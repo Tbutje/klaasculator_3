@@ -1,0 +1,11 @@
+include generate_uno.py
+include unopkg/menu_def
+include unopkg/klaasculator_oo.py
+include unopkg/menu.xcu
+include unopkg/META-INF/manifest.xml
+include pygtk/*.tar.gz
+include pygtk/*.tar
+include pygtk/README
+include README
+include MANIFEST.in
+include windows_installer.nsi

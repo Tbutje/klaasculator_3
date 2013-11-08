@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<oor:component-data oor:name="Addons" oor:package="org.openoffice.Office" xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <node oor:name="AddonUI">
+        <node oor:name="OfficeMenuBar">
+            <node oor:name="klaasculator_3" oor:op="replace">
+                <prop oor:name="Title" oor:type="xs:string">
+                    <value/>
+                    <value xml:lang="en-US">Klaasculator_3</value>
+                    <value xml:lang="nl">Klaasculator_3</value>
+                </prop>
+                <prop oor:name="Target" oor:type="xs:string">
+                    <value>_self</value>
+                </prop>
+                <node oor:name="Submenu">
+                    <node oor:name="m01" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value/>
+                        </prop>
+                        <prop oor:name="Title" oor:type="xs:string">
+                            <value xml:lang="en-US">Algemeen</value>
+                            <value xml:lang="nl">Algemeen</value>
+                        </prop>
+                        <prop oor:name="Target" oor:type="xs:string">
+                            <value>_self</value>
+                        </prop>
+                        <node oor:name="Submenu">
+                            <node oor:name="m02" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Tegenregel</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Tegenregel</value>
+                                    <value xml:lang="nl">Tegenregel</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m03" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Layout</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Layout</value>
+                                    <value xml:lang="nl">Layout</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m04" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Debug</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Debug</value>
+                                    <value xml:lang="nl">Debug</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m05" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Importeer_CSV</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Importeer CSV</value>
+                                    <value xml:lang="nl">Importeer CSV</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m06" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Boekstuk_Editor</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Boekstuk Editor</value>
+                                    <value xml:lang="nl">Boekstuk Editor</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m07" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Kascie_Helper</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Kascie Helper</value>
+                                    <value xml:lang="nl">Kascie Helper</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m08" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Selecteer_een_relatie</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Selecteer een relatie</value>
+                                    <value xml:lang="nl">Selecteer een relatie</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                        </node>
+                    </node>
+                    <node oor:name="09" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value>private:separator</value>
+                        </prop>
+                    </node>
+                    <node oor:name="m10" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value/>
+                        </prop>
+                        <prop oor:name="Title" oor:type="xs:string">
+                            <value xml:lang="en-US">Compileer</value>
+                            <value xml:lang="nl">Compileer</value>
+                        </prop>
+                        <prop oor:name="Target" oor:type="xs:string">
+                            <value>_self</value>
+                        </prop>
+                        <node oor:name="Submenu">
+                            <node oor:name="m11" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Compileer_Alles</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Compileer Alles</value>
+                                    <value xml:lang="nl">Compileer Alles</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m12" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Sorteer_Journaal</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Sorteer Journaal</value>
+                                    <value xml:lang="nl">Sorteer Journaal</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m13" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Maak_Grootboek</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Maak Grootboek</value>
+                                    <value xml:lang="nl">Maak Grootboek</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                        </node>
+                    </node>
+                    <node oor:name="14" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value>private:separator</value>
+                        </prop>
+                    </node>
+                    <node oor:name="m15" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value/>
+                        </prop>
+                        <prop oor:name="Title" oor:type="xs:string">
+                            <value xml:lang="en-US">Gebcie</value>
+                            <value xml:lang="nl">Gebcie</value>
+                        </prop>
+                        <prop oor:name="Target" oor:type="xs:string">
+                            <value>_self</value>
+                        </prop>
+                        <node oor:name="Submenu">
+                            <node oor:name="m16" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Baromzet</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Baromzet</value>
+                                    <value xml:lang="nl">Baromzet</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m17" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?NICO</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">NICO</value>
+                                    <value xml:lang="nl">NICO</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                        </node>
+                    </node>
+                    <node oor:name="18" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value>private:separator</value>
+                        </prop>
+                    </node>
+                    <node oor:name="m19" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value/>
+                        </prop>
+                        <prop oor:name="Title" oor:type="xs:string">
+                            <value xml:lang="en-US">Configuratie</value>
+                            <value xml:lang="nl">Configuratie</value>
+                        </prop>
+                        <prop oor:name="Target" oor:type="xs:string">
+                            <value>_self</value>
+                        </prop>
+                        <node oor:name="Submenu">
+                            <node oor:name="m20" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Configuratie_Aanpassen</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Configuratie Aanpassen</value>
+                                    <value xml:lang="nl">Configuratie Aanpassen</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m21" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Relaties_Aanpassen</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Relaties Aanpassen</value>
+                                    <value xml:lang="nl">Relaties Aanpassen</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m22" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Selecteer_Configuratiebestand</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Selecteer Configuratiebestand</value>
+                                    <value xml:lang="nl">Selecteer Configuratiebestand</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m23" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Selecteer_Relatiebestand</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Selecteer Relatiebestand</value>
+                                    <value xml:lang="nl">Selecteer Relatiebestand</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m24" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Sneltoetsen_activeren</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Sneltoetsen activeren</value>
+                                    <value xml:lang="nl">Sneltoetsen activeren</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                        </node>
+                    </node>
+                    <node oor:name="25" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value>private:separator</value>
+                        </prop>
+                    </node>
+                    <node oor:name="m26" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value>service:klaasculator_oo.Verkeersregelaar?Python_Console</value>
+                        </prop>
+                        <prop oor:name="Title" oor:type="xs:string">
+                            <value xml:lang="en-US">Python Console</value>
+                            <value xml:lang="nl">Python Console</value>
+                        </prop>
+                        <prop oor:name="Target" oor:type="xs:string">
+                            <value>_self</value>
+                        </prop>
+                        <prop oor:name="Context" oor:type="xs:string">
+                            <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                        </prop>
+                    </node>
+                </node>
+            </node>
+        </node>
+    </node>
+</oor:component-data>

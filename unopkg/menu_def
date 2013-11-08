@@ -1,0 +1,34 @@
+# het eerste argument is het menuitem.
+# Als er drie items op een regel zijn, is het eerste een submenu, met twee items op een regel is de eerste gewoon
+# een menuitem. Het laatse item is de naam van de python-functie die moet worden aangeroepen.
+# regels die met '#' beginnen zijn commentaar en worden genegeerd.
+# verder: vervang alle spaties in je namen door underscores. Dus 'Sorteer Journaal' wordt 'Sorteer_Journaal'
+
+#
+# Hmmm.... bizarre bug op windows, implementationHelper werkt niet als je meer dat +- 10 dingen toevoegt.
+# Ik heb dus maar het meeste uitgezet. Ik zoek later wel uit hoe dat mooi te verhelpen.
+#
+# Bug verholpen
+
+Algemeen Tegenregel tegenregel
+Algemeen Layout layout
+Algemeen Debug Debug
+Algemeen Importeer_CSV importeer_csv
+Algemeen Boekstuk_Editor boekstukeditor
+Algemeen Kascie_Helper kasciehelper
+Algemeen Selecteer_een_relatie KiesRelatie
+
+Compileer Compileer_Alles compileeralles
+Compileer Sorteer_Journaal sorteerjournaal
+Compileer Maak_Grootboek maakgrootboek
+
+Gebcie Baromzet baromzet
+Gebcie NICO nico
+
+Configuratie Configuratie_Aanpassen EditConfig
+Configuratie Relaties_Aanpassen EditRelaties
+Configuratie Selecteer_Configuratiebestand selectconfig
+Configuratie Selecteer_Relatiebestand selectrelaties
+Configuratie Sneltoetsen_activeren enablekeys
+
+Python_Console console

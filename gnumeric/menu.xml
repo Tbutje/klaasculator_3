@@ -1,0 +1,34 @@
+<ui>
+    <menubar>
+        <menu name="Tools" action="MenuTools">
+            <menu name="klaasculator_menu" action="dummy_menu">
+                <menu name="Algemeen" action="Algemeen_menu">
+                    <menuitem action="Tegenregel"/>
+                    <menuitem action="Layout"/>
+                    <menuitem action="Debug"/>
+                    <menuitem action="Importeer_CSV"/>
+                    <menuitem action="Boekstuk_Editor"/>
+                    <menuitem action="Kascie_Helper"/>
+                    <menuitem action="Selecteer_een_relatie"/>
+                </menu>
+                <menu name="Compileer" action="Compileer_menu">
+                    <menuitem action="Compileer_Alles"/>
+                    <menuitem action="Sorteer_Journaal"/>
+                    <menuitem action="Maak_Grootboek"/>
+                </menu>
+                <menu name="Gebcie" action="Gebcie_menu">
+                    <menuitem action="Baromzet"/>
+                    <menuitem action="NICO"/>
+                </menu>
+                <menu name="Configuratie" action="Configuratie_menu">
+                    <menuitem action="Configuratie_Aanpassen"/>
+                    <menuitem action="Relaties_Aanpassen"/>
+                    <menuitem action="Selecteer_Configuratiebestand"/>
+                    <menuitem action="Selecteer_Relatiebestand"/>
+                    <menuitem action="Sneltoetsen_activeren"/>
+                </menu>
+                <menuitem action="Python_Console"/>
+            </menu>
+        </menu>
+    </menubar>
+</ui>
