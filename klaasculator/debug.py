@@ -9,10 +9,10 @@ class Debug:
         self.rel = Relaties()
         self.bdatum = getbegindatum()
         self.edatum = geteinddatum()
+        self.begindc = Sheet_jr_ro('BeginDC')
 
         self.verder = True
         self.error = ''
-        compileeralles()
         # ok returned FALSE als er ergens iets niet ok is
         # optioneel kan self.verder aangeven dat het al klaar is
         # probleem is dat als er een fout gevonden wordt ok False blijft
@@ -329,32 +329,24 @@ class Debug:
         window.destroy()
         
     def check_begindc_x_beginbalans(self, ok):
-        # do sum balans posten
-        journaal = Sheet_jr_ro('Journaal')
-        begindc = Sheet_jr_ro('BeginDC')
-        dc = Debcred(journaal, begindc)
-        dc.maak()
+        dc = self.begindc_fix()
         totals = {}
-        reks = Config().balansrekeningen()
+        reks = self.conf.balansrekeningen()
         reks.sort()
-        rel = Relaties()
-        conf = Config()
-        
 
         for line in reks:
             if line.nummer > 129 and line.nummer < 150:
                 # haal Relates().exclude rek rekening eruit
                 # we nemen aan dat dit geen normale deb/cred zijn
                 # zoals bv btw
-                if not (conf.getrekening(line.nummer).naam in rel.exclude_rek):
+                if not (self.conf.getrekening(line.nummer).naam in self.rel.exclude_rek):
                     totals[line.nummer] = 0
         
-        for line in dc.dclijst:
-            if line.omschrijving == "Van beginbalans":
-                if line.waarde.dc == 0: # debet
-                    totals[line.rekening] += line.waarde.value/100
-                elif line.waarde.dc == 1: # credit
-                    totals[line.rekening] -= line.waarde.value/100
+        for line in dc:
+            if line.waarde.dc == 0: # debet
+                totals[line.rekening] += line.waarde.value/100
+            elif line.waarde.dc == 1: # credit
+                totals[line.rekening] -= line.waarde.value/100
                     
         beginbalans = Sheet_bl_ro('Beginbalans')
         ok = True
@@ -368,7 +360,6 @@ class Debug:
                     foute_nummers.append( key)
         
         if len(foute_nummers) > 0:
-            # print str(foute_nummers)
             text = " ".join(str(x) for x in foute_nummers)
             text = "Het totaal van de volgende begin DC posten is niet gelijk aan de beginbalans : " + text
             ok = False
@@ -387,12 +378,36 @@ class Debug:
             window.show_all()
             gtk.main()
             
-        
         return ok
+        
+    def begindc_fix(self):
+        """Deze methode verwijdert dubbele entrys in de begindc.
+
+        Dus wanneer iemand twee keer op dezelfde rekening in de begindc iets heeft, wordt dit samengevat tot een.
+        Retourneert een lijst met boekregels zoals ze horen.
+        Omdat dit later van pas komt worden alle date vervangen door de begindatum - 1
+        """
+        bdc = sorter(self.begindc, sorter_rodn)
+
+        it = 0
+        while it < len(bdc):
+            b = bdc[it]
+            it += 1
+            b.datum = self.bdatum - 1
+            while it < len(bdc) and b.rekening == bdc[it].rekening and b.omschrijving == bdc[it].omschrijving:
+                b.omschrijving2 += ', ' + bdc[it].omschrijving2
+                b.waarde += bdc[it].waarde
+                del bdc[it]
+
+        return bdc
+        
     
+        
+            
 
 if __name__ == "__main__":
     Debug()
+    
     
 
                     
