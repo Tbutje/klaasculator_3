@@ -47,4 +47,7 @@ def selectrelaties():
     """Zie selectconfig()."""
     selectconfig('C11', 'Selecteer het relatiebestand')
 
+if __name__ == "__main__":
+    selectconfig()
+    selectrelaties()
 

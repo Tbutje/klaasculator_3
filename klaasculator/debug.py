@@ -26,17 +26,14 @@ class Debug:
         if self.verder:
             ok = self.check_begindc(ok)
             
-        # maak check voor totaal balans post == eindbalans
+        # maak check voor totaal begin dc / post == beginbalans
         if self.verder:
-            ok = self.check_eindbalans(ok)
+            ok = self.check_begindc_x_beginbalans(ok)
 
-        # even een schermpje hoe het ging
+        # even een schermpje als er geen fouten waren
         if ok:
             title = 'Gefeliciteerd'
             text = 'Geen fouten gevonden.'
-        # else:
-            # title = 'Oei'
-            # text = 'Er zijn nog fouten over gevonden.'
 
             window = gtkwindow(title)
             vbox = gtkvbox()
@@ -331,7 +328,7 @@ class Debug:
     def verder_bl(self, button, window):
         window.destroy()
         
-    def check_eindbalans(self, ok):
+    def check_begindc_x_beginbalans(self, ok):
         # do sum balans posten
         journaal = Sheet_jr_ro('Journaal')
         begindc = Sheet_jr_ro('BeginDC')
@@ -341,6 +338,7 @@ class Debug:
         reks = Config().balansrekeningen()
         reks.sort()
         rel = Relaties()
+        conf = Config()
         
 
         for line in reks:
@@ -348,35 +346,33 @@ class Debug:
                 # haal Relates().exclude rek rekening eruit
                 # we nemen aan dat dit geen normale deb/cred zijn
                 # zoals bv btw
-                if not (Config().getrekening(line.nummer).naam in rel.exclude_rek):
+                if not (conf.getrekening(line.nummer).naam in rel.exclude_rek):
                     totals[line.nummer] = 0
         
         for line in dc.dclijst:
-            if not (line.omschrijving == "Naar eindbalans" or 
-                    line.omschrijving == "Van beginbalans"):
+            if line.omschrijving == "Van beginbalans":
                 if line.waarde.dc == 0: # debet
                     totals[line.rekening] += line.waarde.value/100
                 elif line.waarde.dc == 1: # credit
                     totals[line.rekening] -= line.waarde.value/100
                     
-        # print totals
-        eindbalans = Sheet_bl_ro('Eindbalans')
+        beginbalans = Sheet_bl_ro('Beginbalans')
         ok = True
         foute_nummers = []
         for key,value in totals.iteritems():
-            if eindbalans.getwaarde(key).dc == 0: # bebet
-                if eindbalans.getwaarde(key).value/100 != value:
+            if beginbalans.getwaarde(key).dc == 0: # bebet
+                if beginbalans.getwaarde(key).value/100 != value:
                     foute_nummers.append( key)
-            if eindbalans.getwaarde(key).dc == 1: # credit
-                if (eindbalans.getwaarde(key).value/-100) != value:
+            if beginbalans.getwaarde(key).dc == 1: # credit
+                if (beginbalans.getwaarde(key).value/-100) != value:
                     foute_nummers.append( key)
         
         if len(foute_nummers) > 0:
             # print str(foute_nummers)
             text = " ".join(str(x) for x in foute_nummers)
-            text = "Het totaal van de volgende Deb/cred posten is niet gelijk aan de eindbalans : " + text
+            text = "Het totaal van de volgende begin DC posten is niet gelijk aan de beginbalans : " + text
             ok = False
-            window = gtkwindow('Fout')
+            window = gtkwindow('Begin DC fout')
             vbox = gtkvbox()
             vbox.pack_start(gtk.Label(text))
             bbox = gtkhbuttonbox()
