@@ -12,15 +12,23 @@ class DebcredKortLeden(Debcred):
         self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
         
     def header(self, it, b):
-        """Hulpfunctie.
-
-        Dit maakt de headers. Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
+        """Hulpfunctie.Dit maakt de headers. 
+        Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
         """
-        it = Debcred.header(self, it, b)
-
-        self.dclijst.setint(it - 1, 2, 0)
-        self.dclijst.setint(it - 3, 2, 0)
-
+        self.dclijst.setboekregel(it, Boekregel(rekening = 0, omschrijving = b.omschrijving))
+        it += 1
+        self.dclijst.setboekregel(it, Boekregel())
+        it += 1
+        if b.datum == self.bdatum - 1:
+            self.dclijst.setboekregel(it, Boekregel(0, self.bdatum, b.rekening, '', 'Van beginbalans', 0, 0, b.waarde, b.omschrijving2))
+            self.dclijst.setstring(it, 0, 'Begin')
+            it += 1
+        else:
+            self.dclijst.setboekregel(it, Boekregel(0, self.bdatum, b.rekening, '', 'Van beginbalans', 0, 0, Euro(), ''))
+            self.dclijst.setstring(it, 0, 'Begin')
+            it += 1
+            self.dclijst.setboekregel(it, b)
+            it += 1
         return it
 
     def footer(self, it, w):
@@ -69,7 +77,6 @@ class DebcredKortLeden(Debcred):
 
     def write(self):
         """Wie schrijft die blijft."""
-        rel = Relaties()
         
         # maak deb/cred lijst leten
         createsheet('DebCredKortLeden')

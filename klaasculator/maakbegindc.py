@@ -1,6 +1,6 @@
 from debcred import *
 
-class DebcredKort(Debcred):
+class MaakBeginDC(Debcred):
     """Maak een debiteuren- en crediteurenlijst-samenvatting"""
 
     def __init__(self, journaal, begindc):
@@ -15,24 +15,33 @@ class DebcredKort(Debcred):
         """Hulpfunctie.Dit maakt de headers. 
         Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
         """
-        self.dclijst.setboekregel(it, Boekregel(rekening = 0, omschrijving = b.omschrijving))
+        self.dclijst.setboekregel(it, Boekregel(rekening = b.rekening, 
+                                            omschrijving = ""))
         it += 1
         self.dclijst.setboekregel(it, Boekregel())
         it += 1
-        if b.datum == self.bdatum - 1:
-            self.dclijst.setboekregel(it, Boekregel(0, self.bdatum, b.rekening, '', 'Van beginbalans', 0, 0, b.waarde, b.omschrijving2))
-            self.dclijst.setstring(it, 0, 'Begin')
-            it += 1
-        else:
-            self.dclijst.setboekregel(it, Boekregel(0, self.bdatum, b.rekening, '', 'Van beginbalans', 0, 0, Euro(), ''))
-            self.dclijst.setstring(it, 0, 'Begin')
-            it += 1
-            self.dclijst.setboekregel(it, b)
-            it += 1
+        self.dclijst.setboekregel(it, b)
+        it += 1
         return it
 
-    def footer(self, it, w):
-        return Debcred.footer(self, it, Boekregel(), w)
+    def footer(self, it, r, w):
+        self.dclijst.setboekregel(it, Boekregel(0,
+                                                "",
+                                                0,
+                                                '',
+                                                '',
+                                                0,
+                                                0,
+                                                w.counterpart(),
+                                                'Begin balans volgend jaar'))
+        self.dclijst.setstring(it, 0, 'Eind')
+        it += 1
+        self.dclijst.setboekregel(it, Boekregel())
+        it += 1
+        self.dclijst.setboekregel(it, Boekregel())
+        it += 1                                  
+        return it
+
 
     def bdatumfix(self, b):
         if b.datum == self.bdatum:
@@ -41,7 +50,7 @@ class DebcredKort(Debcred):
 
     def maak(self):
         """Maak de handel."""
-        regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_odn)
+        regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_rdn)
 
         if not regels: #stoppen bij lege boekhouding
             return
@@ -52,11 +61,11 @@ class DebcredKort(Debcred):
         om2 = ''
         
         for r in regels:      
+            print r
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
-            if r.omschrijving != rel.omschrijving:
-                self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
-                it = self.footer(it, waarde)
+            if r.rekening != rel.rekening:
+                it = self.footer(it,r, waarde)
                 it = self.header(it, r)
                 rel = r
                 waarde = r.waarde
@@ -68,17 +77,16 @@ class DebcredKort(Debcred):
                 it += 1
                 waarde += r.waarde
                 om2 += ', ' + r.omschrijving2
-        self.footer(it, waarde)
-        self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
-
+        self.footer(it,r, waarde)
 
     def write(self):
         """Wie schrijft die blijft."""
+        rel = Relaties()
         
-        # maak deb/cred lijst leten
-        createsheet('DebCredKort')
+        # maak deb/cred lijst
+        createsheet('BeginDC_NEW')
 
-        tmp = Sheet('DebCredKort', 0, 0, 9, 0)
+        tmp = Sheet('BeginDC_NEW', 0, 0, 9, 0)
         tmp.setstring(0, 4, 'Debiteuren / Crediteuren Samenvatting')
 
         tmp.setstring(1, 0, 'Bknr.')
@@ -92,52 +100,11 @@ class DebcredKort(Debcred):
         tmp.setstring(1, 8, 'credit')
         tmp.setstring(1, 9, 'Omschrijving')
 
-        tmp.write('DebCredKort', 0, 0)
-        self.dclijst.write('DebCredKort', erase = True)
-         
-        # maak extra korte lijst
-        createsheet('DebCredExtraKort')
-
-        kort = Sheet('DebCredExtraKort', 0, 0, 3, 0)
-        # timo edit
-        kort.setstring(0, 3, 'DebCredExtraKort')
-
-        kort.setstring(1, 0, 'naam.')
-        kort.setstring(1, 1, 'waarde')
-        kort.setstring(1, 3, 'omschrijving.')
-
-        kort.write('DebCredExtraKort', 0, 0)
-
-        #c = 0
-        c = 2
-        for r in self.dclijstkort:
-            if r.waarde.true():
-                kort.setstring(c, 0, r.naam)
-
-                if r.waarde.dc == DEBET:
-                    kort.setfloat(c, 1, float(r.waarde))
-                    kort.setfloat(c, 2, 0.0)
-                else:
-                    kort.setfloat(c, 1, 0.0)
-                    kort.setfloat(c, 2, float(r.waarde))
-                kort.setstring(c, 3, r.omschrijving)
-                c += 1
-                
-        kort.write('DebCredExtraKort', 0, 0, erase = True)
-
-        # def write(self, sheetname, left, bottom, insert = False, erase = False):
-        # """Schrijft de data naar een sheet sheetname.
-
-        # left is de linkse hoek, bottom het laagste rijnummer.
-        # Als insert = False, dat wordt eventuele data overschreven. Is insert True, dan worden er rijen ingevoegd.
-        # Als erase = True, dat wordt alle data met rijen hoger dan rows() verwijdert.
-        # """
-
-        
+        tmp.write('BeginDC_NEW', 0, 0)
+        self.dclijst.write('BeginDC_NEW', erase = True)
 
         try:
             layout_journaalstyle('DebCredKort')
-            layout_extrakortedc('DebCredExtraKort')
         except:
             pass
 
@@ -204,7 +171,7 @@ class DebcredKort(Debcred):
 if __name__ == "__main__":
     journaal = Sheet_jr_ro('Journaal')
     begindc = Sheet_jr_ro('BeginDC')
-    dc = DebcredKort(journaal, begindc)
+    dc = MaakBeginDC(journaal, begindc)
     dc.maak()
     dc.write()
     

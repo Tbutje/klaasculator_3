@@ -78,7 +78,7 @@ class Debcred:
         for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
-            
+            # != rel.rekening zorgt ervoor dat er per rekening uitgesplitsts word
             if r.omschrijving != rel.omschrijving or r.rekening != rel.rekening:
                 it = self.footer(it, rel, waarde)
                 it = self.header(it, r)

@@ -399,6 +399,8 @@ class Debug:
                 b.waarde += bdc[it].waarde
                 del bdc[it]
 
+        for line in bdc:
+            print line
         return bdc
         
     
