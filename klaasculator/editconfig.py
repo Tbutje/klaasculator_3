@@ -136,9 +136,13 @@ Instructies:
 
     def write(self):
         fname = urlparse(self.label.get_text())[2]
+        # the program glitched on the extra / in the start of string
+        # thus remove element 0
+        fname = fname[1:len(fname)]
+        
         try:
-            setcellstring('Info', 'C10', self.label.get_text())
-            f = open(fname, 'w')
+            # setcellstring('Info', 'C10', self.label.get_text())
+            f = open(fname, 'wb')
 
             for r in self.balansrekeningen:
                 s = r[0].get_text().strip()
@@ -243,4 +247,7 @@ Instructies:
             i.set_value(o[1])
             ret.append([e, i])
         return ret
+        
+if __name__ == "__main__":
+    EditConfig()
 

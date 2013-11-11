@@ -64,7 +64,8 @@ class EditRelaties:
         self.ledenrek = []
         self.olvrek = []
         self.externrek = []
-        self.alias = []
+        self.excluderek = []
+        # self.alias = []
         
         # leden
         vbox, table, button = self.ledenframe()
@@ -95,16 +96,16 @@ class EditRelaties:
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(vbox)
         self.notebook.append_page(scroll, gtk.Label('Externen'))
-
+        
         # alias
-        vbox, table, button = self.aliasframe()
-        self.alias.extend(self.alias_set(table))
-        button.connect('clicked', self.aliasadd, table)
+        # vbox, table, button = self.aliasframe()
+        # self.alias.extend(self.alias_set(table))
+        # button.connect('clicked', self.aliasadd, table)
 
-        scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        scroll.add_with_viewport(vbox)
-        self.notebook.append_page(scroll, gtk.Label('Alias'))
+        # scroll = gtk.ScrolledWindow()
+        # scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        # scroll.add_with_viewport(vbox)
+        # self.notebook.append_page(scroll, gtk.Label('Alias'))
 
         # ledenrek
         table = self.rekeningframe()
@@ -126,7 +127,7 @@ class EditRelaties:
         scroll.add_with_viewport(table)
         self.notebook.append_page(scroll, gtk.Label('OLVrekeningen'))
 
-        # externrek
+        # extern rek
         table = self.rekeningframe()
         self.externrek.extend(self.externrek_set(table))
         button.connect('clicked', self.externrekadd, table)
@@ -135,6 +136,16 @@ class EditRelaties:
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(table)
         self.notebook.append_page(scroll, gtk.Label('Externrekeningen'))
+        
+         # exclude rek
+        table = self.rekeningframe()
+        self.excluderek.extend(self.excluderek_set(table))
+        button.connect('clicked', self.excluderekadd, table)
+        
+        scroll = gtk.ScrolledWindow()
+        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        scroll.add_with_viewport(table)
+        self.notebook.append_page(scroll, gtk.Label('Excluded rekeningen'))
 
         # instructies:
         help = gtk.TextView()
@@ -143,6 +154,8 @@ class EditRelaties:
         buff = help.get_buffer()
         buff.set_text("""\
 Instructies:
+* Alle rekeningen tussen 129 en 150 worden automatisch als extern rek gemarkeerd als ze niet in leden rek of exclude rek staan
+* exclude rek wordt niet meegenomen bij de deb/cred lijst.
 * Om namen aan te passen:
   Ga rustig typen. Bij leden kan automatisch een fico code gemaakt worden.
 * Om namen toe te voegen:
@@ -153,6 +166,7 @@ Instructies:
   Dit houdt in dat ze worden meegenomen bij het maken van debiteuren/crediteurenlijsten. Zet een vinkje achter de rekening.
 * De rekening die ik als relatierekening wil aanmerken bestaat niet.
   Voeg de rekening eerst toe met 'Configuratie aanpassen' als balansrekening.
+
 """)
         self.notebook.append_page(help, gtk.Label('Instructies'))         
         
@@ -175,8 +189,11 @@ Instructies:
 
     def write(self):
         fname = urlparse(self.label.get_text())[2]
+        # the program glitched on the extra / in the start of string
+        # thus remove element 0
+        fname = fname[1:len(fname)]
         try:
-            setcellstring('Info', 'C11', self.label.get_text())
+            # setcellstring('Info', 'C11', self.label.get_text())
             f = open(fname, 'w')
 
             for r in self.leden:
@@ -197,6 +214,7 @@ Instructies:
 
                 if naam:
                     f.write('"extern","%s"\n' % naam)
+                    
 
             for r in self.ledenrek:
                 s = r[0].get_text().strip()
@@ -212,18 +230,24 @@ Instructies:
                 s = r[0].get_text().strip()
                 if r[1].get_active() and s:
                     f.write('"externrekening","%s"\n' % s)
+                    
+            for r in self.excluderek:
+                s = r[0].get_text().strip()
+                if r[1].get_active() and s:
+                    f.write('"exclude","%s"\n' % s)
+            
 
-            for r in self.alias:
-                a = r[0].get_text().strip()
-                if a:
-                    f.write('"alias:%s","%s"\n' % (a.replace('"', r'\"'), r[1].child.get_text()))
+            # for r in self.alias:
+                # a = r[0].get_text().strip()
+                # if a:
+                    # f.write('"alias:%s","%s"\n' % (a.replace('"', r'\"'), r[1].child.get_text()))
             f.close()
         except Exception, e:
             print e
             raise Fout('Kon niet naar bestand \'%s\' schrijven.' % fname)
 
 
-    ## allerlij hulpfuncties:
+    ## allerlij hulpfuncties: #################################################
 
     # leden
 
@@ -305,7 +329,7 @@ Instructies:
 
     def externadd(self, b, table):
         self.extern.append(self.naamframe_append(table))
-
+        
     def olv_set(self, table):
         ret = []
         for l in sorter(self.rel.olv):
@@ -392,6 +416,10 @@ Instructies:
 
     def externrekadd(self, b, table):
         self.externrek.append(self.rekeningframe_append(table))
+        
+    def excluderekadd(self, b, table):
+        self.excluderek.append(self.rekeningframe_append(table))
+
 
     def ledenrek_set(self, table):
         ret = []
@@ -422,3 +450,16 @@ Instructies:
 
             ret.append([naam, check])
         return ret
+        
+    def excluderek_set(self, table):
+        ret = []
+        for l in sorter(self.conf.balansrekeningen()):
+            naam, check = self.rekeningframe_append(table)
+            naam.set_text(l.naam)
+            check.set_active(l.naam in self.rel.exclude_rek)
+
+            ret.append([naam, check])
+        return ret
+        
+if __name__ == "__main__":
+    EditRelaties()
