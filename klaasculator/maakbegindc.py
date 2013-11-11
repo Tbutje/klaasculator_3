@@ -61,7 +61,6 @@ class MaakBeginDC(Debcred):
         om2 = ''
         
         for r in regels:      
-            print r
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
             if r.rekening != rel.rekening:

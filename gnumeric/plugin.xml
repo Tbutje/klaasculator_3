@@ -23,6 +23,9 @@
                 <action name="Compileer_Alles" label="Compileer Alles"/>
                 <action name="Sorteer_Journaal" label="Sorteer Journaal"/>
                 <action name="Maak_Grootboek" label="Maak Grootboek"/>
+                <action name="debcred_menu" label="debcred"/>
+                <action name="debCred_leden" label="debCred leden"/>
+                <action name="begin_dc" label="begin dc"/>
                 <action name="Gebcie_menu" label="Gebcie"/>
                 <action name="Baromzet" label="Baromzet"/>
                 <action name="NICO" label="NICO"/>

@@ -22,6 +22,9 @@ Compileer Compileer_Alles compileeralles
 Compileer Sorteer_Journaal sorteerjournaal
 Compileer Maak_Grootboek maakgrootboek
 
+debcred debCred_leden maakdebcredkortleden
+debcred begin_dc maakbegindc
+
 Gebcie Baromzet baromzet
 Gebcie NICO nico
 

@@ -3,6 +3,7 @@ from grootboek import *
 from debcred import *
 from debcredkort import *
 from debcredkort_leden import *
+from maakbegindc import *
 
 def sorteerjournaal():
     """Sorteer het journaal."""
@@ -133,6 +134,13 @@ def maakdebcredkortleden():
     dc.maak()
     dc.write()
     
+def maakbegindc():
+    journaal = Sheet_jr_ro('Journaal')
+    begindc = Sheet_jr_ro('BeginDC')
+    dc = MaakBeginDC(journaal, begindc)
+    dc.maak()
+    dc.write()
+    
 def compileeralles():
     """Compileert alles."""
     if Config().getvar('idiotproof:autowinst'):
@@ -157,9 +165,9 @@ def compileeralles():
     dc.maak()
     dc.write()
     
-    dl = DebcredKortLeden(journaal, begindc)
-    dl.maak()
-    dl.write()
+    # dl = DebcredKortLeden(journaal, begindc)
+    # dl.maak()
+    # dl.write()
     
 
 if __name__ == "__main__":

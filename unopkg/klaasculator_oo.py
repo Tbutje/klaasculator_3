@@ -130,6 +130,14 @@ class Verkeersregelaar(unohelper.Base, XJobExecutor):
                 maakgrootboek()
                 return
 
+            if functie == 'debCred_leden':
+                maakdebcredkortleden()
+                return
+
+            if functie == 'begin_dc':
+                maakbegindc()
+                return
+
             if functie == 'Baromzet':
                 baromzet()
                 return

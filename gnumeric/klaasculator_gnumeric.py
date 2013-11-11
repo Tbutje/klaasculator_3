@@ -211,6 +211,46 @@ def gnumeric_Maak_Grootboek(e):
         f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
         f.show(True)
 
+def gnumeric_debCred_leden(e):
+    try:
+        Config()
+        Relaties()
+    except Fout, f:
+        f.settraceback(gettraceback())
+        f.show(False)
+    except Exception, e:
+        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
+        f.show(True)
+
+    try:
+        maakdebcredkortleden()
+    except Fout, f:
+        f.settraceback(gettraceback())
+        f.show(False)
+    except Exception, e:
+        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
+        f.show(True)
+
+def gnumeric_begin_dc(e):
+    try:
+        Config()
+        Relaties()
+    except Fout, f:
+        f.settraceback(gettraceback())
+        f.show(False)
+    except Exception, e:
+        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
+        f.show(True)
+
+    try:
+        maakbegindc()
+    except Fout, f:
+        f.settraceback(gettraceback())
+        f.show(False)
+    except Exception, e:
+        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
+        f.show(True)
+
 def gnumeric_Baromzet(e):
     try:
         Config()
@@ -380,6 +420,8 @@ klaasculator_ui_actions = {'Tegenregel' : gnumeric_Tegenregel,
                            'Compileer_Alles' : gnumeric_Compileer_Alles,
                            'Sorteer_Journaal' : gnumeric_Sorteer_Journaal,
                            'Maak_Grootboek' : gnumeric_Maak_Grootboek,
+                           'debCred_leden' : gnumeric_debCred_leden,
+                           'begin_dc' : gnumeric_begin_dc,
                            'Baromzet' : gnumeric_Baromzet,
                            'NICO' : gnumeric_NICO,
                            'Configuratie_Aanpassen' : gnumeric_Configuratie_Aanpassen,

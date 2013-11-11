@@ -1,5 +1,8 @@
 import sys
 
+### dit generate aan de hand van menu_def  stuff
+## output --> klaasculator_oo.py + *.xcu
+
 def indenteer(f, i):
     f.write('    '*i)
 

@@ -16,6 +16,10 @@
                     <menuitem action="Sorteer_Journaal"/>
                     <menuitem action="Maak_Grootboek"/>
                 </menu>
+                <menu name="debcred" action="debcred_menu">
+                    <menuitem action="debCred_leden"/>
+                    <menuitem action="begin_dc"/>
+                </menu>
                 <menu name="Gebcie" action="Gebcie_menu">
                     <menuitem action="Baromzet"/>
                     <menuitem action="NICO"/>

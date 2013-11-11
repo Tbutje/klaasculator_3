@@ -205,8 +205,8 @@
                             <value/>
                         </prop>
                         <prop oor:name="Title" oor:type="xs:string">
-                            <value xml:lang="en-US">Gebcie</value>
-                            <value xml:lang="nl">Gebcie</value>
+                            <value xml:lang="en-US">debcred</value>
+                            <value xml:lang="nl">debcred</value>
                         </prop>
                         <prop oor:name="Target" oor:type="xs:string">
                             <value>_self</value>
@@ -214,11 +214,11 @@
                         <node oor:name="Submenu">
                             <node oor:name="m16" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
-                                    <value>service:klaasculator_oo.Verkeersregelaar?Baromzet</value>
+                                    <value>service:klaasculator_oo.Verkeersregelaar?debCred_leden</value>
                                 </prop>
                                 <prop oor:name="Title" oor:type="xs:string">
-                                    <value xml:lang="en-US">Baromzet</value>
-                                    <value xml:lang="nl">Baromzet</value>
+                                    <value xml:lang="en-US">debCred leden</value>
+                                    <value xml:lang="nl">debCred leden</value>
                                 </prop>
                                 <prop oor:name="Target" oor:type="xs:string">
                                     <value>_self</value>
@@ -229,11 +229,11 @@
                             </node>
                             <node oor:name="m17" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
-                                    <value>service:klaasculator_oo.Verkeersregelaar?NICO</value>
+                                    <value>service:klaasculator_oo.Verkeersregelaar?begin_dc</value>
                                 </prop>
                                 <prop oor:name="Title" oor:type="xs:string">
-                                    <value xml:lang="en-US">NICO</value>
-                                    <value xml:lang="nl">NICO</value>
+                                    <value xml:lang="en-US">begin dc</value>
+                                    <value xml:lang="nl">begin dc</value>
                                 </prop>
                                 <prop oor:name="Target" oor:type="xs:string">
                                     <value>_self</value>
@@ -254,6 +254,55 @@
                             <value/>
                         </prop>
                         <prop oor:name="Title" oor:type="xs:string">
+                            <value xml:lang="en-US">Gebcie</value>
+                            <value xml:lang="nl">Gebcie</value>
+                        </prop>
+                        <prop oor:name="Target" oor:type="xs:string">
+                            <value>_self</value>
+                        </prop>
+                        <node oor:name="Submenu">
+                            <node oor:name="m20" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Baromzet</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Baromzet</value>
+                                    <value xml:lang="nl">Baromzet</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m21" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?NICO</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">NICO</value>
+                                    <value xml:lang="nl">NICO</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                        </node>
+                    </node>
+                    <node oor:name="22" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value>private:separator</value>
+                        </prop>
+                    </node>
+                    <node oor:name="m23" oor:op="replace">
+                        <prop oor:name="URL" oor:type="xs:string">
+                            <value/>
+                        </prop>
+                        <prop oor:name="Title" oor:type="xs:string">
                             <value xml:lang="en-US">Configuratie</value>
                             <value xml:lang="nl">Configuratie</value>
                         </prop>
@@ -261,7 +310,7 @@
                             <value>_self</value>
                         </prop>
                         <node oor:name="Submenu">
-                            <node oor:name="m20" oor:op="replace">
+                            <node oor:name="m24" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Configuratie_Aanpassen</value>
                                 </prop>
@@ -276,7 +325,7 @@
                                     <value>com.sun.star.sheet.SpreadsheetDocument</value>
                                 </prop>
                             </node>
-                            <node oor:name="m21" oor:op="replace">
+                            <node oor:name="m25" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Relaties_Aanpassen</value>
                                 </prop>
@@ -291,7 +340,7 @@
                                     <value>com.sun.star.sheet.SpreadsheetDocument</value>
                                 </prop>
                             </node>
-                            <node oor:name="m22" oor:op="replace">
+                            <node oor:name="m26" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Selecteer_Configuratiebestand</value>
                                 </prop>
@@ -306,7 +355,7 @@
                                     <value>com.sun.star.sheet.SpreadsheetDocument</value>
                                 </prop>
                             </node>
-                            <node oor:name="m23" oor:op="replace">
+                            <node oor:name="m27" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Selecteer_Relatiebestand</value>
                                 </prop>
@@ -321,7 +370,7 @@
                                     <value>com.sun.star.sheet.SpreadsheetDocument</value>
                                 </prop>
                             </node>
-                            <node oor:name="m24" oor:op="replace">
+                            <node oor:name="m28" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Sneltoetsen_activeren</value>
                                 </prop>
@@ -338,12 +387,12 @@
                             </node>
                         </node>
                     </node>
-                    <node oor:name="25" oor:op="replace">
+                    <node oor:name="29" oor:op="replace">
                         <prop oor:name="URL" oor:type="xs:string">
                             <value>private:separator</value>
                         </prop>
                     </node>
-                    <node oor:name="m26" oor:op="replace">
+                    <node oor:name="m30" oor:op="replace">
                         <prop oor:name="URL" oor:type="xs:string">
                             <value>service:klaasculator_oo.Verkeersregelaar?Python_Console</value>
                         </prop>

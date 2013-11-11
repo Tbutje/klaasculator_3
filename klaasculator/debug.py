@@ -228,8 +228,6 @@ class Debug:
 
     def error_begindc(self, regel, row):
         """Errorscherm als er iets mis is in de begindc."""
-        # print self.error
-        # print regel
 
         window = gtkwindow('Fout in de Debiteuren/Crediteuren-beginlijst')
 
