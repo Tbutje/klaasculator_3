@@ -1,10 +1,7 @@
-#from tools import *
 from powertools import *
 
 from StringIO import StringIO
 from urllib import urlopen
-
-#from config import * #Rekening, Config
 
 import csv, re
 

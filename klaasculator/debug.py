@@ -17,7 +17,8 @@ class Debug:
         # optioneel kan self.verder aangeven dat het al klaar is
         # probleem is dat als er een fout gevonden wordt ok False blijft
         # ook nadat je verberterd hebt
-        # misschien dubbele check doen?
+        # misschien dubbele check doen? beetje loos. dan maar geen berichtje
+        # als je alles goed verbeterd hebt.
         ok = self.check_journaal(True)
 
         if self.verder:
