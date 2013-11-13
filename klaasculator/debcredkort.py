@@ -41,7 +41,55 @@ class DebcredKort(Debcred):
 
     def maak(self):
         """Maak de handel."""
-        regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_odn)
+        
+        regels = self.begindc_fix() + self.journaal_fix()
+        # extra wegstrepen
+        # mega inefficient :/ maar ben beetje lui en nu streetp die ook
+        # dc x journaal weg wat nog niet weg is
+        # if self.conf.getvar('debcredkort:wegstrepen'):
+            # regels = self.wegstrepen(regels)
+           
+        # was sorter odn
+        regels = sorter(regels, sorter_odn)
+        # nu willen we nog af van alle deb/cred die op 0 eindigen?
+        
+        rel = regels.pop(0)
+    #    it = self.header(0, rel)
+        waarde = rel.waarde
+        
+        # remove totals with 0
+        dict = {}
+        dict[str(rel.rekening) + rel.omschrijving] = waarde.true()
+        for r in regels:
+            if self.check and not self.rel.exist(r.omschrijving):
+                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)    
+                
+                
+            if r.omschrijving != rel.omschrijving:
+                dict[str(r.rekening) + r.omschrijving] = waarde.true()
+                rel = r
+                waarde = r.waarde
+            else:
+                waarde += r.waarde
+            
+        # dict[rel] = waarde.true()
+        # als dict is true dan meenemen
+        # loop hiermee door de lijst
+       
+        # regels_new = []
+        
+        # idx = 0
+        # for line in regels:
+            
+            # print dict[str(line.rekening) + line.omschrijving]
+            # if dict[str(line.rekening) + line.omschrijving]:
+                # regels_new.append(line)
+            # else:
+                # continue
+                  
+        print dict
+                    
+        regels = sorted(self.begindc_fix() + self.journaal_fix(), sorter_odn)
 
         if not regels: #stoppen bij lege boekhouding
             return
@@ -53,9 +101,19 @@ class DebcredKort(Debcred):
         
         for r in regels:      
             if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
+                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)    
+                
+            # verwijder lege boekstukken
+            if r.waarde.floatt() == (0.00, 0.00):
+                continue
+            # verwijder omschrijvingen die eindigen op 0
+            print not dict[str(r.rekening) + r.omschrijving]
+            if not dict[str(r.rekening) + r.omschrijving]:
+                continue
+
             if r.omschrijving != rel.omschrijving:
                 self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
+               
                 it = self.footer(it, waarde)
                 it = self.header(it, r)
                 rel = r
@@ -70,6 +128,7 @@ class DebcredKort(Debcred):
                 om2 += ', ' + r.omschrijving2
         self.footer(it, waarde)
         self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
+   
 
 
     def write(self):

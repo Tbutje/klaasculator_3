@@ -50,8 +50,13 @@ class MaakBeginDC(Debcred):
 
     def maak(self):
         """Maak de handel."""
-        regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_rdn)
-
+        regels = self.begindc_fix() + self.journaal_fix()
+        # extra wegstrepen
+        # mega inefficient :/
+        if self.conf.getvar('debcredkort:wegstrepen'):
+            regels = self.wegstrepen(regels)
+            
+        regels = sorter(regels, sorter_odn)
         if not regels: #stoppen bij lege boekhouding
             return
         
