@@ -148,7 +148,7 @@ class DebcredKort(Debcred):
             if r.waarde.true():
                 if r.naam in self.rel.extern:
                     kort.setstring(c, 0, r.naam)
-                    kort.setstring(c, 1, r.datum)
+                    kort.setint(c, 1, r.datum)
 
                     if r.waarde.dc == DEBET:
                         kort.setfloat(c, 2, float(r.waarde))
@@ -170,7 +170,7 @@ class DebcredKort(Debcred):
             if r.waarde.true():
                 if not r.naam in self.rel.extern:
                     kort.setstring(c, 0, r.naam)
-                    kort.setstring(c, 1, r.datum)
+                    kort.setint(c, 1, r.datum)
 
                     if r.waarde.dc == DEBET:
                         kort.setfloat(c, 2, float(r.waarde))
