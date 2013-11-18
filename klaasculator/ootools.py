@@ -423,18 +423,18 @@ def layout_extrakortedc(sheet):
     sheet.setPropertyValue('HoriJustify', 0)
     sheet.setPropertyValue('VertJustify', 2)
 
-    for c in range(4):
+    for c in range(5):
     
         if c == 0:
             width = 8000
             numberformat = 0
-        # elif c == 1:
-                # width = 2000
-                # numberformat = 39
-        elif c == 1 or c == 2:
+        elif c == 1:
+                width = 2000
+                numberformat = 39
+        elif c == 2 or c == 3:
                 width = 3000
                 numberformat = 2
-        elif c == 3:
+        elif c == 4:
             width = 8000
             numberformat = 0
 

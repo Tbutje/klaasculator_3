@@ -130,10 +130,10 @@ class DebcredKort(Debcred):
         kort.setstring(0, 3, 'DebCredSamenvatting')
 
         kort.setstring(1, 0, 'naam.')
-    #    kort.setstring(1, 1, "Oudste datum")
-        kort.setstring(1, 1, 'Debet')
-        kort.setstring(1, 2, 'Credit')
-        kort.setstring(1, 3, 'omschrijving.')
+        kort.setstring(1, 1, "Oudste datum")
+        kort.setstring(1, 2, 'Debet')
+        kort.setstring(1, 3, 'Credit')
+        kort.setstring(1, 4, 'omschrijving.')
 
         # kort.write('DebCredSamenvatting', 0, 0)
 
@@ -148,15 +148,15 @@ class DebcredKort(Debcred):
             if r.waarde.true():
                 if r.naam in self.rel.extern:
                     kort.setstring(c, 0, r.naam)
-                    # kort.setstring(c, 1, r.datum)
+                    kort.setstring(c, 1, r.datum)
 
                     if r.waarde.dc == DEBET:
-                        kort.setfloat(c, 1, float(r.waarde))
-                        kort.setfloat(c, 2, 0.0)
-                    else:
-                        kort.setfloat(c, 1, 0.0)
                         kort.setfloat(c, 2, float(r.waarde))
-                    kort.setstring(c, 3, r.omschrijving)
+                        kort.setfloat(c, 3, 0.0)
+                    else:
+                        kort.setfloat(c, 2, 0.0)
+                        kort.setfloat(c, 3, float(r.waarde))
+                    kort.setstring(c, 4, r.omschrijving)
                     c += 1
                 else:
                     continue
@@ -170,15 +170,15 @@ class DebcredKort(Debcred):
             if r.waarde.true():
                 if not r.naam in self.rel.extern:
                     kort.setstring(c, 0, r.naam)
-                    # kort.setstring(c, 1, r.datum)
+                    kort.setstring(c, 1, r.datum)
 
                     if r.waarde.dc == DEBET:
-                        kort.setfloat(c, 1, float(r.waarde))
-                        kort.setfloat(c, 2, 0.0)
-                    else:
-                        kort.setfloat(c, 1, 0.0)
                         kort.setfloat(c, 2, float(r.waarde))
-                    kort.setstring(c, 3, r.omschrijving)
+                        kort.setfloat(c, 3, 0.0)
+                    else:
+                        kort.setfloat(c, 2, 0.0)
+                        kort.setfloat(c, 3, float(r.waarde))
+                    kort.setstring(c, 4, r.omschrijving)
                     c += 1
                 else:
                     continue
