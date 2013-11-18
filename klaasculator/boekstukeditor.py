@@ -71,4 +71,4 @@ def kasciehelper():
     k.run()
     
 if __name__ == "__main__":
-    boekstukeditor()
+    kasciehelper()

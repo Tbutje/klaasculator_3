@@ -95,13 +95,23 @@ class Kortedcregel:
     self.naam is een naam, self.waarde de waarde en self.omschrijving de omschrijving
     """
 
-    def __init__(self, naam = '', waarde = Euro(), omschrijving = ''):
+    def __init__(self, naam = '', waarde = Euro(), omschrijving = '', datum = 0):
         """Initialiseer."""
         self.naam = naam
         self.waarde = waarde
         self.omschrijving = omschrijving
+        self.datum = datum
 
     def __str__(self):
         """String-representatie."""
-        return self.naam + ',' + str(self.waarde) + ', ' + self.omschrijving
+        return self.naam + ',' + str(self.datum) +  ',' + str(self.waarde) + ', ' + self.omschrijving
+        
+def sorter_dckort_w(een, twee):
+
+    if een.waarde < twee.waarde:
+        return 1
+    elif een.waarde > twee.waarde:
+        return -1
+    elif een.waarde == twee.waarde:
+        return 0
     

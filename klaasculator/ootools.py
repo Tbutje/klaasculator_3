@@ -424,12 +424,19 @@ def layout_extrakortedc(sheet):
     sheet.setPropertyValue('VertJustify', 2)
 
     for c in range(4):
-        width = 8000
-        numberformat = 0
-
-        if c == 1 or c == 2:
-            width = 3000
-            numberformat = 2
+    
+        if c == 0:
+            width = 8000
+            numberformat = 0
+        # elif c == 1:
+                # width = 2000
+                # numberformat = 39
+        elif c == 1 or c == 2:
+                width = 3000
+                numberformat = 2
+        elif c == 3:
+            width = 8000
+            numberformat = 0
 
         col = sheet.getColumns().getByIndex(c)
         col.setPropertyValue('NumberFormat', numberformat)

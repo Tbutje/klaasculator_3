@@ -60,6 +60,7 @@ class DebcredKort(Debcred):
         it = self.header(0, rel)
         waarde = rel.waarde
         om2 = ''
+        datum = rel.datum
         
         for r in regels:      
             if self.check and not self.rel.exist(r.omschrijving):
@@ -70,16 +71,19 @@ class DebcredKort(Debcred):
                 continue
                 
             if r.omschrijving != rel.omschrijving:
-                self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
+                self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2, datum))
                
                 it = self.footer(it, waarde)
                 it = self.header(it, r)
                 rel = r
-                waarde = r.waarde
+                waarde = rel.waarde
                 om2 = ''
+                datum = rel.datum
              # het is nog het huidge boekstuk
              #dus += waarde en extra boekregel
             else:
+                if datum > r.datum:
+                    datum = r.datum
                 self.dclijst.setboekregel(it, r)
                 it += 1
                 waarde += r.waarde
@@ -110,6 +114,12 @@ class DebcredKort(Debcred):
         tmp.setstring(1, 9, 'Omschrijving')
 
         tmp.write('DebCredKort', 0, 0)
+        
+        self.dclijstkort = sorter(self.dclijstkort, sorter_dckort_w)
+        # for line in tmp:
+            # print line.waarde
+            
+        
         self.dclijst.write('DebCredKort', erase = True)
          
         # maak extra korte lijst
@@ -120,26 +130,61 @@ class DebcredKort(Debcred):
         kort.setstring(0, 3, 'DebCredSamenvatting')
 
         kort.setstring(1, 0, 'naam.')
-        kort.setstring(1, 1, 'waarde')
+    #    kort.setstring(1, 1, "Oudste datum")
+        kort.setstring(1, 1, 'Debet')
+        kort.setstring(1, 2, 'Credit')
         kort.setstring(1, 3, 'omschrijving.')
 
-        kort.write('DebCredSamenvatting', 0, 0)
+        # kort.write('DebCredSamenvatting', 0, 0)
 
-        #c = 0
-        c = 2
+        # split in extern en leden
+        # line.omschrijving in self.rel.leden
+        # eerst extern schrijven
+        # dan leden, inefficient maar is maar klein lijstje anyway
+        kort.setstring(2,0, "EXTERNEN")
+        c = 3
+        # print self.rel.extern
         for r in self.dclijstkort:
             if r.waarde.true():
-                kort.setstring(c, 0, r.naam)
+                if r.naam in self.rel.extern:
+                    kort.setstring(c, 0, r.naam)
+                    # kort.setstring(c, 1, r.datum)
 
-                if r.waarde.dc == DEBET:
-                    kort.setfloat(c, 1, float(r.waarde))
-                    kort.setfloat(c, 2, 0.0)
+                    if r.waarde.dc == DEBET:
+                        kort.setfloat(c, 1, float(r.waarde))
+                        kort.setfloat(c, 2, 0.0)
+                    else:
+                        kort.setfloat(c, 1, 0.0)
+                        kort.setfloat(c, 2, float(r.waarde))
+                    kort.setstring(c, 3, r.omschrijving)
+                    c += 1
                 else:
-                    kort.setfloat(c, 1, 0.0)
-                    kort.setfloat(c, 2, float(r.waarde))
-                kort.setstring(c, 3, r.omschrijving)
-                c += 1
-                
+                    continue
+                    
+        
+        
+        c += 3
+        kort.setstring(c-1,0, "LEDEN")
+        
+        for r in self.dclijstkort:
+            if r.waarde.true():
+                if not r.naam in self.rel.extern:
+                    kort.setstring(c, 0, r.naam)
+                    # kort.setstring(c, 1, r.datum)
+
+                    if r.waarde.dc == DEBET:
+                        kort.setfloat(c, 1, float(r.waarde))
+                        kort.setfloat(c, 2, 0.0)
+                    else:
+                        kort.setfloat(c, 1, 0.0)
+                        kort.setfloat(c, 2, float(r.waarde))
+                    kort.setstring(c, 3, r.omschrijving)
+                    c += 1
+                else:
+                    continue
+        
+        
+                    
         kort.write('DebCredSamenvatting', 0, 0, erase = True)
 
         # def write(self, sheetname, left, bottom, insert = False, erase = False):
@@ -154,7 +199,7 @@ class DebcredKort(Debcred):
 
         try:
             layout_journaalstyle('DebCredKort')
-            layout_journaalstyle('DebCredSamenvatting')
+            layout_extrakortedc('DebCredSamenvatting')
         except:
             pass
 
