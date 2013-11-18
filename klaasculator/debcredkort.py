@@ -113,17 +113,17 @@ class DebcredKort(Debcred):
         self.dclijst.write('DebCredKort', erase = True)
          
         # maak extra korte lijst
-        createsheet('DebCredExtraKort')
+        createsheet('DebCredSamenvatting')
 
-        kort = Sheet('DebCredExtraKort', 0, 0, 3, 0)
+        kort = Sheet('DebCredSamenvatting', 0, 0, 3, 0)
         # timo edit
-        kort.setstring(0, 3, 'DebCredExtraKort')
+        kort.setstring(0, 3, 'DebCredSamenvatting')
 
         kort.setstring(1, 0, 'naam.')
         kort.setstring(1, 1, 'waarde')
         kort.setstring(1, 3, 'omschrijving.')
 
-        kort.write('DebCredExtraKort', 0, 0)
+        kort.write('DebCredSamenvatting', 0, 0)
 
         #c = 0
         c = 2
@@ -140,7 +140,7 @@ class DebcredKort(Debcred):
                 kort.setstring(c, 3, r.omschrijving)
                 c += 1
                 
-        kort.write('DebCredExtraKort', 0, 0, erase = True)
+        kort.write('DebCredSamenvatting', 0, 0, erase = True)
 
         # def write(self, sheetname, left, bottom, insert = False, erase = False):
         # """Schrijft de data naar een sheet sheetname.
@@ -154,7 +154,7 @@ class DebcredKort(Debcred):
 
         try:
             layout_journaalstyle('DebCredKort')
-            layout_extrakortedc('DebCredExtraKort')
+            layout_journaalstyle('DebCredSamenvatting')
         except:
             pass
 
