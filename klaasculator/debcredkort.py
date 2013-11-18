@@ -125,7 +125,7 @@ class DebcredKort(Debcred):
         # maak extra korte lijst
         createsheet('DebCredSamenvatting')
 
-        kort = Sheet('DebCredSamenvatting', 0, 0, 3, 0)
+        kort = Sheet('DebCredSamenvatting', 0, 0, 4, 0)
         # timo edit
         kort.setstring(0, 3, 'DebCredSamenvatting')
 
