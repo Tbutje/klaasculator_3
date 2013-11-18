@@ -66,7 +66,7 @@ class DebcredKort(Debcred):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)    
                 
             # verwijder lege boekstukken
-            if r.waarde.floatt() == (0.00, 0.00):
+            if not r.waarde.true():
                 continue
                 
             if r.omschrijving != rel.omschrijving:

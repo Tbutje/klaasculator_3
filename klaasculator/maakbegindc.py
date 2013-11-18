@@ -10,6 +10,8 @@ class MaakBeginDC(Debcred):
         """
         Debcred.__init__(self, journaal, begindc)
         self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
+        self.wegstrepen_true = self.conf.getvar('debcredkort:wegstrepen')
+        self.verwijder_dubieus = self.conf.getvar('maakbegindc:verwijder_Dubieuze_Debiteuren')
         
     def header(self, it, b):
         """Hulpfunctie.Dit maakt de headers. 
@@ -53,10 +55,13 @@ class MaakBeginDC(Debcred):
         regels = self.begindc_fix() + self.journaal_fix()
         # extra wegstrepen
         # mega inefficient :/
-        if self.conf.getvar('debcredkort:wegstrepen'):
-            regels = self.wegstrepen(regels)
+        # if self.conf.getvar('debcredkort:wegstrepen'):
+            # regels = self.wegstrepen(regels)
             
-        regels = sorter(regels, sorter_odn)
+        if self.wegstrepen_true:
+            regels = self.verwijder_nul(regels)
+            
+        regels = sorter(regels, sorter_rodn)
         if not regels: #stoppen bij lege boekhouding
             return
         
@@ -67,7 +72,10 @@ class MaakBeginDC(Debcred):
         
         for r in regels:      
             if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
+                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
+
+            if self.verwijder_dubieus and r.omschrijving == "Dubieuze Debiteuren":
+                continue
             if r.rekening != rel.rekening:
                 it = self.footer(it,r, waarde)
                 it = self.header(it, r)
@@ -122,7 +130,7 @@ class MaakBeginDC(Debcred):
         bdc = sorter(self.begindc, sorter_rodn)
 
 
-        if self.conf.getvar('debcredkort:wegstrepen'):
+        if self.wegstrepen_true:
             bdc = self.wegstrepen(bdc)
             bdc.sort(sorter_rodn)
 
@@ -171,6 +179,36 @@ class MaakBeginDC(Debcred):
                 it2 += 1
             it += 1
         return regels
+        
+    def verwijder_nul(self, regels):
+   
+        regels.sort(sorter_rodn)
+            
+        include = []
+        it = 0
+        while it < len(regels):
+            rek = regels[it].rekening
+            naam = regels[it].omschrijving
+            waarde = Euro()
+            
+            while (it < len(regels) and regels[it].omschrijving == naam and 
+                    regels[it].rekening == rek):
+                    
+                waarde += regels[it].waarde
+                it += 1
+            if waarde.true():
+                include.append(str(rek)+naam)
+              
+        regels_new = []
+        it = 0
+        while it < len(regels):
+            rek = str(regels[it].rekening)
+            naam = regels[it].omschrijving
+            
+            if (rek + naam) in include:
+                regels_new.append(regels[it])
+            it += 1
+        return regels_new
 
 if __name__ == "__main__":
     journaal = Sheet_jr_ro('Journaal')
