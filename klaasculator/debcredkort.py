@@ -10,6 +10,7 @@ class DebcredKort(Debcred):
         """
         Debcred.__init__(self, journaal, begindc)
         self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
+        self.wegstrepen_true = self.conf.getvar('debcredkort:wegstrepen')
         
     def header(self, it, b):
         """Hulpfunctie.Dit maakt de headers. 
@@ -43,53 +44,14 @@ class DebcredKort(Debcred):
         """Maak de handel."""
         
         regels = self.begindc_fix() + self.journaal_fix()
-        # extra wegstrepen
-        # mega inefficient :/ maar ben beetje lui en nu streetp die ook
-        # dc x journaal weg wat nog niet weg is
-        # if self.conf.getvar('debcredkort:wegstrepen'):
-            # regels = self.wegstrepen(regels)
-           
-        # was sorter odn
+
+        # dit haalt alle deb/cred weg die op 0 eindigen op eindbalans
+        # houd alles nog een beetje overzichtelijk
+        # wel extreem trage functie aangezien die 2x door de boekhouding gaat
+        if self.wegstrepen_true:
+            regels = self.verwijder_nul(regels)
         regels = sorter(regels, sorter_odn)
-        # nu willen we nog af van alle deb/cred die op 0 eindigen?
-        
-        rel = regels.pop(0)
-    #    it = self.header(0, rel)
-        waarde = rel.waarde
-        
-        # remove totals with 0
-        dict = {}
-        dict[str(rel.rekening) + rel.omschrijving] = waarde.true()
-        for r in regels:
-            if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)    
-                
-                
-            if r.omschrijving != rel.omschrijving:
-                dict[str(r.rekening) + r.omschrijving] = waarde.true()
-                rel = r
-                waarde = r.waarde
-            else:
-                waarde += r.waarde
-            
-        # dict[rel] = waarde.true()
-        # als dict is true dan meenemen
-        # loop hiermee door de lijst
-       
-        # regels_new = []
-        
-        # idx = 0
-        # for line in regels:
-            
-            # print dict[str(line.rekening) + line.omschrijving]
-            # if dict[str(line.rekening) + line.omschrijving]:
-                # regels_new.append(line)
-            # else:
-                # continue
-                  
-        print dict
-                    
-        regels = sorted(self.begindc_fix() + self.journaal_fix(), sorter_odn)
+
 
         if not regels: #stoppen bij lege boekhouding
             return
@@ -106,11 +68,7 @@ class DebcredKort(Debcred):
             # verwijder lege boekstukken
             if r.waarde.floatt() == (0.00, 0.00):
                 continue
-            # verwijder omschrijvingen die eindigen op 0
-            print not dict[str(r.rekening) + r.omschrijving]
-            if not dict[str(r.rekening) + r.omschrijving]:
-                continue
-
+                
             if r.omschrijving != rel.omschrijving:
                 self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
                
@@ -259,7 +217,38 @@ class DebcredKort(Debcred):
                 it2 += 1
             it += 1
         return regels
-
+        
+    def verwijder_nul(self, regels):
+   
+        regels.sort(sorter_rodn)
+            
+        include = []
+        it = 0
+        while it < len(regels):
+            rek = regels[it].rekening
+            naam = regels[it].omschrijving
+            waarde = Euro()
+            
+            while (it < len(regels) and regels[it].omschrijving == naam and 
+                    regels[it].rekening == rek):
+                    
+                waarde += regels[it].waarde
+                it += 1
+            if waarde.true():
+                include.append(str(rek)+naam)
+              
+        regels_new = []
+        it = 0
+        while it < len(regels):
+            rek = str(regels[it].rekening)
+            naam = regels[it].omschrijving
+            
+            if (rek + naam) in include:
+                regels_new.append(regels[it])
+            it += 1
+        return regels_new
+      
+      
 if __name__ == "__main__":
     journaal = Sheet_jr_ro('Journaal')
     begindc = Sheet_jr_ro('BeginDC')
