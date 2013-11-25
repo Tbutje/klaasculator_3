@@ -10,29 +10,7 @@ class DebcredKortLeden(Debcred):
         """
         Debcred.__init__(self, journaal, begindc)
         self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
-        
-    def header(self, it, b):
-        """Hulpfunctie.Dit maakt de headers. 
-        Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
-        """
-        self.dclijst.setboekregel(it, Boekregel(rekening = 0, omschrijving = b.omschrijving))
-        it += 1
-        self.dclijst.setboekregel(it, Boekregel())
-        it += 1
-        if b.datum == self.bdatum - 1:
-            self.dclijst.setboekregel(it, Boekregel(0, self.bdatum, b.rekening, '', 'Van beginbalans', 0, 0, b.waarde, b.omschrijving2))
-            self.dclijst.setstring(it, 0, 'Begin')
-            it += 1
-        else:
-            self.dclijst.setboekregel(it, Boekregel(0, self.bdatum, b.rekening, '', 'Van beginbalans', 0, 0, Euro(), ''))
-            self.dclijst.setstring(it, 0, 'Begin')
-            it += 1
-            self.dclijst.setboekregel(it, b)
-            it += 1
-        return it
 
-    def footer(self, it, w):
-        return Debcred.footer(self, it, Boekregel(), w)
 
     def bdatumfix(self, b):
         if b.datum == self.bdatum:
@@ -42,42 +20,27 @@ class DebcredKortLeden(Debcred):
     def maak(self):
         """Maak de handel."""
         regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_odn)
-        
-        # for idx in regels:        
+
+        # remove als niet in self.rel.leden
         for line in regels:
             if line.omschrijving in self.rel.leden:
                 continue
             else:
                 regels.remove(line)
-                
-        rel = regels.pop(0)
-        it = self.header(0, rel)
-        waarde = rel.waarde
-        om2 = ''
-        
-        for r in regels:      
+
+
+        it = 0
+
+        for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
-            if r.omschrijving != rel.omschrijving:
-                self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
-                it = self.footer(it, waarde)
-                it = self.header(it, r)
-                rel = r
-                waarde = r.waarde
-                om2 = ''
-             # het is nog het huidge boekstuk
-             #dus += waarde en extra boekregel
-            else:
-                self.dclijst.setboekregel(it, r)
-                it += 1
-                waarde += r.waarde
-                om2 += ', ' + r.omschrijving2
-        self.footer(it, waarde)
-        self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
+                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
+            self.dclijst.setboekregel(it, r)
+            it += 1
+
 
     def write(self):
         """Wie schrijft die blijft."""
-        
+
         # maak deb/cred lijst leten
         createsheet('DebCredKortLeden')
 
@@ -97,7 +60,7 @@ class DebcredKortLeden(Debcred):
 
         tmp.write('DebCredKortLeden', 0, 0)
         self.dclijst.write('DebCredKortLeden', erase = True)
-      
+
         try:
             layout_journaalstyle('DebCredKort')
         except:
@@ -153,8 +116,6 @@ class DebcredKortLeden(Debcred):
 
             while it2 < len(regels) and regels[it2].omschrijving == naam and regels[it2].rekening == rek:
                 if regels[it2].waarde == waarde and regels[it2].waarde.dc != waarde.dc:
-                    #print regels[it]
-                    #print regels[it2]
                     del regels[it2]
                     del regels[it]
                     it -= 1
@@ -169,7 +130,7 @@ if __name__ == "__main__":
     dc = DebcredKortLeden(journaal, begindc)
     dc.maak()
     dc.write()
-    
 
-            
+
+
 
