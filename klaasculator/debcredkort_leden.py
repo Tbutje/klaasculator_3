@@ -67,9 +67,6 @@ class DebcredKortLeden(Debcred):
         tmp.setstring(1, 8, 'credit')
         tmp.setstring(1, 9, 'Omschrijving')
 
-#         tmp.write('DebCredKortLeden', 0, 0)
-
-#         self.dclijst.write('DebCredKortLeden', erase = True)
         # lelijk wegens getallen in centen ipv de normale float euro's
         c = 2
         for r in self.dclijst:
