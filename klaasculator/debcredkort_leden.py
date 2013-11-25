@@ -19,25 +19,31 @@ class DebcredKortLeden(Debcred):
     def maak(self):
         """Maak de handel."""
         regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_odn)
-        if self.wegstrepen_true:
-            regels = self.wegstrepen(regels)
 
         # remove als niet in self.rel.leden
+        regels_new = []
         for line in regels:
             if line.omschrijving in self.rel.leden:
-                continue
+                regels_new.append(line)
             else:
-                regels.remove(line)
+                pass
 
+        if self.wegstrepen_true:
+            regels_new = self.wegstrepen(regels_new)
 
+#         regels = sorter(regels, sorter_odn)
         it = 0
 
-        for r in regels:
+        for r in regels_new:
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
+            # alleen maar appenden als het daadwerkelijk een waarde heeft.
+            if r.waarde.true():
+                self.dclijst.setboekregel(it, r)
+                it += 1
+            else:
+                continue
 
-            self.dclijst.setboekregel(it, r)
-            it += 1
 
 
     def write(self):
@@ -87,10 +93,10 @@ class DebcredKortLeden(Debcred):
             b = bdc[it]
             it += 1
             b.datum = self.bdatum - 1
-            while it < len(bdc) and b.omschrijving == bdc[it].omschrijving:
-                b.omschrijving2 += ', ' + bdc[it].omschrijving2
-                b.waarde += bdc[it].waarde
-                del bdc[it]
+#             while it < len(bdc) and b.omschrijving == bdc[it].omschrijving:
+#                 b.omschrijving2 += ', ' + bdc[it].omschrijving2
+#                 b.waarde += bdc[it].waarde
+#                 del bdc[it]
 
         return bdc
 

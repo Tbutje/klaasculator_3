@@ -69,27 +69,27 @@ class DebcredKort(Debcred):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
 
             # verwijder lege boekstukken
-            if not r.waarde.true():
-                continue
+            if r.waarde.true():
+                if r.omschrijving != rel.omschrijving:
+                    self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2, datum))
 
-            if r.omschrijving != rel.omschrijving:
-                self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2, datum))
-
-                it = self.footer(it, waarde)
-                it = self.header(it, r)
-                rel = r
-                waarde = rel.waarde
-                om2 = ''
-                datum = rel.datum
-             # het is nog het huidge boekstuk
-             #dus += waarde en extra boekregel
+                    it = self.footer(it, waarde)
+                    it = self.header(it, r)
+                    rel = r
+                    waarde = rel.waarde
+                    om2 = ''
+                    datum = rel.datum
+                    # het is nog het huidge boekstuk
+                    #dus += waarde en extra boekregel
+                else:
+                    if datum > r.datum:
+                        datum = r.datum
+                    self.dclijst.setboekregel(it, r)
+                    it += 1
+                    waarde += r.waarde
+                    om2 += ', ' + r.omschrijving2
             else:
-                if datum > r.datum:
-                    datum = r.datum
-                self.dclijst.setboekregel(it, r)
-                it += 1
-                waarde += r.waarde
-                om2 += ', ' + r.omschrijving2
+                continue
         self.footer(it, waarde)
         self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
 
