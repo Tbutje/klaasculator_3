@@ -11,7 +11,6 @@ class DebcredKortLeden(Debcred):
         Debcred.__init__(self, journaal, begindc)
         self.wegstrepen_true = self.conf.getvar('debcredkort:wegstrepen')
 
-
     def bdatumfix(self, b):
         if b.datum == self.bdatum:
             b.datum = self.bdatum - 1

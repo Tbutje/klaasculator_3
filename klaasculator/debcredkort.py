@@ -271,6 +271,11 @@ class DebcredKort(Debcred):
 
         include = []
         it = 0
+        # bereken eerst totale bedrag / relatie
+        # als True(dus niet 0) zet deze rekening*omschrijving combinatie
+        # dan in lijst include.
+        # geburik vervolgends deze lijst om nog keer door alles heen te loopen
+        # maar nu alleen koppieren ales de relatie in include lijst zit
         while it < len(regels):
             rek = regels[it].rekening
             naam = regels[it].omschrijving
