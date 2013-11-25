@@ -9,7 +9,7 @@ class DebcredKortLeden(Debcred):
         De parameters journaal en begindc zijn Sheet_jr_ro van Journaal en BeginDC.
         """
         Debcred.__init__(self, journaal, begindc)
-        self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
+        self.wegstrepen_true = self.conf.getvar('debcredkort:wegstrepen')
 
 
     def bdatumfix(self, b):
@@ -20,6 +20,8 @@ class DebcredKortLeden(Debcred):
     def maak(self):
         """Maak de handel."""
         regels = sorter(self.begindc_fix() + self.journaal_fix(), sorter_odn)
+        if self.wegstrepen_true:
+            regels = self.wegstrepen(regels)
 
         # remove als niet in self.rel.leden
         for line in regels:
@@ -34,7 +36,7 @@ class DebcredKortLeden(Debcred):
         for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
-            #TODO: fix datum
+
             self.dclijst.setboekregel(it, r)
             it += 1
 
@@ -77,9 +79,9 @@ class DebcredKortLeden(Debcred):
         bdc = sorter(self.begindc, sorter_rodn)
 
 
-        if self.conf.getvar('debcredkort:wegstrepen'):
-            bdc = self.wegstrepen(bdc)
-            bdc.sort(sorter_rodn)
+#         if self.wegstrepen_true:
+#             bdc = self.wegstrepen(bdc)
+#             bdc.sort(sorter_rodn)
 
         it = 0
         while it < len(bdc):
@@ -97,8 +99,8 @@ class DebcredKortLeden(Debcred):
         regels = filter(lambda b: self.rel.isrelatierekening(self.conf.getrekening(b.rekening)), self.journaal)
         # if self.conf.getvar('debcredkort:negeerafgehandeld'):
             # regels = filter(lambda b: 'AFGEHANDELD' not in b.omschrijving2, regels)
-        if self.conf.getvar('debcredkort:wegstrepen'):
-            regels = self.wegstrepen(regels)
+#         if self.wegstrepen_true:
+#             regels = self.wegstrepen(regels)
         return regels
 
     def wegstrepen(self, regels):

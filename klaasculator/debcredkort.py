@@ -11,9 +11,9 @@ class DebcredKort(Debcred):
         Debcred.__init__(self, journaal, begindc)
         self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
         self.wegstrepen_true = self.conf.getvar('debcredkort:wegstrepen')
-        
+
     def header(self, it, b):
-        """Hulpfunctie.Dit maakt de headers. 
+        """Hulpfunctie.Dit maakt de headers.
         Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
         """
         self.dclijst.setboekregel(it, Boekregel(rekening = 0, omschrijving = b.omschrijving))
@@ -42,37 +42,39 @@ class DebcredKort(Debcred):
 
     def maak(self):
         """Maak de handel."""
-        
+
         regels = self.begindc_fix() + self.journaal_fix()
 
         # dit haalt alle deb/cred weg die op 0 eindigen op eindbalans
         # houd alles nog een beetje overzichtelijk
         # wel extreem trage functie aangezien die 2x door de boekhouding gaat
         if self.wegstrepen_true:
+            regels = self.wegstrepen(regels)
             regels = self.verwijder_nul(regels)
+
         regels = sorter(regels, sorter_odn)
 
 
         if not regels: #stoppen bij lege boekhouding
             return
-        
+
         rel = regels.pop(0)
         it = self.header(0, rel)
         waarde = rel.waarde
         om2 = ''
         datum = rel.datum
-        
-        for r in regels:      
+
+        for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)    
-                
+                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
+
             # verwijder lege boekstukken
             if not r.waarde.true():
                 continue
-                
+
             if r.omschrijving != rel.omschrijving:
                 self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2, datum))
-               
+
                 it = self.footer(it, waarde)
                 it = self.header(it, r)
                 rel = r
@@ -90,12 +92,12 @@ class DebcredKort(Debcred):
                 om2 += ', ' + r.omschrijving2
         self.footer(it, waarde)
         self.dclijstkort.append(Kortedcregel(rel.omschrijving, waarde, om2))
-   
+
 
 
     def write(self):
         """Wie schrijft die blijft."""
-        
+
         # maak deb/cred lijst leten
         createsheet('DebCredKort')
 
@@ -114,14 +116,14 @@ class DebcredKort(Debcred):
         tmp.setstring(1, 9, 'Omschrijving')
 
         tmp.write('DebCredKort', 0, 0)
-        
+
         self.dclijstkort = sorter(self.dclijstkort, sorter_dckort_w)
         # for line in tmp:
             # print line.waarde
-            
-        
+
+
         self.dclijst.write('DebCredKort', erase = True)
-         
+
         # maak extra korte lijst
         createsheet('DebCredSamenvatting')
 
@@ -160,12 +162,12 @@ class DebcredKort(Debcred):
                     c += 1
                 else:
                     continue
-                    
-        
-        
+
+
+
         c += 3
         kort.setstring(c-1,0, "LEDEN")
-        
+
         for r in self.dclijstkort:
             if r.waarde.true():
                 if not r.naam in self.rel.extern:
@@ -182,9 +184,9 @@ class DebcredKort(Debcred):
                     c += 1
                 else:
                     continue
-        
-        
-                    
+
+
+
         kort.write('DebCredSamenvatting', 0, 0, erase = True)
 
         # def write(self, sheetname, left, bottom, insert = False, erase = False):
@@ -195,7 +197,7 @@ class DebcredKort(Debcred):
         # Als erase = True, dat wordt alle data met rijen hoger dan rows() verwijdert.
         # """
 
-        
+
 
         try:
             layout_journaalstyle('DebCredKort')
@@ -213,9 +215,9 @@ class DebcredKort(Debcred):
         bdc = sorter(self.begindc, sorter_rodn)
 
 
-        if self.conf.getvar('debcredkort:wegstrepen'):
-            bdc = self.wegstrepen(bdc)
-            bdc.sort(sorter_rodn)
+#         if self.conf.getvar('debcredkort:wegstrepen'):
+#             bdc = self.wegstrepen(bdc)
+#             bdc.sort(sorter_rodn)
 
         it = 0
         while it < len(bdc):
@@ -233,8 +235,8 @@ class DebcredKort(Debcred):
         regels = filter(lambda b: self.rel.isrelatierekening(self.conf.getrekening(b.rekening)), self.journaal)
         # if self.conf.getvar('debcredkort:negeerafgehandeld'):
             # regels = filter(lambda b: 'AFGEHANDELD' not in b.omschrijving2, regels)
-        if self.conf.getvar('debcredkort:wegstrepen'):
-            regels = self.wegstrepen(regels)
+#         if self.conf.getvar('debcredkort:wegstrepen'):
+#             regels = self.wegstrepen(regels)
         return regels
 
     def wegstrepen(self, regels):
@@ -262,45 +264,45 @@ class DebcredKort(Debcred):
                 it2 += 1
             it += 1
         return regels
-        
+
     def verwijder_nul(self, regels):
-   
+
         regels.sort(sorter_rodn)
-            
+
         include = []
         it = 0
         while it < len(regels):
             rek = regels[it].rekening
             naam = regels[it].omschrijving
             waarde = Euro()
-            
-            while (it < len(regels) and regels[it].omschrijving == naam and 
+
+            while (it < len(regels) and regels[it].omschrijving == naam and
                     regels[it].rekening == rek):
-                    
+
                 waarde += regels[it].waarde
                 it += 1
             if waarde.true():
                 include.append(str(rek)+naam)
-              
+
         regels_new = []
         it = 0
         while it < len(regels):
             rek = str(regels[it].rekening)
             naam = regels[it].omschrijving
-            
+
             if (rek + naam) in include:
                 regels_new.append(regels[it])
             it += 1
         return regels_new
-      
-      
+
+
 if __name__ == "__main__":
     journaal = Sheet_jr_ro('Journaal')
     begindc = Sheet_jr_ro('BeginDC')
     dc = DebcredKort(journaal, begindc)
     dc.maak()
     dc.write()
-    
 
-            
+
+
 
