@@ -32,6 +32,7 @@ class DebcredKortLeden(Debcred):
             regels_new = self.wegstrepen(regels_new)
 
 #         regels = sorter(regels, sorter_odn)
+        regels_new = sorter(regels_new, sorter_odn)
         it = 0
 
         for r in regels_new:
@@ -50,10 +51,10 @@ class DebcredKortLeden(Debcred):
         """Wie schrijft die blijft."""
 
         # maak deb/cred lijst leten
-        createsheet('DebCredKortLeden')
+        createsheet('DebCredIncassoLeden')
 
         tmp = Sheet('DebCredKortLeden', 0, 0, 9, 0)
-        tmp.setstring(0, 4, 'Debiteuren / Crediteuren Samenvatting Leden')
+        tmp.setstring(0, 4, 'Debiteuren / Crediteuren Incasso Leden')
 
         tmp.setstring(1, 0, 'Bknr.')
         tmp.setstring(1, 1, 'Datum')
@@ -66,8 +67,32 @@ class DebcredKortLeden(Debcred):
         tmp.setstring(1, 8, 'credit')
         tmp.setstring(1, 9, 'Omschrijving')
 
-        tmp.write('DebCredKortLeden', 0, 0)
-        self.dclijst.write('DebCredKortLeden', erase = True)
+#         tmp.write('DebCredKortLeden', 0, 0)
+
+#         self.dclijst.write('DebCredKortLeden', erase = True)
+        # lelijk wegens getallen in centen ipv de normale float euro's
+        c = 2
+        for r in self.dclijst:
+            tmp.setstring(c, 0, r.nummer)
+            tmp.setint(c, 1, r.datum)
+            tmp.setint(c, 2, r.rekening)
+            tmp.setstring(c, 3, r.kascie)
+            tmp.setstring(c, 4, r.omschrijving)
+            tmp.setint(c, 5, r.tegen2)
+            tmp.setint(c, 6, r.tegen)
+
+            if r.waarde.dc == DEBET:
+                # beetje hak; intern houd Euro() de waarde bij in self.value
+                #    in centen. Komt nu goed van pas ;)
+                tmp.setint(c, 7, r.waarde.value)
+                tmp.setint(c, 8, 0)
+            else:
+                tmp.setint(c, 7, 0)
+                tmp.setint(c, 8, r.waarde.value)
+            tmp.setstring(c, 9, r.omschrijving2)
+            c += 1
+
+        tmp.write('DebCredIncassoLeden', 0, 0)
 
         try:
             layout_journaalstyle('DebCredKort')

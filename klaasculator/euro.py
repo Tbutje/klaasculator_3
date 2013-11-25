@@ -9,7 +9,7 @@ class Euro:
 
     def __init__(self, value = 0, dc = DEBET, value_in_centen = False):
         """Initialiseer de Euro met waarde value (float) en type dc.
-        
+
         Als je value_in_centen = True meegeeft, wordt value geinterpeteerd als een bedrag in centen i.p.v. euros.
         """
         self.dc = dc
@@ -19,7 +19,7 @@ class Euro:
             self.value = int(round(value * 100))
 
         self.fixate()
-                
+
     def fixate(self):
         """Corrigeer voor een negatieve waarde door het teken en dc om te slaan.
 
@@ -83,7 +83,7 @@ class Euro:
         self.value = int(round(self.value))
         self.fixate()
         return self
-        
+
     def __add__(self, other):
         """Operator +, other moet een Euro zijn."""
         e = self.__copy__()
@@ -159,4 +159,4 @@ class Euro:
             return '0.00, %.2f' % float(self)
         return '%.2f, 0.00' % float(self)
 
-        
+

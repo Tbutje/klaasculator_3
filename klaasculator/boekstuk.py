@@ -36,9 +36,6 @@ class Boekstuk:
         """Geeft een iterator."""
         return iter(self.regels)
 
-    def __len__(self):
-        return len(self.regels)
-
     def append(self, boekregel):
         """Voeg een boekregel toe."""
         boekregel.nummer = self.nummer
@@ -118,7 +115,7 @@ class Boekstuk:
     def inbalans(self):
         """Geeft True als het boekstuk in balans is."""
         return not self.balanswaarde().true()
-        
+
     def __str__(self):
         """String-representatie."""
         s = ''
@@ -126,4 +123,4 @@ class Boekstuk:
             s += str(r) + '\n'
         return s
 
-        
+
