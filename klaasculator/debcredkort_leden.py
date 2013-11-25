@@ -34,6 +34,7 @@ class DebcredKortLeden(Debcred):
         for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
+            #TODO: fix datum
             self.dclijst.setboekregel(it, r)
             it += 1
 
