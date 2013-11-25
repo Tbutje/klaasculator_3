@@ -22,6 +22,3 @@ from selectconfig import *
 from sheet import *
 from tegenregel import *
 
-
-# from postbankhelper import *
-# from afgehandeld import *
