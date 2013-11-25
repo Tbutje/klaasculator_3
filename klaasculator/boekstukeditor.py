@@ -1,5 +1,6 @@
 from powertools import *
 
+
 class BoekstukEditor:
     def __init__(self, sheetname = 'Journaal'):
         self.window = gtkwindow('Boekstuk Editor')

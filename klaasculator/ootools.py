@@ -4,24 +4,19 @@ Deze oo-afhankelijke functies zouden idealiter tot een minimum
 beperkt moeten blijven, en wel in dit bestand voor overzicht.
 """
 
+from commands import getoutput
+import os
+import sys
+from threading import Lock
+from time import sleep
+
+from com.sun.star.awt import KeyEvent
+from com.sun.star.beans import PropertyValue
+from com.sun.star.sheet import XCellRangeData, XSpreadsheet
+from com.sun.star.table import XCellRange, XColumnRowRange, XTableRows
 import uno
 import unohelper
 
-
-from com.sun.star.table import XCellRange
-from com.sun.star.sheet import XSpreadsheet
-from com.sun.star.sheet import XCellRangeData
-from com.sun.star.table import XColumnRowRange
-from com.sun.star.table import XTableRows
-from com.sun.star.beans import PropertyValue
-from com.sun.star.awt   import KeyEvent
-
-import sys
-import os
-
-from time import sleep
-from commands import getoutput
-from threading import Lock
 
 class OOContext:
     """Singleton class voor de openoffice context.

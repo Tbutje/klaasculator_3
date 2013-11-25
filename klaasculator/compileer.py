@@ -1,9 +1,10 @@
-from powertools import *
-from grootboek import *
 from debcred import *
 from debcredkort import *
 from debcredkort_leden import *
+from grootboek import *
 from maakbegindc import *
+from powertools import *
+
 
 def sorteerjournaal():
     """Sorteer het journaal."""
@@ -15,7 +16,7 @@ def sorteerjournaal():
     boekregels = sorter(journaal_oud, sorter_dn) # sorteren
 
     if not boekregels: # afbreken als er geen boekregels zijn
-        return 
+        return
 
     # en weer in journaal zetten
     journaal = Sheet_jr(None)
@@ -125,7 +126,7 @@ def maakdebcredkort():
     dc = DebcredKort(journaal, begindc)
     dc.maak()
     dc.write()
-    
+
 def maakdebcredkortleden():
     """Maak de debiteuren-crediteuren samenvatting."""
     journaal = Sheet_jr_ro('Journaal')
@@ -133,19 +134,19 @@ def maakdebcredkortleden():
     dc = DebcredKortLeden(journaal, begindc)
     dc.maak()
     dc.write()
-    
+
 def maakbegindc():
     journaal = Sheet_jr_ro('Journaal')
     begindc = Sheet_jr_ro('BeginDC')
     dc = MaakBeginDC(journaal, begindc)
     dc.maak()
     dc.write()
-    
+
 def compileeralles():
     """Compileert alles."""
     if Config().getvar('idiotproof:autowinst'):
         autowinst()
-    
+
     sorteerjournaal()
     mooiebeginbalans()
 
@@ -160,16 +161,15 @@ def compileeralles():
     d = Debcred(journaal, begindc)
     d.maak()
     d.write()
-    
+
     dc = DebcredKort(journaal, begindc)
     dc.maak()
     dc.write()
-    
+
     # dl = DebcredKortLeden(journaal, begindc)
     # dl.maak()
     # dl.write()
-    
+
 
 if __name__ == "__main__":
     compileeralles()
-    

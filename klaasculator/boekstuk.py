@@ -1,5 +1,6 @@
 from boekregel import *
 
+
 class Boekstuk:
     """Deze class beschrijft een boekstuk.
 

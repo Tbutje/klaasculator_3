@@ -1,5 +1,6 @@
 from powertools import *
 
+
 class Grootboek:
     def __init__(self, journaal, beginbalans):
         self.journaal = journaal

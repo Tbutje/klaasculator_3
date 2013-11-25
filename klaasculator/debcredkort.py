@@ -1,5 +1,6 @@
 from debcred import *
 
+
 class DebcredKort(Debcred):
     """Maak een debiteuren- en crediteurenlijst-samenvatting"""
 

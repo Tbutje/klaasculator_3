@@ -1,11 +1,3 @@
-from boekstuk import *
-from tools import *
-from sheet import *
-from config import *
-from relaties import *
-
-import re
-
 """Powertools.
 
 In dit bestand staan handige functies, vergelijkbaar met tools.py. Deze staan echter in een apart bestand om circulaire
@@ -13,7 +5,14 @@ dependencies te voorkomen. Dit zijn namelijk functies op een hoger niveau en zij
 Bijvoorbeeld: veel van deze functies zijn afhankelijk van config.py, maar config.py is zelf ook afhankelijk van tools.py,
 daarom moeten deze functies in een apart bestand.
 """
-   
+
+from boekstuk import *
+from config import *
+from relaties import *
+from sheet import *
+from tools import *
+
+
 def appendboekstuk(boekstuk_tail, row = 0, sheetname = 'Journaal'):
     """Dit voegt de regels in boekstuk_tail toe aan het journaal.
 
@@ -44,7 +43,7 @@ def replaceboekstuk(boekstuk, row, sheetname = 'Journaal'):
 
     count = 0
     row += 1
-        
+
     while s.getint(row + count, 0) and s.getint(row + count, 1):
         count += 1
 
@@ -114,14 +113,14 @@ def relatiewidget(incleden = True, incolv = False, incextern = False):
     if incextern:
         for r in sorter(rel.extern):
             store.append([r])
-    
+
     completion.set_model(store)
     completion.set_text_column(0)
     completion.set_match_func(matchrelatie)
 
     entry = gtk.combo_box_entry_new_text()
     entry.set_model(store)
-    
+
     entry.set_active(0)
     entry.child.set_completion(completion)
     entry.child.set_text('Selecteer een naam:')
@@ -168,7 +167,7 @@ def writeboekstuk(boekstuk, sheetname = 'Journaal'):
 
         if row < 5:
             row = 2
-        
+
         journaal = Sheet_jr(None, row)
         i = 0
         for b in boekstuk:
@@ -190,13 +189,13 @@ class BoekstukWidget:
     window.show_all()
     gtk.main()
     Nu heb je al een window met een (leeg) boekstuk erin. Belangrijkste functies:
-    
+
     (get/set)_editable, hiermee regel je of het boekstuk bewerkt kan worden (behalve het kascie-veld). Ook laat dit de
       bewerk-knoptjes zien.
     (get/set)_kascie, hiermee regel je of het kascie-veld beschreven kan worden en laat kascieknopjes zien.
     (get/set)_boekstuk spreekt voor zich.
     """
-    
+
     def __init__(self):
         self.widget = gtkvbox() # de widget zelf in een vbox
 
@@ -220,7 +219,7 @@ class BoekstukWidget:
         self.datum[1].configure(gtk.Adjustment(v, v, v), 0, 0)
         v = self.datum[2].get_value_as_int()
         self.datum[2].configure(gtk.Adjustment(v, v, v), 0, 0)
-        
+
         nummerdatum.pack_start(nummerlabel)
         nummerdatum.pack_start(self.nummer)
         nummerdatum.pack_start(datumlabel)
@@ -301,7 +300,7 @@ class BoekstukWidget:
         # per default is het niet editable en niet kascie
         self.iseditable = False
         self.iskascie = False
-        
+
     def add(self, b):
         """Voor het bewerk-knopje 'regel toevoegen'."""
         self.set_boekregel(Boekregel())
@@ -351,7 +350,7 @@ class BoekstukWidget:
             if not self.iseditable:
                 self.widget.pack_start(self.buttons, expand = False)
                 self.widget.show_all()
-            
+
             self.iseditable = True
 
             # nummer en datum (merk op dat voor spinbuttons je ook de adjustment aan moet passen met configure)
@@ -385,7 +384,7 @@ class BoekstukWidget:
             if self.iseditable:
                 self.widget.remove(self.buttons)
                 self.widget.show_all()
-            
+
             self.iseditable = False
 
             # nummer en datum (merk op dat voor spinbuttons je ook de adjustment aan moet passen met configure)
@@ -441,7 +440,7 @@ class BoekstukWidget:
         # de regels:
         for i in self.kascie:
             i.set_editable(self.iskascie)
-            
+
     def set_boekregel(self, b):
         """Zet een nieuwe boekregel in de tabel.
 
@@ -725,7 +724,7 @@ class BoekstukZoekerWidget:
                     if self.callback:
                         self.callback(boekstuk)
                     break
-                    
+
         except StopIteration: # StopIteration afvangen
             self.status.set_text('Einde document.')
             self.bkiter = iter(self.bkiter)

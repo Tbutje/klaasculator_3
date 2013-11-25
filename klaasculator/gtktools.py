@@ -1,8 +1,9 @@
 """Handige functies die verband houden met gtk (de grafische interface dingen.)"""
 
+from datetime import date
+
 import gtk
 
-from datetime import date
 
 def gtkdelete(widget, event, data = None):
     return False

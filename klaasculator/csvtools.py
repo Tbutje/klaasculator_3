@@ -5,8 +5,8 @@ draaien is zonder, en dan werken op csv-bestanden als sheets.
 """
 
 import csv
-
 from datetime import date
+
 
 def _datetoint(dag, maand, jaar):
     """Geef de int-representatie van een datum.

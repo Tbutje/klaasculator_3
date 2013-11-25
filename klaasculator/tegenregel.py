@@ -1,5 +1,6 @@
 from powertools import *
 
+
 def tegenregel():
     """Maak een tegenregel."""
 

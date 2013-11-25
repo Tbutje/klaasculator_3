@@ -1,6 +1,6 @@
+import csvtools
 from powertools import *
 
-import csvtools
 
 def importeer_csvfilelist(files, sheetname = 'Journaal'):
     """Importeer de csvbestanden in de lijst filelist."""

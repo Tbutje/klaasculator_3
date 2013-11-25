@@ -1,5 +1,6 @@
 from powertools import *
 
+
 class Nico:
 
     def __init__(self):
@@ -36,31 +37,31 @@ class Nico:
         ekbox = gtkhbox()
         eetkorting = gtk.Button('Berekenen')
         eetkorting.connect('clicked', self.berekeneetkorting)
-        
+
         #in de tabel zetten
         ekbox.pack_start(eetkorting)
         ekbox.pack_start(self.eetkorting)
         table.attach(eklabel, 0, 1, 5, 6)
         table.attach(ekbox, 1, 2, 5, 6)
 
-    
-    #zwarteters 
+
+    #zwarteters
         self.zwarteters = []
-        
+
         self.zwarteter = relatiewidget(True, False, False)
-        
+
         #label
         zelabel = gtk.Label()
         zelabel.set_text('Zwarteter:')
         zelabel.set_alignment(1, 0.5)
-        
+
         self.zelabel = zelabel
-        
+
         #en zo zet je het in de table:
         zebox = gtkhbox()
         zwartetertoevoegen = gtk.Button('Zwarteter Toevoegen')
         zwartetertoevoegen.connect('clicked', self.voegzwartetertoe)
-        
+
         #in de tabel zetten
         zebox.pack_start(zwartetertoevoegen)
         zebox.pack_start(self.zwarteter)
@@ -69,7 +70,7 @@ class Nico:
 
         # knopjes
         hbox = gtkhbuttonbox()
-        
+
         volgende = gtk.Button(stock = gtk.STOCK_GO_FORWARD)
         volgende.connect('clicked', self.volgende)
 
@@ -107,9 +108,9 @@ class Nico:
 
         # omschrijving
         omschrijving = 'Nico'
-        
+
         # hoog en laag btw
-        btw_hoog = conf.getvar('btw:hoog') /100.0 #21 / 100.0
+     #   btw_hoog = conf.getvar('btw:hoog') /100.0 #21 / 100.0
         btw_laag = conf.getvar('btw:laag') / 100.0 # 6 / 100.0
 
         # kasomzet
@@ -130,7 +131,7 @@ class Nico:
         ppe = self.ppe.get_value()
         eetkorting = self.eetkorting.get_value()
         omzet = ((eters * ppe)- eetkorting)
-        
+
         omzetinc = Euro(omzet, CREDIT)
         exc, btwafdracht = btw_inctoexc(omzetinc, btw_laag)
         if exc.true():
@@ -143,7 +144,7 @@ class Nico:
                                       conf.getrekening('Kas Algemeen').nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzetinc)))
-            
+
         # af te dragen BTW
         if btwafdracht.true():
             boekstuk.append(Boekregel(0,
@@ -155,7 +156,7 @@ class Nico:
                                       conf.getrekening('Omzet NICO').nummer,
                                       btwafdracht,
                                       ''))
-        
+
         # verbruik nico
         verbruik = Euro(self.verbruik.get_value(), DEBET)
         exc, btwterug = btw_inctoexc(verbruik, btw_laag)
@@ -196,8 +197,8 @@ class Nico:
                                       conf.getrekening('Omzet NICO').nummer,
                                       adminkostenppe,
                                       'Zwarteter'))
-        
-        
+
+
         # Admistratie kosten Zwarteters
         if totaal.true():
             boekstuk.append(Boekregel(0,
@@ -210,7 +211,7 @@ class Nico:
                                       totaal,
                                       'Administratiekosten zwarteters'))
 
-            
+
         # kasverschil
         verschil = boekstuk.balanswaarde()
         if verschil.true():
@@ -225,24 +226,24 @@ class Nico:
                                       ''))
         # naar journaal schrijven
         writeboekstuk(boekstuk)
-        
-        
+
+
     def berekeneetkorting(self, button):
         """Berekent de eetkorting aan de hand van aantal eters en prijs per eter"""
 ##      conf = Config()
 ##      self.eetkorting = conf.geteetkorting(self.eters,self.ppe)
         #voorlopig zo maar dit willen we ook uit een config file halen , iets met data en code scheiden
-    
+
         n = self.eters.get_value_as_int()
         p = self.ppe.get_value()
-    
+
         if n < 13:
             self.eetkorting.set_value(1 + (2 * 1.5))
         elif n < 18:
             self.eetkorting.set_value(1 + (2 * p))
         else:
             self.eetkorting.set_value(1 + (3 * p))
-            
+
     def voegzwartetertoe(self, button):
         #voegt een zwarteter toe aan de lijst van zwarteters
         naam = self.zwarteter.child.get_text()
@@ -255,15 +256,15 @@ class Nico:
         for naam in self.zwarteters:
             label += '\n' + naam
         self.zelabel.set_label(label)
-        
+
     def volgende(self, button):
         """Maakt het boekstuk en geeft alle velden hun defaults terug."""
         self.maak()
-        self.dag, self.maand, self.jaar = makegtkentry(table, 0, 'Datum:', DATUM)
+        self.dag, self.maand, self.jaar = makegtkentry(self.table, 0, 'Datum:', DATUM)
         self.eters = 0
         self.kas = 0.0
         self.ppe = 0.0
-        
+
     def klaar(self, button):
         """Maakt het boekstuk en maakt het scherm stuk."""
         self.maak()
@@ -271,15 +272,15 @@ class Nico:
 
     def annuleren(self, button):
         self.window.destroy()
-    
+
 def nico():
     Nico()
-    
+
 if __name__ == "__main__":
     nico()
-    
 
 
-    
 
-    
+
+
+

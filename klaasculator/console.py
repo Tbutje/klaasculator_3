@@ -1,10 +1,13 @@
-from code import InteractiveConsole
 from StringIO import StringIO
+from code import InteractiveConsole
+import sys
 from textwrap import wrap, fill
+
+import gtk
+import pango
+
 from gtktools import *
 
-import sys
-import gtk, pango
 
 class Console:
     """Een python-console.

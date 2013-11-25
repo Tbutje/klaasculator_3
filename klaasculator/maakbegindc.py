@@ -1,5 +1,6 @@
 from debcred import *
 
+
 class MaakBeginDC(Debcred):
     """Maak een debiteuren- en crediteurenlijst-samenvatting"""
 

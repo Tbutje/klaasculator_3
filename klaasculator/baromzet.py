@@ -1,5 +1,6 @@
 from powertools import *
 
+
 class Baromzet:
     def __init__(self):
         """Maakt het baromzet-schermpje."""

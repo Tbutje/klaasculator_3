@@ -1,8 +1,9 @@
-from powertools import *
-
-from urlparse import urlparse, urlunparse
 from os.path import dirname
 from urllib import pathname2url, url2pathname
+from urlparse import urlparse, urlunparse
+
+from powertools import *
+
 
 def selectconfig(field = 'C10', titel = 'Selecteer het configuratiebestand'):
     """Selecteer het configuratiebestand.

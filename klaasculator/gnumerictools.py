@@ -3,10 +3,11 @@
 Om even aan te tonen dat het kan, werkt de klaasculator namelijk ook in gnumeric.
 """
 
+import os
+import sys
+
 from Gnumeric import *
 
-import sys
-import os
 
 def getactivecell(): # is dit nodig?
     """Geeft de geselecteerde cel terug."""

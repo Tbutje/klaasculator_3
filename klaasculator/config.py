@@ -1,9 +1,9 @@
-from tools import *
-
 from StringIO import StringIO
+import csv
 from urllib import urlopen
 
-import csv
+from tools import *
+
 
 BALANSREKENING, RESULTATENREKENING = range(2) # enum
 

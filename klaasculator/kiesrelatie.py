@@ -1,5 +1,6 @@
 from powertools import *
 
+
 class KiesRelatie:
     def __init__(self):
         self.window = gtkwindow('Selecteer een relatie')

@@ -1,5 +1,6 @@
 from euro import *
 
+
 class Balansregel:
     """Deze class beschrijft een regel zoals die op begin en eindbalansen verschijnt.
 
@@ -19,10 +20,10 @@ class Balansregel:
     def __str__(self):
         """String-representatie."""
         return str(self.rekening) + ', ' + self.naam + ', ' + str(self.waarde)
-    
+
 class Boekregel:
     """Beschrijft een boekregel zoals die in journaal en grootboek voorkomen.
-    
+
     Datamembers zijn self.nummer (Bknr.), self.datum (Datum), self.rekening (rek.), self.kascie (ctr.), self.omschrijving
     (Hoofdomschrijving), self.tegen2 (tegr2), self.tegen (tegr1), self.waarde (debet, credit) en self.omschrijving2
     (Extra omschrijving).
@@ -91,7 +92,7 @@ def sorter_rodn(een, twee):
 
 class Kortedcregel:
     """Een regel zoals in een samenvatting van debiteuren-crediteuren lijst.
-    
+
     self.naam is een naam, self.waarde de waarde en self.omschrijving de omschrijving
     """
 
@@ -105,7 +106,7 @@ class Kortedcregel:
     def __str__(self):
         """String-representatie."""
         return self.naam + ',' + str(self.datum) +  ',' + str(self.waarde) + ', ' + self.omschrijving
-        
+
 def sorter_dckort_w(een, twee):
 
     if een.waarde < twee.waarde:
@@ -114,4 +115,4 @@ def sorter_dckort_w(een, twee):
         return -1
     elif een.waarde == twee.waarde:
         return 0
-    
+

@@ -1,9 +1,10 @@
-from powertools import *
-
 from StringIO import StringIO
+import csv
+import re
 from urllib import urlopen
 
-import csv, re
+from powertools import *
+
 
 LID, OLV, EXTERN = range(3) # enum
 

@@ -1,6 +1,7 @@
 from powertools import *
 from selectconfig import *
 
+
 class EditRelaties:
     def __init__(self):
         self.conf = Config()

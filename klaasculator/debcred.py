@@ -1,5 +1,6 @@
 from powertools import *
 
+
 class Debcred:
     """Maak een debiteuren- en crediteurenlijst."""
 
@@ -57,7 +58,7 @@ class Debcred:
         self.dclijst.setboekregel(it, Boekregel())
         it += 1
         self.dclijst.setboekregel(it, Boekregel())
-        it += 1                                  
+        it += 1
         return it
 
     def maak(self):
@@ -74,10 +75,10 @@ class Debcred:
         rel = regels.pop(0)
         it = self.header(0, rel)
         waarde = rel.waarde
-        
+
         for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)                
+                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
             # != rel.rekening zorgt ervoor dat er per rekening uitgesplitsts word
             if r.omschrijving != rel.omschrijving or r.rekening != rel.rekening:
                 it = self.footer(it, rel, waarde)
@@ -93,7 +94,7 @@ class Debcred:
     def write(self):
         """Wie schrijft die blijft."""
         self.dclijst.write('DebCred', erase = True)
-            
+
     def begindc_fix(self):
         """Deze methode verwijdert dubbele entrys in de begindc.
 
@@ -114,8 +115,8 @@ class Debcred:
                 del bdc[it]
 
         return bdc
-        
-    
+
+
 
 if __name__ == "__main__":
     journaal = Sheet_jr_ro('Journaal')
@@ -124,4 +125,4 @@ if __name__ == "__main__":
     d = Debcred(journaal, begindc)
     d.maak()
     d.write()
-    
+

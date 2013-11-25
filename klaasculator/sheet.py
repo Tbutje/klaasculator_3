@@ -1,11 +1,11 @@
-from tools import *
 from boekstuk import *
 from config import *
+from tools import *
+
 
 ##
 ## Sheet_jr_abstract
 ##
-
 class Sheet_jr_abstract:
     """Abstracte class voor Sheet_jr en Sheet_jr_ro.
 
@@ -21,7 +21,7 @@ class Sheet_jr_abstract:
 
     def __iter__(self):
         """Iterator support.
-        
+
         Dit maakt het mogelijk om over de sheet te itereren als een lijst boekregels. Slaat lege regels over.
         """
         self.i = -1
@@ -82,7 +82,7 @@ class Sheet_jr_abstract:
         a = 0
         b = self.rows()
         g = (a + b) / 2
-        
+
         if self.check(nummer, datum, a) >= 0:
             return 0
 
@@ -139,7 +139,7 @@ class Sheet_jr_abstract:
 ##
 ## Sheet_jr
 ##
-    
+
 
 class Sheet_jr(Sheet, Sheet_jr_abstract):
     """Deze class beschrijft een sheet van het 'journaal-type'.
@@ -220,10 +220,10 @@ class Sheet_jr_ro(Sheet_ro, Sheet_jr_abstract):
 
     def write(self, sheet, insert = False, erase = False):
         """Schrijf de data naar een werkblad.
-        
+
         Als erase == True, dan wordt het werkblad helemaal leeggehaald voordat er naar geschreven wordt.
         """
-        
+
         Sheet_ro.write(self, sheet, 0, self.startrow, insert, erase)
 
 ##
@@ -370,7 +370,7 @@ class Sheet_bl_ro(Sheet_ro, Sheet_bl_abstract):
         else:
             e = laatsteboeking(sheet)
             Sheet_ro.__init__(self, sheet, 1, self.startrow, 7, e)
-    
+
     def write(self, sheet):
         Sheet_ro.write(self, sheet, 1, self.startrow, False, True)
 

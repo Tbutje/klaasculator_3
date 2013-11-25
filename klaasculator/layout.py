@@ -1,5 +1,6 @@
 from tools import *
 
+
 def layout():
     """Layout het document."""
     layout_journaalstyle('Journaal')

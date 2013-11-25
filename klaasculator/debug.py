@@ -1,7 +1,8 @@
-from powertools import *
-from debcred import *
 from compileer import compileeralles
+from debcred import *
+from powertools import *
 from relaties import *
+
 
 class Debug:
     def __init__(self):

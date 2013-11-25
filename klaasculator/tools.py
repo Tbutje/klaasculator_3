@@ -1,13 +1,19 @@
-import sys
-import os
-
 """Handige functies.
 
 In dit bestand staan die functies die je vaker zult willen gebruiken. Zie ook powertools.py voor funcies die op een hoger
 niveau opereren.
 """
-
 # Zo bepalen we in welk spreadsheetprogramma we zitten: door de naam aan sys.argv toe te voegen
+
+from StringIO import StringIO
+from datetime import date
+import os
+import sys
+from traceback import print_exc
+
+from gtktools import *
+
+
 if 'gnumeric' in sys.argv:
     from gnumerictools import *
     print 'Gnumeric loaded'
@@ -19,11 +25,7 @@ else:
     print 'CSV loaded'
     
 
-from gtktools import *
 
-from datetime import date
-from traceback import print_exc
-from StringIO import StringIO
 
 def gettraceback():
     """ Genereert de traceback van de laatste Exception, handig voor debuggen. """
