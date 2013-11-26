@@ -7,6 +7,7 @@ class BoekstukEditor:
 
         hbox = gtkvbox()
 
+        # dit gedeelte hier handelt zoek functie
         self.zoek = BoekstukZoekerWidget(sheetname)
         self.boekstuk = BoekstukWidget()
 
@@ -68,6 +69,7 @@ def boekstukeditor():
 
 def kasciehelper():
     k = BoekstukEditor()
+    k.zoek.kascie_true = True
     k.window.set_title('Kascie Helper')
     k.boekstuk.set_editable(False)
     k.boekstuk.set_kascie(True)

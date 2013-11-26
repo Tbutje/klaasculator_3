@@ -599,6 +599,7 @@ class BoekstukZoekerWidget:
     moet gebeuren.
     """
     def __init__(self, sheetname = 'Journaal'):
+        self.kascie_true = False
         self.widget = gtkvbox()
         self.callback = None
 
@@ -676,6 +677,14 @@ class BoekstukZoekerWidget:
                 return True
         return False
 
+    def match_kascie(self, boekstuk):
+        """functie die checked of ctr != x"""
+        for b in boekstuk:
+            if b.kascie == "x":
+                return False
+        return True
+
+
     def match_omschrijving(self, boekstuk):
         """Functie die True geeft als de omschrijving matcht."""
         pattern = self.omschrijving.get_text()
@@ -712,22 +721,41 @@ class BoekstukZoekerWidget:
             self.status.set_text('Zoekende ...')
             while True:
                 boekstuk = self.bkiter.next()
-
-                if self.doenummerdatum.get_active() and self.match_nummerdatum(boekstuk):
-                    self.status.set_text('Gevonden.')
-                    if self.callback:
-                        self.callback(boekstuk)
-                    break
-                if self.doerekening.get_active() and self.match_rekening(boekstuk):
-                    self.status.set_text('Gevonden.')
-                    if self.callback:
-                        self.callback(boekstuk)
-                    break
-                if self.doeomschrijving.get_active() and self.match_omschrijving(boekstuk):
-                    self.status.set_text('Gevonden.')
-                    if self.callback:
-                        self.callback(boekstuk)
-                    break
+                ## iets met kascie doen hier
+                # lets go lomp
+                if self.kascie_true:
+                    if self.match_kascie(boekstuk):
+                        if self.doenummerdatum.get_active() and self.match_nummerdatum(boekstuk):
+                            self.status.set_text('Gevonden.')
+                            if self.callback:
+                                self.callback(boekstuk)
+                            break
+                        if self.doerekening.get_active() and self.match_rekening(boekstuk):
+                            self.status.set_text('Gevonden.')
+                            if self.callback:
+                                self.callback(boekstuk)
+                            break
+                        if self.doeomschrijving.get_active() and self.match_omschrijving(boekstuk):
+                            self.status.set_text('Gevonden.')
+                            if self.callback:
+                                self.callback(boekstuk)
+                            break
+                else:
+                    if self.doenummerdatum.get_active() and self.match_nummerdatum(boekstuk):
+                        self.status.set_text('Gevonden.')
+                        if self.callback:
+                            self.callback(boekstuk)
+                        break
+                    if self.doerekening.get_active() and self.match_rekening(boekstuk):
+                        self.status.set_text('Gevonden.')
+                        if self.callback:
+                            self.callback(boekstuk)
+                        break
+                    if self.doeomschrijving.get_active() and self.match_omschrijving(boekstuk):
+                        self.status.set_text('Gevonden.')
+                        if self.callback:
+                            self.callback(boekstuk)
+                        break
 
         except StopIteration: # StopIteration afvangen
             self.status.set_text('Einde document.')
