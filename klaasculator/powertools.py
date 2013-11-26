@@ -740,6 +740,12 @@ class BoekstukZoekerWidget:
                             if self.callback:
                                 self.callback(boekstuk)
                             break
+                        else:
+                            self.status.set_text('Gevonden.')
+                            if self.callback:
+                                self.callback(boekstuk)
+                            break
+
                 else:
                     if self.doenummerdatum.get_active() and self.match_nummerdatum(boekstuk):
                         self.status.set_text('Gevonden.')
