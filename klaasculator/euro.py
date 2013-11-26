@@ -1,4 +1,5 @@
 DEBET, CREDIT = range(2) # enum
+from tools import Fout
 
 class Euro:
     """Deze class beschrijft valuta, i.t.t. floating-point getallen.
@@ -54,35 +55,47 @@ class Euro:
 
     def __iadd__(self, other):
         """Operator +=, other moet een Euro zijn."""
-        if self.dc == other.dc:
-            self.value += other.value
-        else:
-            self.value -= other.value
-            self.fixate()
-        return self
+        try:
+            if self.dc == other.dc:
+                self.value += other.value
+            else:
+                self.value -= other.value
+                self.fixate()
+            return self
+        except:
+            raise Fout("Kan alleen maar een Euro() class optellen")
 
     def __isub__(self, other):
         """Operator -=, other moet een Euro zijn."""
-        if self.dc == other.dc:
-            self.value -= other.value
-            self.fixate()
-        else:
-            self.value += other.value
-        return self
+        try:
+            if self.dc == other.dc:
+                self.value -= other.value
+                self.fixate()
+            else:
+                self.value += other.value
+            return self
+        except:
+            raise Fout("Kan alleen maar een Euro() class aftrekken")
 
     def __imul__(self, other):
         """Operator *= operator, other moet een float zijn."""
-        self.value *= other
-        self.value = int(round(self.value))
-        self.fixate()
-        return self
+        try:
+            self.value *= other
+            self.value = int(round(self.value))
+            self.fixate()
+            return self
+        except:
+            raise Fout("moet vermenigvuldigen met een float")
 
     def __idiv__(self, other):
         """Operator /=, other moet een float zijn."""
-        self.value /= other
-        self.value = int(round(self.value))
-        self.fixate()
-        return self
+        try:
+            self.value /= other
+            self.value = int(round(self.value))
+            self.fixate()
+            return self
+        except:
+            raise Fout("moet delen met een float")
 
     def __add__(self, other):
         """Operator +, other moet een Euro zijn."""

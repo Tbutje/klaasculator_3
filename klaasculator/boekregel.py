@@ -1,4 +1,5 @@
-from euro import *
+from euro import Euro
+from tools import Fout
 
 
 class Balansregel:
@@ -47,6 +48,10 @@ class Boekregel:
         self.omschrijving = omschrijving
         self.tegen2 = tegen2
         self.tegen = tegen
+        try:
+            waarde.true()
+        except:
+            raise Fout("Waarde moet type Euro() zijn")
         self.waarde = waarde
         self.omschrijving2 = omschrijving2
 
