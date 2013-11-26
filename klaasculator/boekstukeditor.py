@@ -14,19 +14,21 @@ class BoekstukEditor:
         self.boekstuk.set_editable(True)
 
         bbox = gtkhbuttonbox()
+
         annuleren = gtk.Button(stock = gtk.STOCK_CANCEL)
         annuleren.connect('clicked', self.annuleren)
-
-        volgende = gtk.Button(stock = gtk.STOCK_GO_FORWARD)
-        volgende.connect('clicked', self.volgende)
 
         ok = gtk.Button(stock = gtk.STOCK_APPLY)
         ok.connect('clicked', self.ok)
 
+        volgende = gtk.Button(stock = gtk.STOCK_GO_FORWARD)
+        volgende.connect('clicked', self.volgende)
+
         bbox.pack_start(annuleren)
-        bbox.pack_start(volgende)
         bbox.pack_start(ok)
-        
+        bbox.pack_start(volgende)
+
+
         hbox.pack_start(gtk.Label('Zoek het boekstuk:'), expand = False)
         hbox.pack_start(self.zoek.widget, expand = False)
         hbox.pack_start(gtk.HSeparator(), expand = False)
@@ -70,6 +72,6 @@ def kasciehelper():
     k.boekstuk.set_editable(False)
     k.boekstuk.set_kascie(True)
     k.run()
-    
+
 if __name__ == "__main__":
     kasciehelper()

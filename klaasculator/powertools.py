@@ -290,6 +290,8 @@ class BoekstukWidget:
         ok.set_image(tmp.get_image())
         ok.connect('clicked', self.afkeuren)
         self.kasciebuttons.pack_start(ok)
+        tmp = gtk.Button(stock = gtk.STOCK_FIND)
+
 
         tmp = gtk.Button(stock = gtk.STOCK_YES)
         nee = gtk.Button('Goedkeuren')
