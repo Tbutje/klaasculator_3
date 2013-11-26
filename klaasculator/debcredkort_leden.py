@@ -98,11 +98,7 @@ class DebcredKortLeden(Debcred):
             pass
 
     def begindc_fix(self):
-        """Deze methode verwijdert dubbele entrys in de begindc.
-
-        Dus wanneer iemand twee keer op dezelfde rekening in de begindc iets heeft, wordt dit samengevat tot een.
-        Retourneert een lijst met boekregels zoals ze horen.
-        Omdat dit later van pas komt worden alle date vervangen door de begindatum - 1
+        """ Omdat dit later van pas komt worden alle date vervangen door de begindatum - 1
         """
         bdc = sorter(self.begindc, sorter_rodn)
 

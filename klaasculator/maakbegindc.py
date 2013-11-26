@@ -13,12 +13,12 @@ class MaakBeginDC(Debcred):
         self.dclijstkort = [] # dclijstkort is een list met Kortedcregels
         self.wegstrepen_true = self.conf.getvar('debcredkort:wegstrepen')
         self.verwijder_dubieus = self.conf.getvar('maakbegindc:verwijder_Dubieuze_Debiteuren')
-        
+
     def header(self, it, b):
-        """Hulpfunctie.Dit maakt de headers. 
+        """Hulpfunctie.Dit maakt de headers.
         Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
         """
-        self.dclijst.setboekregel(it, Boekregel(rekening = b.rekening, 
+        self.dclijst.setboekregel(it, Boekregel(rekening = b.rekening,
                                             omschrijving = ""))
         it += 1
         self.dclijst.setboekregel(it, Boekregel())
@@ -42,7 +42,7 @@ class MaakBeginDC(Debcred):
         self.dclijst.setboekregel(it, Boekregel())
         it += 1
         self.dclijst.setboekregel(it, Boekregel())
-        it += 1                                  
+        it += 1
         return it
 
 
@@ -54,24 +54,21 @@ class MaakBeginDC(Debcred):
     def maak(self):
         """Maak de handel."""
         regels = self.begindc_fix() + self.journaal_fix()
-        # extra wegstrepen
-        # mega inefficient :/
-        # if self.conf.getvar('debcredkort:wegstrepen'):
-            # regels = self.wegstrepen(regels)
-            
+
         if self.wegstrepen_true:
+            regels = self.wegstrepen(regels)
             regels = self.verwijder_nul(regels)
-            
+
         regels = sorter(regels, sorter_rodn)
         if not regels: #stoppen bij lege boekhouding
             return
-        
+
         rel = regels.pop(0)
         it = self.header(0, rel)
         waarde = rel.waarde
         om2 = ''
-        
-        for r in regels:      
+
+        for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
                 raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
 
@@ -95,7 +92,7 @@ class MaakBeginDC(Debcred):
     def write(self):
         """Wie schrijft die blijft."""
         rel = Relaties()
-        
+
         # maak deb/cred lijst
         createsheet('BeginDC_NEW')
 
@@ -131,9 +128,6 @@ class MaakBeginDC(Debcred):
         bdc = sorter(self.begindc, sorter_rodn)
 
 
-        if self.wegstrepen_true:
-            bdc = self.wegstrepen(bdc)
-            bdc.sort(sorter_rodn)
 
         it = 0
         while it < len(bdc):
@@ -151,8 +145,6 @@ class MaakBeginDC(Debcred):
         regels = filter(lambda b: self.rel.isrelatierekening(self.conf.getrekening(b.rekening)), self.journaal)
         # if self.conf.getvar('debcredkort:negeerafgehandeld'):
             # regels = filter(lambda b: 'AFGEHANDELD' not in b.omschrijving2, regels)
-        if self.conf.getvar('debcredkort:wegstrepen'):
-            regels = self.wegstrepen(regels)
         return regels
 
     def wegstrepen(self, regels):
@@ -180,32 +172,37 @@ class MaakBeginDC(Debcred):
                 it2 += 1
             it += 1
         return regels
-        
+
     def verwijder_nul(self, regels):
-   
+
         regels.sort(sorter_rodn)
-            
+
         include = []
         it = 0
+        # bereken eerst totale bedrag / relatie
+        # als True(dus niet 0) zet deze rekening*omschrijving combinatie
+        # dan in lijst include.
+        # geburik vervolgends deze lijst om nog keer door alles heen te loopen
+        # maar nu alleen koppieren ales de relatie in include lijst zit
         while it < len(regels):
             rek = regels[it].rekening
             naam = regels[it].omschrijving
             waarde = Euro()
-            
-            while (it < len(regels) and regels[it].omschrijving == naam and 
+
+            while (it < len(regels) and regels[it].omschrijving == naam and
                     regels[it].rekening == rek):
-                    
+
                 waarde += regels[it].waarde
                 it += 1
             if waarde.true():
                 include.append(str(rek)+naam)
-              
+
         regels_new = []
         it = 0
         while it < len(regels):
             rek = str(regels[it].rekening)
             naam = regels[it].omschrijving
-            
+
             if (rek + naam) in include:
                 regels_new.append(regels[it])
             it += 1
@@ -217,7 +214,7 @@ if __name__ == "__main__":
     dc = MaakBeginDC(journaal, begindc)
     dc.maak()
     dc.write()
-    
 
-            
+
+
 

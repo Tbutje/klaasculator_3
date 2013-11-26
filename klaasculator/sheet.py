@@ -1,6 +1,7 @@
 from boekstuk import *
 from config import *
 from tools import *
+from euro import DEBET
 
 
 ##
