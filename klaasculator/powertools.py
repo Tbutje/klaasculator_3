@@ -296,6 +296,8 @@ class BoekstukWidget:
         nee.set_image(tmp.get_image())
         nee.connect('clicked', self.goedkeuren)
         self.kasciebuttons.pack_start(nee)
+                # set layuot
+        self.kasciebuttons.set_layout(gtk.BUTTONBOX_END)
 
         # per default is het niet editable en niet kascie
         self.iseditable = False
