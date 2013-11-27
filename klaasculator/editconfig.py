@@ -5,13 +5,13 @@ from selectconfig import *
 class EditConfig:
     def __init__(self):
         self.conf = Config()
-        
+
         self.window = gtkwindow('Wijzig de configuratie')
 
         ## om data in op te stlaan
         self.balansrekeningen = []
         self.resultatenrekeningen = []
-        self.opties = []        
+        self.opties = []
 
         ## knopjes
 
@@ -48,7 +48,7 @@ class EditConfig:
         self.maak()
 
         ## in elkaar zetten:
-        
+
         vbox = gtkvbox()
         vbox.pack_start(self.label, expand = False)
         vbox.pack_start(self.notebook, expand = True)
@@ -66,12 +66,12 @@ class EditConfig:
         self.balansrekeningen = []
         self.resultatenrekeningen = []
         self.opties = []
-        
+
         # balansrekening
         vbox, table, button = self.rekeningframe()
         self.balansrekeningen.extend(self.rekeningen_set(table, sorter(self.conf.balansrekeningen())))
         button.connect('clicked', self.brekadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(vbox)
@@ -96,7 +96,7 @@ class EditConfig:
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(vbox)
         self.notebook.append_page(scroll, gtk.Label('Opties'))
-                
+
         # instructies:
         help = gtk.TextView()
         help.set_editable(False)
@@ -116,10 +116,10 @@ Instructies:
 * Wanneer je een rekening of optie wilt verwijderen:
   Maak het betrefende veld leeg.
 """)
-        self.notebook.append_page(help, gtk.Label('Instructies'))         
-        
+        self.notebook.append_page(help, gtk.Label('Instructies'))
+
         self.window.show_all()
-        
+
     def selectfile(self, b):
         selectconfig()
         self.label.set_text(getcellstring('Info', 'C10'))
@@ -136,11 +136,11 @@ Instructies:
         self.window.destroy()
 
     def write(self):
-        fname = urlparse(self.label.get_text())[2]
-        # the program glitched on the extra / in the start of string
-        # thus remove element 0
-        fname = fname[1:len(fname)]
-        
+
+        fname = self.label.get_text()
+        fname = fname.lstrip("file:///")
+        fname = fname.replace("C|", "")
+
         try:
             # setcellstring('Info', 'C10', self.label.get_text())
             f = open(fname, 'wb')
@@ -225,7 +225,7 @@ Instructies:
         vbox.pack_start(bbox, expand = False)
 
         return vbox, table, button
-        
+
     def optieframe_append(self, table):
         row = table.get_property('n-rows')
         table.resize(row + 1, 2)
@@ -248,7 +248,7 @@ Instructies:
             i.set_value(o[1])
             ret.append([e, i])
         return ret
-        
+
 if __name__ == "__main__":
     EditConfig()
 

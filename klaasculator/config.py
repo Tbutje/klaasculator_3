@@ -1,7 +1,6 @@
 from StringIO import StringIO
 import csv
 from urllib import urlopen
-
 from tools import *
 
 
@@ -41,7 +40,7 @@ class Config:
             configuratie gebruikt. Anders wordt dit als een url naar het configuratiebestand geinterpeteerd.
             """
             self.configure(filename)
-            
+
         def configure(self, filename = ''):
             """Het daadwerkelijke configureren."""
             if filename:
@@ -81,7 +80,7 @@ class Config:
                     self.rekening2[value] = Rekening(value, naam, RESULTATENREKENING)
                 else:
                     self.variabelen[key] = value
-                    
+
             f.close()
 
         def getvar(self, key, default = None):

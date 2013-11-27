@@ -1,10 +1,24 @@
 from powertools import *
+from euro import *
 
 
 class Nico:
 
     def __init__(self):
         """Maakt het Nico-schermpje."""
+
+        # we lezen eerst alle config meuk, zodat als een variabele mist
+        #    je een error krijgt voordat je een schermpje krijgt.
+        self.conf = Config()
+        # hoog en laag btw
+        self.btw_hoog = self.conf.getvar('btw:hoog') /100.0 #21 / 100.0
+        self.btw_laag = self.conf.getvar('btw:laag') / 100.0 # 6 / 100.0
+
+        # automatisch opzoeken van de gebruikelijke prijs per eter
+        self.prijs_per_eter = self.conf.getvar('nico:Prijs per eter') / 100.0
+
+        #zwarteters
+        self.administratiekosten = Euro(self.conf.getvar('nico:administratiekosten') / 100.0, CREDIT)
 
         # de window
         self.window = gtkwindow('Nico')
@@ -19,8 +33,7 @@ class Nico:
         self.verbruik = makegtkentry(table, 3, 'Kosten:', FLOAT)
         self.ppe = makegtkentry(table, 4, 'Prijs Per Eter:', FLOAT)
 
-        # automatisch opzoeken van de gebruikelijke prijs per eter
-        self.ppe.set_value(Config().getvar('nico:Prijs per eter') / 100.0)
+
 
 
 
@@ -104,25 +117,22 @@ class Nico:
         boekstuk = Boekstuk(0, datum)
 
         # configuratie erbij pakken
-        conf = Config()
+
+        self.ppe.set_value(self.prijs_per_eter)
 
         # omschrijving
         omschrijving = 'Nico'
-
-        # hoog en laag btw
-     #   btw_hoog = conf.getvar('btw:hoog') /100.0 #21 / 100.0
-        btw_laag = conf.getvar('btw:laag') / 100.0 # 6 / 100.0
 
         # kasomzet
         kas = Euro(self.kas.get_value(), DEBET)
         if kas.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
                                       '',
                                       omschrijving,
-                                      conf.getrekening('Verbruik NICO').nummer,
-                                      conf.getrekening('Omzet NICO').nummer,
+                                      self.conf.getrekening('Verbruik NICO').nummer,
+                                      self.conf.getrekening('Omzet NICO').nummer,
                                       kas,
                                         ''))
 
@@ -133,15 +143,15 @@ class Nico:
         omzet = ((eters * ppe)- eetkorting)
 
         omzetinc = Euro(omzet, CREDIT)
-        exc, btwafdracht = btw_inctoexc(omzetinc, btw_laag)
+        exc, btwafdracht = btw_inctoexc(omzetinc, self.btw_laag)
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Omzet NICO').nummer,
+                                      self.conf.getrekening('Omzet NICO').nummer,
                                       '',
                                       omschrijving,
-                                      conf.getrekening('Af te dragen BTW over verkopen').nummer,
-                                      conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Af te dragen BTW over verkopen').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzetinc)))
 
@@ -149,52 +159,55 @@ class Nico:
         if btwafdracht.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Af te dragen BTW over verkopen').nummer,
+                                      self.conf.getrekening('Af te dragen BTW over verkopen').nummer,
                                       '',
                                       omschrijving,
-                                      conf.getrekening('Kas Algemeen').nummer,
-                                      conf.getrekening('Omzet NICO').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Omzet NICO').nummer,
                                       btwafdracht,
                                       ''))
 
         # verbruik nico
         verbruik = Euro(self.verbruik.get_value(), DEBET)
-        exc, btwterug = btw_inctoexc(verbruik, btw_laag)
+        exc, btwterug = btw_inctoexc(verbruik, self.btw_laag)
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Verbruik NICO').nummer,
+                                      self.conf.getrekening('Verbruik NICO').nummer,
                                       '',
                                       omschrijving,
-                                      conf.getrekening('Kasverschillen').nummer,
-                                      conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Kasverschillen').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(verbruik)))
         # af te dragen BTW
         if btwterug.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Te vorderen BTW over inkopen').nummer,
+                                      self.conf.getrekening('Te vorderen BTW over inkopen').nummer,
                                       '',
                                       omschrijving,
-                                      conf.getrekening('Kas Algemeen').nummer,
-                                      conf.getrekening('Verbruik NICO').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Verbruik NICO').nummer,
                                       btwterug,
                                       ''))
 
         # Zwarteters
-        administratiekosten = Euro(conf.getvar('nico:administratiekosten') / 100.0, CREDIT)   ## dit moet ook een config komen!
+        # admin kosten
+
+        # admin kosten + hoeveel eten kost
+        adminkostenppe = Euro((self.conf.getvar('nico:administratiekosten') / 100.0) + self.ppe.get_value(), DEBET)
         totaal = Euro()
-        adminkostenppe = Euro((conf.getvar('nico:administratiekosten') / 100.0) + self.ppe.get_value(), DEBET)
+
         for lidx in self.zwarteters:
-            totaal += administratiekosten
+            totaal += self.administratiekosten
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Debiteuren Intern').nummer,
+                                      self.conf.getrekening('Debiteuren Intern').nummer,
                                       '',
                                       lidx,
-                                      conf.getrekening('Administratie zwarteters').nummer,
-                                      conf.getrekening('Omzet NICO').nummer,
+                                      self.conf.getrekening('Administratie zwarteters').nummer,
+                                      self.conf.getrekening('Omzet NICO').nummer,
                                       adminkostenppe,
                                       'Zwarteter'))
 
@@ -203,11 +216,11 @@ class Nico:
         if totaal.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Administratie zwarteters').nummer,
+                                      self.conf.getrekening('Administratie zwarteters').nummer,
                                       '',
                                       'Nico',
-                                      conf.getrekening('Kas Algemeen').nummer,
-                                      conf.getrekening('Debiteuren Intern').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Debiteuren Intern').nummer,
                                       totaal,
                                       'Administratiekosten zwarteters'))
 
@@ -217,11 +230,11 @@ class Nico:
         if verschil.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      conf.getrekening('Kasverschillen').nummer,
+                                      self.conf.getrekening('Kasverschillen').nummer,
                                       '',
                                       omschrijving,
                                       0,
-                                      conf.getrekening('Kas Algemeen').nummer,
+                                      self.conf.getrekening('Kas Algemeen').nummer,
                                       verschil,
                                       ''))
         # naar journaal schrijven

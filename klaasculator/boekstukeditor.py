@@ -69,6 +69,7 @@ def boekstukeditor():
 
 def kasciehelper():
     k = BoekstukEditor()
+    # vieze edit.. but it works:P
     k.zoek.kascie_true = True
     k.window.set_title('Kascie Helper')
     k.boekstuk.set_editable(False)

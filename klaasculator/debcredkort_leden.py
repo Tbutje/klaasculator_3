@@ -54,7 +54,7 @@ class DebcredKortLeden(Debcred):
         # maak deb/cred lijst leten
         createsheet('DebCredIncassoLeden')
 
-        tmp = Sheet('DebCredKortLeden', 0, 0, 9, 0)
+        tmp = Sheet('DebCredIncassoLeden', 0, 0, 9, 0)
         tmp.setstring(0, 4, 'Debiteuren / Crediteuren Incasso Leden')
 
         tmp.setstring(1, 0, 'Bknr.')

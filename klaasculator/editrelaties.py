@@ -6,7 +6,7 @@ class EditRelaties:
     def __init__(self):
         self.conf = Config()
         self.rel = Relaties()
-        
+
         self.window = gtkwindow('Wijzig het relatiebestand')
 
         ## knopjes
@@ -44,7 +44,7 @@ class EditRelaties:
         self.maak()
 
         ## in elkaar zetten:
-        
+
         vbox = gtkvbox()
         vbox.pack_start(self.label, expand = False)
         vbox.pack_start(self.notebook, expand = True)
@@ -67,12 +67,12 @@ class EditRelaties:
         self.externrek = []
         self.excluderek = []
         # self.alias = []
-        
+
         # leden
         vbox, table, button = self.ledenframe()
         self.leden.extend(self.leden_set(table))
         button.connect('clicked', self.ledenadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(vbox)
@@ -82,7 +82,7 @@ class EditRelaties:
         vbox, table, button = self.naamframe()
         self.olv.extend(self.olv_set(table))
         button.connect('clicked', self.olvadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(vbox)
@@ -92,12 +92,12 @@ class EditRelaties:
         vbox, table, button = self.naamframe()
         self.extern.extend(self.extern_set(table))
         button.connect('clicked', self.externadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(vbox)
         self.notebook.append_page(scroll, gtk.Label('Externen'))
-        
+
         # alias
         # vbox, table, button = self.aliasframe()
         # self.alias.extend(self.alias_set(table))
@@ -112,7 +112,7 @@ class EditRelaties:
         table = self.rekeningframe()
         self.ledenrek.extend(self.ledenrek_set(table))
         button.connect('clicked', self.ledenrekadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(table)
@@ -122,7 +122,7 @@ class EditRelaties:
         table = self.rekeningframe()
         self.olvrek.extend(self.olvrek_set(table))
         button.connect('clicked', self.olvrekadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(table)
@@ -132,17 +132,17 @@ class EditRelaties:
         table = self.rekeningframe()
         self.externrek.extend(self.externrek_set(table))
         button.connect('clicked', self.externrekadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(table)
         self.notebook.append_page(scroll, gtk.Label('Externrekeningen'))
-        
+
          # exclude rek
         table = self.rekeningframe()
         self.excluderek.extend(self.excluderek_set(table))
         button.connect('clicked', self.excluderekadd, table)
-        
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(table)
@@ -169,10 +169,10 @@ Instructies:
   Voeg de rekening eerst toe met 'Configuratie aanpassen' als balansrekening.
 
 """)
-        self.notebook.append_page(help, gtk.Label('Instructies'))         
-        
+        self.notebook.append_page(help, gtk.Label('Instructies'))
+
         self.window.show_all()
-        
+
     def selectfile(self, b):
         selectrelaties()
         self.label.set_text(getcellstring('Info', 'C11'))
@@ -189,10 +189,11 @@ Instructies:
         self.window.destroy()
 
     def write(self):
-        fname = urlparse(self.label.get_text())[2]
-        # the program glitched on the extra / in the start of string
-        # thus remove element 0
-        fname = fname[1:len(fname)]
+
+        fname = self.label.get_text()
+        fname = fname.lstrip("file:///")
+        fname = fname.replace("C|", "")
+
         try:
             # setcellstring('Info', 'C11', self.label.get_text())
             f = open(fname, 'w')
@@ -215,7 +216,7 @@ Instructies:
 
                 if naam:
                     f.write('"extern","%s"\n' % naam)
-                    
+
 
             for r in self.ledenrek:
                 s = r[0].get_text().strip()
@@ -231,12 +232,12 @@ Instructies:
                 s = r[0].get_text().strip()
                 if r[1].get_active() and s:
                     f.write('"externrekening","%s"\n' % s)
-                    
+
             for r in self.excluderek:
                 s = r[0].get_text().strip()
                 if r[1].get_active() and s:
                     f.write('"exclude","%s"\n' % s)
-            
+
 
             # for r in self.alias:
                 # a = r[0].get_text().strip()
@@ -330,7 +331,7 @@ Instructies:
 
     def externadd(self, b, table):
         self.extern.append(self.naamframe_append(table))
-        
+
     def olv_set(self, table):
         ret = []
         for l in sorter(self.rel.olv):
@@ -417,7 +418,7 @@ Instructies:
 
     def externrekadd(self, b, table):
         self.externrek.append(self.rekeningframe_append(table))
-        
+
     def excluderekadd(self, b, table):
         self.excluderek.append(self.rekeningframe_append(table))
 
@@ -428,7 +429,7 @@ Instructies:
             naam, check = self.rekeningframe_append(table)
             naam.set_text(l.naam)
             check.set_active(l.naam in self.rel.ledenrek)
-                
+
             ret.append([naam, check])
         return ret
 
@@ -451,7 +452,7 @@ Instructies:
 
             ret.append([naam, check])
         return ret
-        
+
     def excluderek_set(self, table):
         ret = []
         for l in sorter(self.conf.balansrekeningen()):
@@ -461,6 +462,6 @@ Instructies:
 
             ret.append([naam, check])
         return ret
-        
+
 if __name__ == "__main__":
     EditRelaties()
