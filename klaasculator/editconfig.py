@@ -139,7 +139,9 @@ Instructies:
 
         fname = self.label.get_text()
         fname = fname.lstrip("file:///")
-        fname = fname.replace("C|", "")
+        # doordat klaas een urlparser gebruikt ipv dirparser vervangt die
+        #  : door |. Nu dus weer omdraaien
+        fname = fname.replace("|", ":")
 
         try:
             # setcellstring('Info', 'C10', self.label.get_text())

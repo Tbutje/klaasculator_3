@@ -192,11 +192,13 @@ Instructies:
 
         fname = self.label.get_text()
         fname = fname.lstrip("file:///")
-        fname = fname.replace("C|", "")
+        # doordat klaas een urlparser gebruikt ipv dirparser vervangt die
+        #  : door |. Nu dus weer omdraaien
+        fname = fname.replace("|", ":")
 
         try:
             # setcellstring('Info', 'C11', self.label.get_text())
-            f = open(fname, 'w')
+            f = open(fname, 'wb')
 
             for r in self.leden:
                 code = r[0].get_text().strip()
