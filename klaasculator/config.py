@@ -67,8 +67,14 @@ class Config:
 
             reader = csv.reader(f)
             for l in reader:
-                key = l[0].strip('"')
-                value = int(l[1])
+                try:
+                    key = l[0].strip('"')
+                except IndexError:
+                    raise Fout("fout bij inlezen config, misschien staat er een lege enter op de laatste regel?")
+                try:
+                    value = int(l[1])
+                except IndexError:
+                    raise Fout("fout bij inlezen config, misschien is heeft de variabele op de laatste regel geen waarde? ")
 
                 if key.startswith('balansrekening:'):
                     naam = key[key.find(':') + 1:]
@@ -155,3 +161,6 @@ class Config:
 
     def __setattr__(self, attr, value):
         return setattr(self.instance, attr, value)
+
+if __name__ == "__main__":
+    Config()
