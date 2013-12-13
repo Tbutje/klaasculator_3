@@ -1,6 +1,6 @@
 from StringIO import StringIO
 import csv
-from urllib import urlopen
+# from urllib import urlopen
 from tools import *
 
 
@@ -57,7 +57,8 @@ class Config:
                     f = self.leessheet(loc)
                 except Exception:
                     try:
-                        f = urlopen(loc)
+#                         f = urlopen(loc)
+                        f = open(loc)
                     except:
                         raise Fout('Kon bestand of sheet \'%s\' niet lezen.' % loc)
 
@@ -70,11 +71,11 @@ class Config:
                 try:
                     key = l[0].strip('"')
                 except IndexError:
-                    raise Fout("fout bij inlezen config, misschien staat er een lege enter op de laatste regel?")
+                    raise Fout("fout bij inlezen config, misschien staat er een lege enter op een regel?")
                 try:
                     value = int(l[1])
                 except IndexError:
-                    raise Fout("fout bij inlezen config, misschien is heeft de variabele op de laatste regel geen waarde? ")
+                    raise Fout("fout bij inlezen config, misschien is heeft een variabele op een regel geen waarde? ")
 
                 if key.startswith('balansrekening:'):
                     naam = key[key.find(':') + 1:]
@@ -154,7 +155,7 @@ class Config:
 
     def __init__(self, filename = ''):
         if Config.instance == None:
-             Config.instance = Config.ding(filename)
+            Config.instance = Config.ding(filename)
 
     def __getattr__(self, attr):
         return getattr(self.instance, attr)

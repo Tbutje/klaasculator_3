@@ -1,7 +1,6 @@
 from StringIO import StringIO
 import csv
 import re
-from urllib import urlopen
 
 from powertools import *
 
@@ -44,7 +43,7 @@ class Relaties:
                     f = self.leessheet(loc)
                 except Exception:
                     try:
-                        f = urlopen(loc)
+                        f = open(loc)
                     except:
                         raise Fout('Kon bestand of sheet \'%s\' niet lezen.' % loc)
 
@@ -60,11 +59,11 @@ class Relaties:
 
             reader = csv.reader(f)
             for l in reader:
-                try : 
+                try :
                     key = l[0].strip('"')
                 except:
                      raise Fout('Kon regel \'%s\' niet lezen in relatie bestand' % l)
-                try :  
+                try :
                     value = l[1].strip('"')
                 except:
                      raise Fout('Kon regel \'%s\' niet lezen in relatie bestand' % l)
@@ -83,7 +82,7 @@ class Relaties:
                     self.exclude_rek.add(value)
                 elif key.startswith('alias:'):
                     self.alias[key[key.find(':') + 1:]] = value
-                    
+
             # maak hier iets dat alle rekeningde die niet olv of extern zijn
             # add in self.extern; behalve als in exclude_rek
             reks = Config().balansrekeningen()
@@ -92,7 +91,7 @@ class Relaties:
             for line in reks:
                 if line.nummer > 129 and line.nummer < 150:
                     deb_cred_list.append( Config().getrekening(line.nummer).naam)
-                  
+
             for line in deb_cred_list:
                 if line in self.ledenrek:
                     continue
@@ -100,7 +99,7 @@ class Relaties:
                     continue
                 else:
                     self.externrek.add(line)
-                  
+
             f.close()
 
         def alias_regex(self, string):
@@ -180,7 +179,7 @@ class Relaties:
 
     def __setattr__(self, attr, value):
         return setattr(self.instance, attr, value)
-        
+
 if __name__ == "__main__":
     rel = Relaties()
     print "LEDENREKNNG"
@@ -190,6 +189,6 @@ if __name__ == "__main__":
     print rel.externrek
     print "EXLCIDE"
     print rel.exclude_rek
-    
+
 # self.leden, self.olv en self.extern, d
     # self.ledenrek, self.olvrek en self.externrek.

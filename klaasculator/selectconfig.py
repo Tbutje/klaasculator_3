@@ -1,6 +1,4 @@
 from os.path import dirname
-from urllib import pathname2url, url2pathname
-from urlparse import urlparse, urlunparse
 
 from powertools import *
 
@@ -28,22 +26,22 @@ def selectconfig(field = 'C10', titel = 'Selecteer het configuratiebestand'):
     dialog.add_filter(filter)
 
     try:
-        url = urlparse(getcellstring('Info', field))
-        if url[0] == 'file':
-            dialog.set_current_folder(dirname(url2pathname(url[2])))
+        path = getcellstring('Info', field)
+        if (".csv" in path):
+            dialog.set_current_folder(dirname(path))
     except:
         pass
-    
+
     result = dialog.run()
     if result == gtk.RESPONSE_OK:
-        npath = 'file:' + pathname2url(dialog.get_filename())
+        npath = dialog.get_filename()
         setcellstring('Info', field, npath)
         if field == 'C10':
             Config().configure()
         elif field == 'C11':
             Relaties().configure()
     dialog.destroy()
-    
+
 def selectrelaties():
     """Zie selectconfig()."""
     selectconfig('C11', 'Selecteer het relatiebestand')
