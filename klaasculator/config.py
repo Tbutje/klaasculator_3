@@ -67,15 +67,16 @@ class Config:
             self.variabelen = {}
 
             reader = csv.reader(f)
+            rownum = 0
             for l in reader:
                 try:
                     key = l[0].strip('"')
                 except IndexError:
-                    raise Fout("fout bij inlezen config, misschien staat er een lege enter op een regel?")
+                    raise Fout("fout bij inlezen config op RIJ %i, misschien staat er een lege enter of een regel?" % (rownum + 1))
                 try:
                     value = int(l[1])
                 except IndexError:
-                    raise Fout("fout bij inlezen config, misschien is heeft een variabele op een regel geen waarde? ")
+                    raise Fout("fout bij inlezen config op RIJ %i , misschien is heeft een variabele op een regel geen waarde? " % (rownum + 1))
 
                 if key.startswith('balansrekening:'):
                     naam = key[key.find(':') + 1:]
@@ -87,6 +88,7 @@ class Config:
                     self.rekening2[value] = Rekening(value, naam, RESULTATENREKENING)
                 else:
                     self.variabelen[key] = value
+                rownum +=1
 
             f.close()
 

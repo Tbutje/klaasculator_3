@@ -58,15 +58,16 @@ class Relaties:
             self.alias = {}
 
             reader = csv.reader(f)
+            rownum = 0
             for l in reader:
                 try :
                     key = l[0].strip('"')
                 except:
-                     raise Fout('Kon regel \'%s\' niet lezen in relatie bestand' % l)
+                    raise Fout('fout bij inlezen relaties op RIJ %i, misschien staat er een lege enter of een regel?' % (rownum + 1))
                 try :
                     value = l[1].strip('"')
                 except:
-                     raise Fout('Kon regel \'%s\' niet lezen in relatie bestand' % l)
+                    raise Fout('fout bij inlezen relaties op RIJ %i, misschien staat er een lege enter of een regel?' % (rownum + 1))
 
                 if key == 'lid':
                     self.leden.add(value)
@@ -82,6 +83,8 @@ class Relaties:
                     self.exclude_rek.add(value)
                 elif key.startswith('alias:'):
                     self.alias[key[key.find(':') + 1:]] = value
+
+                rownum +=1
 
             # maak hier iets dat alle rekeningde die niet olv of extern zijn
             # add in self.extern; behalve als in exclude_rek
