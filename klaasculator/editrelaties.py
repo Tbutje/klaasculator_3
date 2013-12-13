@@ -138,7 +138,7 @@ class EditRelaties:
         scroll.add_with_viewport(table)
         self.notebook.append_page(scroll, gtk.Label('Externrekeningen'))
 
-         # exclude rek
+        # exclude rek
         table = self.rekeningframe()
         self.excluderek.extend(self.excluderek_set(table))
         button.connect('clicked', self.excluderekadd, table)
