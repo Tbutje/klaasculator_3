@@ -72,11 +72,13 @@ class Config:
                 try:
                     key = l[0].strip('"')
                 except IndexError:
-                    raise Fout("fout bij inlezen config op RIJ %i, misschien staat er een lege enter of een regel?" % (rownum + 1))
+                    raise Fout("fout bij inlezen config op RIJ %i, misschien \
+                    staat er een lege enter of een regel?" % (rownum + 1))
                 try:
                     value = int(l[1])
                 except IndexError:
-                    raise Fout("fout bij inlezen config op RIJ %i , misschien is heeft een variabele op een regel geen waarde? " % (rownum + 1))
+                    raise Fout("fout bij inlezen config op RIJ %i , misschien \
+                    is heeft een variabele op een regel geen waarde? " % (rownum + 1))
 
                 if key.startswith('balansrekening:'):
                     naam = key[key.find(':') + 1:]
