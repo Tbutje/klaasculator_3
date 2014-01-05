@@ -13,10 +13,10 @@
 Algemeen Tegenregel tegenregel
 Algemeen Layout layout
 Algemeen Debug Debug
-Algemeen Importeer_CSV importeer_csv
 Algemeen Boekstuk_Editor boekstukeditor
 Algemeen Kascie_Helper kasciehelper
 Algemeen Selecteer_een_relatie KiesRelatie
+Algemeen Refresh_Config_relaties refresh_conf_rel
 
 Compileer Compileer_Alles compileeralles
 Compileer Sorteer_Journaal sorteerjournaal

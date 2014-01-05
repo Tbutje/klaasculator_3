@@ -104,6 +104,7 @@ def relatiewidget(incleden = True, incolv = False, incextern = False):
     store = gtk.ListStore(str)
 
     rel = Relaties()
+    rel.Configure()
     if incleden:
         for r in sorter(rel.leden):
             store.append([r])
@@ -825,3 +826,8 @@ class BalansregelWidget:
         w = regel.waarde.floatt()
         self.debet.set_value(w[0])
         self.credit.set_value(w[1])
+
+def refresh_conf_rel():
+    """simpele functie om configuratie en relatie bestand opnieuw in te laden"""
+    Config().configure()
+    Relaties().configure()
