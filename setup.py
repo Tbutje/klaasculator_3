@@ -43,7 +43,7 @@ for i in range(len(sys.argv)):
         break
 
 setup(name = 'klaasculator',
-      version = 'mk2.1',
+      version = '3',
       description = 'klaasculator, tweede versie',
       package_dir = {'klaasculator':'klaasculator'},
       packages = ['klaasculator'],
