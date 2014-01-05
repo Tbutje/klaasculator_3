@@ -71,21 +71,6 @@
                             </node>
                             <node oor:name="m05" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
-                                    <value>service:klaasculator_oo.Verkeersregelaar?Importeer_CSV</value>
-                                </prop>
-                                <prop oor:name="Title" oor:type="xs:string">
-                                    <value xml:lang="en-US">Importeer CSV</value>
-                                    <value xml:lang="nl">Importeer CSV</value>
-                                </prop>
-                                <prop oor:name="Target" oor:type="xs:string">
-                                    <value>_self</value>
-                                </prop>
-                                <prop oor:name="Context" oor:type="xs:string">
-                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
-                                </prop>
-                            </node>
-                            <node oor:name="m06" oor:op="replace">
-                                <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Boekstuk_Editor</value>
                                 </prop>
                                 <prop oor:name="Title" oor:type="xs:string">
@@ -99,7 +84,7 @@
                                     <value>com.sun.star.sheet.SpreadsheetDocument</value>
                                 </prop>
                             </node>
-                            <node oor:name="m07" oor:op="replace">
+                            <node oor:name="m06" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Kascie_Helper</value>
                                 </prop>
@@ -114,13 +99,28 @@
                                     <value>com.sun.star.sheet.SpreadsheetDocument</value>
                                 </prop>
                             </node>
-                            <node oor:name="m08" oor:op="replace">
+                            <node oor:name="m07" oor:op="replace">
                                 <prop oor:name="URL" oor:type="xs:string">
                                     <value>service:klaasculator_oo.Verkeersregelaar?Selecteer_een_relatie</value>
                                 </prop>
                                 <prop oor:name="Title" oor:type="xs:string">
                                     <value xml:lang="en-US">Selecteer een relatie</value>
                                     <value xml:lang="nl">Selecteer een relatie</value>
+                                </prop>
+                                <prop oor:name="Target" oor:type="xs:string">
+                                    <value>_self</value>
+                                </prop>
+                                <prop oor:name="Context" oor:type="xs:string">
+                                    <value>com.sun.star.sheet.SpreadsheetDocument</value>
+                                </prop>
+                            </node>
+                            <node oor:name="m08" oor:op="replace">
+                                <prop oor:name="URL" oor:type="xs:string">
+                                    <value>service:klaasculator_oo.Verkeersregelaar?Refresh_Config_relaties</value>
+                                </prop>
+                                <prop oor:name="Title" oor:type="xs:string">
+                                    <value xml:lang="en-US">Refresh Config relaties</value>
+                                    <value xml:lang="nl">Refresh Config relaties</value>
                                 </prop>
                                 <prop oor:name="Target" oor:type="xs:string">
                                     <value>_self</value>

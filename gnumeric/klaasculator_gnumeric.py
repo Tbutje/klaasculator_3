@@ -71,26 +71,6 @@ def gnumeric_Debug(e):
         f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
         f.show(True)
 
-def gnumeric_Importeer_CSV(e):
-    try:
-        Config()
-        Relaties()
-    except Fout, f:
-        f.settraceback(gettraceback())
-        f.show(False)
-    except Exception, e:
-        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
-        f.show(True)
-
-    try:
-        importeer_csv()
-    except Fout, f:
-        f.settraceback(gettraceback())
-        f.show(False)
-    except Exception, e:
-        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
-        f.show(True)
-
 def gnumeric_Boekstuk_Editor(e):
     try:
         Config()
@@ -144,6 +124,26 @@ def gnumeric_Selecteer_een_relatie(e):
 
     try:
         KiesRelatie()
+    except Fout, f:
+        f.settraceback(gettraceback())
+        f.show(False)
+    except Exception, e:
+        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
+        f.show(True)
+
+def gnumeric_Refresh_Config_relaties(e):
+    try:
+        Config()
+        Relaties()
+    except Fout, f:
+        f.settraceback(gettraceback())
+        f.show(False)
+    except Exception, e:
+        f = Fout(str(e) + '\nDit is misschien een bug en moet je Klaas erbij halen.', gettraceback())
+        f.show(True)
+
+    try:
+        refresh_conf_rel()
     except Fout, f:
         f.settraceback(gettraceback())
         f.show(False)
@@ -413,10 +413,10 @@ def gnumeric_Python_Console(e):
 klaasculator_ui_actions = {'Tegenregel' : gnumeric_Tegenregel,
                            'Layout' : gnumeric_Layout,
                            'Debug' : gnumeric_Debug,
-                           'Importeer_CSV' : gnumeric_Importeer_CSV,
                            'Boekstuk_Editor' : gnumeric_Boekstuk_Editor,
                            'Kascie_Helper' : gnumeric_Kascie_Helper,
                            'Selecteer_een_relatie' : gnumeric_Selecteer_een_relatie,
+                           'Refresh_Config_relaties' : gnumeric_Refresh_Config_relaties,
                            'Compileer_Alles' : gnumeric_Compileer_Alles,
                            'Sorteer_Journaal' : gnumeric_Sorteer_Journaal,
                            'Maak_Grootboek' : gnumeric_Maak_Grootboek,

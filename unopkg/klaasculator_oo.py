@@ -102,10 +102,6 @@ class Verkeersregelaar(unohelper.Base, XJobExecutor):
                 Debug()
                 return
 
-            if functie == 'Importeer_CSV':
-                importeer_csv()
-                return
-
             if functie == 'Boekstuk_Editor':
                 boekstukeditor()
                 return
@@ -116,6 +112,10 @@ class Verkeersregelaar(unohelper.Base, XJobExecutor):
 
             if functie == 'Selecteer_een_relatie':
                 KiesRelatie()
+                return
+
+            if functie == 'Refresh_Config_relaties':
+                refresh_conf_rel()
                 return
 
             if functie == 'Compileer_Alles':

@@ -6,10 +6,10 @@
                     <menuitem action="Tegenregel"/>
                     <menuitem action="Layout"/>
                     <menuitem action="Debug"/>
-                    <menuitem action="Importeer_CSV"/>
                     <menuitem action="Boekstuk_Editor"/>
                     <menuitem action="Kascie_Helper"/>
                     <menuitem action="Selecteer_een_relatie"/>
+                    <menuitem action="Refresh_Config_relaties"/>
                 </menu>
                 <menu name="Compileer" action="Compileer_menu">
                     <menuitem action="Compileer_Alles"/>
