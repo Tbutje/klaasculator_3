@@ -55,11 +55,12 @@ class Config:
                     raise Fout('Kon cell C10 op de sheet \'Info\' niet lezen.')
                 try: # gooit een exceptie als sheet in kwestie niet bestaat
                     f = self.leessheet(loc)
-                except Exception:
+                except Exception, e:
                     try:
 #                         f = urlopen(loc)
                         f = open(loc)
                     except:
+                        print e
                         raise Fout('Kon bestand of sheet \'%s\' niet lezen.' % loc)
 
             self.rekening = {}

@@ -247,8 +247,77 @@ Instructies:
                     # f.write('"alias:%s","%s"\n' % (a.replace('"', r'\"'), r[1].child.get_text()))
             f.close()
         except Exception, e:
-            print e
-            raise Fout('Kon niet naar bestand \'%s\' schrijven.' % fname)
+
+            ## probeer te schrijven naar een sheet
+            ## TODO: mogelijk onverwacht resultaat bij rare pathname?
+            try: # gooit een exceptie als sheet in kwestie niet bestaat
+                rel_sheet = Sheet(fname, 0, 0, 1, 0)
+                idx = 0
+
+                for r in self.leden:
+                    code = r[0].get_text().strip()
+                    naam = r[1].get_text().strip()
+
+                    if naam:
+                        rel_sheet.setstring(idx, 0, "lid")
+                        rel_sheet.setstring(idx, 0, '"%s - %s"' % (code, naam))
+                        idx +=1
+
+                for r in self.olv:
+                    naam = r.get_text().strip()
+
+                    if naam:
+                        f.write('"olv","%s"\n' % naam)
+
+                for r in self.extern:
+                    naam = r.get_text().strip()
+
+                    if naam:
+                        f.write('"extern","%s"\n' % naam)
+
+
+                for r in self.ledenrek:
+                    s = r[0].get_text().strip()
+                    if r[1].get_active() and s:
+                        f.write('"ledenrekening","%s"\n' % s)
+
+                for r in self.olvrek:
+                    s = r[0].get_text().strip()
+                    if r[1].get_active() and s:
+                        f.write('"olvrekening","%s"\n' % s)
+
+                for r in self.externrek:
+                    s = r[0].get_text().strip()
+                    if r[1].get_active() and s:
+                        f.write('"externrekening","%s"\n' % s)
+
+                for r in self.excluderek:
+                    s = r[0].get_text().strip()
+                    if r[1].get_active() and s:
+                        f.write('"exclude","%s"\n' % s)
+
+
+
+
+
+
+
+
+
+
+
+                for r in self.balansrekeningen:
+                    s = r[0].get_text().strip()
+                    if s:
+                        conf_sheet.setstring(idx, 0,"balansrekening:" + s)
+                        conf_sheet.setint(idx,1,r[1].get_value_as_int() )
+                        idx +=1
+
+                conf_sheet.write(fname, 0, 0, erase = True)
+
+            except Exception:
+                print e
+                raise Fout('Kon niet naar bestand \'%s\' schrijven.' % fname)
 
 
     ## allerlij hulpfuncties: #################################################

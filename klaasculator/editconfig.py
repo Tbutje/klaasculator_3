@@ -135,6 +135,7 @@ Instructies:
         self.conf.configure()
         self.window.destroy()
 
+
     def write(self):
 
         fname = self.label.get_text()
@@ -164,8 +165,39 @@ Instructies:
 
             f.close()
         except Exception, e:
-            print e
-            raise Fout('Kon niet naar bestand \'%s\' schrijven.' % fname)
+
+            ## probeer te schrijven naar een sheet
+            ## TODO: mogelijk onverwacht resultaat bij rare pathname?
+            try: # gooit een exceptie als sheet in kwestie niet bestaat
+                conf_sheet = Sheet(fname, 0, 0, 1, 0)
+
+                idx = 0
+                for r in self.balansrekeningen:
+                    s = r[0].get_text().strip()
+                    if s:
+                        conf_sheet.setstring(idx, 0,"balansrekening:" + s)
+                        conf_sheet.setint(idx,1,r[1].get_value_as_int() )
+                        idx +=1
+
+                for r in self.resultatenrekeningen:
+                    s = r[0].get_text().strip()
+                    if s:
+                        conf_sheet.setstring(idx, 0,"resultatenrekening:" + s)
+                        conf_sheet.setint(idx,1,r[1].get_value_as_int() )
+                        idx +=1
+
+                for o in self.opties:
+                    s = o[0].get_text().strip()
+                    if s:
+                        conf_sheet.setstring(idx, 0, s )
+                        conf_sheet.setint(idx, 1, o[1].get_value_as_int())
+                        idx +=1
+
+                conf_sheet.write(fname, 0, 0, erase = True)
+
+            except Exception:
+                print e
+                raise Fout('Kon niet naar bestand \'%s\' schrijven.' % fname)
 
     # Allerlij hulpfuncties:
 
