@@ -203,9 +203,12 @@ Instructies:
             for r in self.leden:
                 code = r[0].get_text().strip()
                 naam = r[1].get_text().strip()
+                huis = r[2].get_text().strip()
+                reknr = r[3].get_text().strip()
 
                 if naam:
-                    f.write('"lid","%s - %s"\n' % (code, naam))
+                    f.write('"lid","%s - %s",%s,%s\n' % (code, naam, huis, \
+                                                           reknr))
 
             for r in self.olv:
                 naam = r.get_text().strip()
@@ -257,63 +260,59 @@ Instructies:
                 for r in self.leden:
                     code = r[0].get_text().strip()
                     naam = r[1].get_text().strip()
+                    huis = r[2].get_text().strip()
+                    reknr = r[3].get_text().strip()
 
                     if naam:
                         rel_sheet.setstring(idx, 0, "lid")
-                        rel_sheet.setstring(idx, 0, '"%s - %s"' % (code, naam))
+                        rel_sheet.setstring(idx, 1, '"%s - %s"' % (code, naam))
+                        rel_sheet.setstring(idx, 2, huis)
+                        rel_sheet.setint(idx, 3, reknr)
                         idx +=1
 
                 for r in self.olv:
                     naam = r.get_text().strip()
 
                     if naam:
-                        f.write('"olv","%s"\n' % naam)
+                        rel_sheet.setstring(idx, 0, "olv")
+                        rel_sheet.setstring(idx, 1, naam)
+                        idx +=1
 
                 for r in self.extern:
                     naam = r.get_text().strip()
 
                     if naam:
-                        f.write('"extern","%s"\n' % naam)
+                        rel_sheet.setstring(idx, 0, "extern")
+                        rel_sheet.setstring(idx, 1, naam)
+                        idx +=1
 
 
                 for r in self.ledenrek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
-                        f.write('"ledenrekening","%s"\n' % s)
+                        rel_sheet.setstring(idx, 0, "ledenrekening")
+                        rel_sheet.setstring(idx, 1, s)
 
                 for r in self.olvrek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
-                        f.write('"olvrekening","%s"\n' % s)
+                        rel_sheet.setstring(idx, 0, "olvrekening")
+                        rel_sheet.setstring(idx, 1, s)
 
                 for r in self.externrek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
-                        f.write('"externrekening","%s"\n' % s)
+                        rel_sheet.setstring(idx, 0, "externrekening")
+                        rel_sheet.setstring(idx, 1, s)
 
                 for r in self.excluderek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
-                        f.write('"exclude","%s"\n' % s)
+                        rel_sheet.setstring(idx, 0, "exclude")
+                        rel_sheet.setstring(idx, 1, s)
 
 
-
-
-
-
-
-
-
-
-
-                for r in self.balansrekeningen:
-                    s = r[0].get_text().strip()
-                    if s:
-                        conf_sheet.setstring(idx, 0,"balansrekening:" + s)
-                        conf_sheet.setint(idx,1,r[1].get_value_as_int() )
-                        idx +=1
-
-                conf_sheet.write(fname, 0, 0, erase = True)
+                rel_sheet.write(fname, 0, 0, erase = True)
 
             except Exception:
                 print e
@@ -346,13 +345,17 @@ Instructies:
 
         code = gtkentry(STRING)
         naam = gtkentry(STRING)
+        plaats = gtkentry(STRING)
+        reknr = gtkentry(STRING)
 
         table.attach(code, 0, 1, row, row + 1, gtk.SHRINK)
         table.attach(naam, 1, 2, row, row + 1)
+        table.attach(plaats, 2, 3, row, row + 1)
+        table.attach(reknr, 3, 4, row, row + 1)
 
-        naam.connect('changed', self.maakfico, code, naam)
+  #      naam.connect('changed', self.maakfico, code, naam)
         self.window.show_all()
-        return code, naam
+        return code, naam, plaats, reknr
 
     def maakfico(self, b, code, naam):
         l = naam.get_text().split()
@@ -364,11 +367,16 @@ Instructies:
     def leden_set(self, table):
         ret = []
         for l in sorter(self.rel.leden):
-            code, naam = self.ledenframe_append(table)
-            sp = l.split(' - ')
-            code.set_text(sp[0].strip())
-            naam.set_text((' - '.join(sp[1:])).strip())
-            ret.append([code, naam])
+            #code, naam, plaats, reknr = self.ledenframe_append(table)
+            code, naam, plaats, reknr = self.ledenframe_append(table)
+
+
+            code.set_text(l[0])
+            naam.set_text(l[1])
+            plaats.set_text(l[2])
+            reknr.set_text(l[3])
+
+            ret.append([code, naam, plaats, reknr])
         return ret
 
     # naam

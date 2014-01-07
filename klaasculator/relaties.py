@@ -1,7 +1,6 @@
 from StringIO import StringIO
 import csv
 import re
-#hallo
 from powertools import *
 
 
@@ -47,7 +46,7 @@ class Relaties:
                     except:
                         raise Fout('Kon bestand of sheet \'%s\' niet lezen.' % loc)
 
-            self.leden = set()
+            self.leden = []
             self.olv = set()
             self.extern = set()
             self.ledenrek = set()
@@ -63,14 +62,29 @@ class Relaties:
                 try :
                     key = l[0].strip('"')
                 except:
-                    raise Fout('fout bij inlezen relaties op RIJ %i, misschien staat er een lege enter of een regel?' % (rownum + 1))
+                    raise Fout('fout bij inlezen relaties op RIJ %i, misschien \
+                    staat er een lege enter of een regel?' % (rownum + 1))
                 try :
                     value = l[1].strip('"')
                 except:
-                    raise Fout('fout bij inlezen relaties op RIJ %i, misschien staat er een lege enter of een regel?' % (rownum + 1))
+                    raise Fout('fout bij inlezen relaties op RIJ %i, misschien \
+                     staat er een lege enter of een regel?' % (rownum + 1))
 
                 if key == 'lid':
-                    self.leden.add(value)
+                    try:
+                        naam = l[2].strip('"')
+                    except:
+                        naam = ""
+                    try :
+                        woonplaats = l[3].strip('"')
+                    except:
+                        woonplaats = ""
+                    try:
+                        reknr = l[4]
+                    except:
+                        reknr = ""
+                    self.leden.append((value, naam, woonplaats, reknr))
+
                 elif key == 'olv':
                     self.olv.add(value)
                 elif key == 'extern':
@@ -164,10 +178,10 @@ class Relaties:
             Dit leest de configuratie uit het sheet loc. retourneert een filepointer-achtige StringIO(). Dit is op zich
             een overbodige kopie, maarach. Het idee is toch dat deze funcie maar een keert wordt uitgevoerd.
             """
-            s = Sheet_ro(loc, 0, 0, 1, laatsteboeking(loc))
+            s = Sheet_ro(loc, 0, 0, 4, laatsteboeking(loc))
             f = StringIO()
             for r in s.data:
-                f.write('"%s",%s\n' % (r[0], r[1]))
+                f.write('"%s",%s,%s,%s,%i\n' % (r[0], r[1], r[2], r[3], r[4]))
             f.seek(0)
             return f
 
@@ -175,7 +189,7 @@ class Relaties:
 
     def __init__(self, filename = ''):
         if Relaties.instance == None:
-             Relaties.instance = Relaties.ding(filename)
+            Relaties.instance = Relaties.ding(filename)
 
     def __getattr__(self, attr):
         return getattr(self.instance, attr)
@@ -185,13 +199,7 @@ class Relaties:
 
 if __name__ == "__main__":
     rel = Relaties()
-    print "LEDENREKNNG"
-    print rel.ledenrek
-    print rel.olvrek
-    print "EXTERN"
-    print rel.externrek
-    print "EXLCIDE"
-    print rel.exclude_rek
+    print rel.leden
 
 # self.leden, self.olv en self.extern, d
     # self.ledenrek, self.olvrek en self.externrek.
