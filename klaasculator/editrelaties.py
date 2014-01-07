@@ -253,7 +253,6 @@ Instructies:
         except Exception, e:
 
             ## probeer te schrijven naar een sheet
-            ## TODO: mogelijk onverwacht resultaat bij rare pathname?
             try: # gooit een exceptie als sheet in kwestie niet bestaat
                 rel_sheet = Sheet(fname, 0, 0, 1, 0)
                 idx = 0
@@ -266,9 +265,10 @@ Instructies:
 
                     if naam:
                         rel_sheet.setstring(idx, 0, "lid")
-                        rel_sheet.setstring(idx, 1, '"%s - %s"' % (code, naam))
-                        rel_sheet.setstring(idx, 2, huis)
-                        rel_sheet.setint(idx, 3, reknr)
+                        rel_sheet.setstring(idx, 1, '"%s"' % code)
+                        rel_sheet.setstring(idx, 2, '"%s"' % naam)
+                        rel_sheet.setstring(idx, 3, plaats)
+                        rel_sheet.setstring(idx, 4, reknr)
                         idx +=1
 
                 for r in self.olv:
