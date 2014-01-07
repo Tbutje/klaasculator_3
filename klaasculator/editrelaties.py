@@ -203,11 +203,12 @@ Instructies:
             for r in self.leden:
                 code = r[0].get_text().strip()
                 naam = r[1].get_text().strip()
-                huis = r[2].get_text().strip()
+                plaats = r[2].get_text().strip()
                 reknr = r[3].get_text().strip()
 
+
                 if naam:
-                    f.write('"lid","%s - %s",%s,%s\n' % (code, naam, huis, \
+                    f.write('"lid","%s","%s","%s",%s\n' % (code, naam, plaats, \
                                                            reknr))
 
             for r in self.olv:
@@ -260,7 +261,7 @@ Instructies:
                 for r in self.leden:
                     code = r[0].get_text().strip()
                     naam = r[1].get_text().strip()
-                    huis = r[2].get_text().strip()
+                    plaats = r[2].get_text().strip()
                     reknr = r[3].get_text().strip()
 
                     if naam:
@@ -329,6 +330,8 @@ Instructies:
         table = gtktable(1, 2)
         table.attach(gtk.Label('Code:'), 0, 1, 0, 1, gtk.SHRINK)
         table.attach(gtk.Label('Naam:'), 1, 2, 0, 1)
+        table.attach(gtk.Label('Plaats:'), 2, 3, 0, 1)
+        table.attach(gtk.Label('Rek nr.:'), 3, 4, 0, 1)
 
         button = gtk.Button(stock = gtk.STOCK_ADD)
         bbox = gtkhbuttonbox()
