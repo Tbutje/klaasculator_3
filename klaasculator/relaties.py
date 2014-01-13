@@ -181,7 +181,19 @@ class Relaties:
             s = Sheet_ro(loc, 0, 0, 4, laatsteboeking(loc))
             f = StringIO()
             for r in s.data:
-                f.write('"%s",%s,%s,%s,%i\n' % (r[0], r[1], r[2], r[3], r[4]))
+                print r
+                if r[0] == "lid":
+                    try:
+                        f.write('%s,%s,%s,%s,%s\n' % (r[0], r[1], r[2], r[3], r[4]))
+                    except Exception, e:
+                        print e
+                        raise Fout("mogelijk probleem met missende rijen in relatie bestand")
+                else:
+                    try:
+                        f.write('%s,%s\n' % (r[0], r[1]))
+                    except Exception, e:
+                        print e
+                        raise Fout("mogelijk probleem met missende rijen in relatie bestand")
             f.seek(0)
             return f
 
@@ -199,6 +211,7 @@ class Relaties:
 
 if __name__ == "__main__":
     rel = Relaties()
+    print "print rel.leden"
     print rel.leden
 
 # self.leden, self.olv en self.extern, d
