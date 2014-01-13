@@ -104,9 +104,13 @@ def relatiewidget(incleden = True, incolv = False, incextern = False):
     store = gtk.ListStore(str)
 
     rel = Relaties()
+    leden = []
+    for r in rel.leden:
+        leden.append(r[0])
 
     if incleden:
-        for r in sorter(rel.leden):
+
+        for r in sorter(leden):
             store.append([r])
     if incolv:
         for r in sorter(rel.olv):
@@ -831,3 +835,7 @@ def refresh_conf_rel():
     """simpele functie om configuratie en relatie bestand opnieuw in te laden"""
     Config().configure()
     Relaties().configure()
+
+
+if __name__ == "__main__":
+    relatiewidget()

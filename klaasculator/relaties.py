@@ -181,7 +181,6 @@ class Relaties:
             s = Sheet_ro(loc, 0, 0, 4, laatsteboeking(loc))
             f = StringIO()
             for r in s.data:
-                print r
                 if r[0] == "lid":
                     try:
                         f.write('%s,%s,%s,%s,%s\n' % (r[0], r[1], r[2], r[3], r[4]))
