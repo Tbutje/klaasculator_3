@@ -254,7 +254,7 @@ Instructies:
 
             ## probeer te schrijven naar een sheet
             try: # gooit een exceptie als sheet in kwestie niet bestaat
-                rel_sheet = Sheet(fname, 0, 0, 1, 0)
+                rel_sheet = Sheet(fname, 0, 0, 4, 0)
                 idx = 0
 
                 for r in self.leden:
