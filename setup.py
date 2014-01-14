@@ -44,13 +44,13 @@ for i in range(len(sys.argv)):
 
 setup(name = 'klaasculator',
       version = '3',
-      description = 'klaasculator, tweede versie',
+      description = 'klaasculator, derre versie',
       package_dir = {'klaasculator':'klaasculator'},
       packages = ['klaasculator'],
       author = 'Klaas Jacob de Vries',
       author_email = 'klaasjacobdevries@gmail.com',
       license = 'gpl',
-      long_description = 'klaasculator, tweede versie',
+      long_description = 'klaasculator, derde versie',
       url = 'http://www.cleopatra-groningen.nl',
       )
 
