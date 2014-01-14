@@ -373,7 +373,6 @@ Instructies:
             #code, naam, plaats, reknr = self.ledenframe_append(table)
             code, naam, plaats, reknr = self.ledenframe_append(table)
 
-
             code.set_text(l[0])
             naam.set_text(l[1])
             plaats.set_text(l[2])

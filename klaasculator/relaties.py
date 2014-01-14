@@ -80,7 +80,8 @@ class Relaties:
                     except:
                         woonplaats = ""
                     try:
-                        reknr = l[4]
+                        reknr = str(l[4])
+
                     except:
                         reknr = ""
                     self.leden.append((value, naam, woonplaats, reknr))
@@ -183,7 +184,13 @@ class Relaties:
             for r in s.data:
                 if r[0] == "lid":
                     try:
-                        f.write('%s,%s,%s,%s,%s\n' % (r[0], r[1], r[2], r[3], r[4]))
+                        try:
+                            reknr = int(r[4])
+                        except:
+                            reknr = str(r[4])
+
+                        f.write('%s,%s,%s,%s,%s\n' % \
+                                (r[0], r[1], r[2], r[3],reknr))
                     except Exception, e:
                         print e
                         raise Fout("mogelijk probleem met missende rijen in relatie bestand")
