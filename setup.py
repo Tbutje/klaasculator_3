@@ -10,14 +10,14 @@ def unopkg():
     generate_uno.main(os.path.join('unopkg', 'menu_def'),
                       os.path.join('unopkg', 'klaasculator_oo.py'),
                       os.path.join('unopkg', 'menu.xcu'))
-    try:
-        os.mkdir('gnumeric')
-    except:
-        pass
-    generate_uno.gnumeric(os.path.join('unopkg', 'menu_def'),
-                          os.path.join('gnumeric', 'klaasculator_gnumeric.py'),
-                          os.path.join('gnumeric', 'menu.xml'),
-                          os.path.join('gnumeric', 'plugin.xml'))
+    # try:
+        # os.mkdir('gnumeric')
+    # except:
+        # pass
+    # generate_uno.gnumeric(os.path.join('unopkg', 'menu_def'),
+                          # os.path.join('gnumeric', 'klaasculator_gnumeric.py'),
+                          # os.path.join('gnumeric', 'menu.xml'),
+                          # os.path.join('gnumeric', 'plugin.xml'))
     
     try:
         os.mkdir('build')
