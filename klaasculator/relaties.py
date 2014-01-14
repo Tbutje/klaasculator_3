@@ -47,6 +47,7 @@ class Relaties:
                         raise Fout('Kon bestand of sheet \'%s\' niet lezen.' % loc)
 
             self.leden = []
+            self.leden_codes = set() # deze gaat alleen ficos opslaan.
             self.olv = set()
             self.extern = set()
             self.ledenrek = set()
@@ -100,6 +101,12 @@ class Relaties:
                     self.alias[key[key.find(':') + 1:]] = value
 
                 rownum +=1
+
+            # versimpelde list maken van rel.leden met alleen fico.
+            for line in self.leden:
+                self.leden_codes.add(line[0])
+
+
 
             # maak hier iets dat alle rekeningde die niet olv of extern zijn
             # add in self.extern; behalve als in exclude_rek
@@ -157,12 +164,12 @@ class Relaties:
             soort moet LID, OLV, of EXTERN zijn. Als soort niet is opgegeven, dan wordt alles uitgeprobeerd.
             """
             if soort == LID:
-                return naam in self.leden
+                return naam in self.leden_codes
             elif soort == OLV:
                 return naam in self.olv
             elif soort == EXTERN:
                 return naam in self.extern
-            return naam in self.leden or naam in self.olv or naam in self.extern
+            return naam in self.leden_codes or naam in self.olv or naam in self.extern
 
         def isrelatierekening(self, rekening):
             """Geeft True als rekening een relatierekening is.
@@ -184,13 +191,23 @@ class Relaties:
             for r in s.data:
                 if r[0] == "lid":
                     try:
+
+                        try:
+                            naam = r[2].strip('"')
+                        except:
+                            naam = ""
+                        try:
+                            woonplaats = r[3].strip('"')
+                        except:
+                            woonplaats = ""
                         try:
                             reknr = int(r[4])
                         except:
                             reknr = str(r[4])
 
+
                         f.write('%s,%s,%s,%s,%s\n' % \
-                                (r[0], r[1], r[2], r[3],reknr))
+                                (r[0], r[1], naam, woonplaats,reknr))
                     except Exception, e:
                         print e
                         raise Fout("mogelijk probleem met missende rijen in relatie bestand")
@@ -218,7 +235,9 @@ class Relaties:
 if __name__ == "__main__":
     rel = Relaties()
     print "print rel.leden"
-    print rel.leden
+    print rel.leden_codes
+    print rel.exist("ALDI - Aletta Dijkstra")
+    print "ALDI - Aletta Dijkstra" in rel.leden_codes
 
 # self.leden, self.olv en self.extern, d
     # self.ledenrek, self.olvrek en self.externrek.

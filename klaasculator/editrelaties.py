@@ -201,13 +201,29 @@ Instructies:
             f = open(fname, 'wb')
 
             for r in self.leden:
+                try:
+                    naam = r[1].get_text().strip()
+                except:
+                    naam = " "
+                try:
+                    plaats =  r[2].get_text().strip()
+                except:
+                    plaats = " "
+                try:
+                    reknr = r[3].get_text().strip()
+                except:
+                    reknr = " "
+
+
                 code = r[0].get_text().strip()
-                naam = r[1].get_text().strip()
-                plaats = r[2].get_text().strip()
-                reknr = r[3].get_text().strip()
+#                 naam = r[1].get_text().strip()
+#                 plaats = r[2].get_text().strip()
+#                 reknr = r[3].get_text().strip()
 
 
-                if naam:
+                if code:
+                    print ('"lid","%s","%s","%s",%s\n' % (code, naam, plaats, \
+                                                           reknr))
                     f.write('"lid","%s","%s","%s",%s\n' % (code, naam, plaats, \
                                                            reknr))
 
