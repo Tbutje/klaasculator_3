@@ -222,8 +222,6 @@ Instructies:
 
 
                 if code:
-                    print ('"lid","%s","%s","%s",%s\n' % (code, naam, plaats, \
-                                                           reknr))
                     f.write('"lid","%s","%s","%s",%s\n' % (code, naam, plaats, \
                                                            reknr))
 
@@ -274,12 +272,23 @@ Instructies:
                 idx = 0
 
                 for r in self.leden:
-                    code = r[0].get_text().strip()
-                    naam = r[1].get_text().strip()
-                    plaats = r[2].get_text().strip()
-                    reknr = r[3].get_text().strip()
+                    try:
+                        naam = r[1].get_text().strip()
+                    except:
+                        naam = " "
+                    try:
+                        plaats =  r[2].get_text().strip()
+                    except:
+                        plaats = " "
+                    try:
+                        reknr = r[3].get_text().strip()
+                    except:
+                        reknr = " "
 
-                    if naam:
+
+                    code = r[0].get_text().strip()
+
+                    if code:
                         rel_sheet.setstring(idx, 0, "lid")
                         rel_sheet.setstring(idx, 1, '"%s"' % code)
                         rel_sheet.setstring(idx, 2, '"%s"' % naam)
@@ -309,24 +318,28 @@ Instructies:
                     if r[1].get_active() and s:
                         rel_sheet.setstring(idx, 0, "ledenrekening")
                         rel_sheet.setstring(idx, 1, s)
+                        idx +=1
 
                 for r in self.olvrek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
                         rel_sheet.setstring(idx, 0, "olvrekening")
                         rel_sheet.setstring(idx, 1, s)
+                        idx +=1
 
                 for r in self.externrek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
                         rel_sheet.setstring(idx, 0, "externrekening")
                         rel_sheet.setstring(idx, 1, s)
+                        idx +=1
 
                 for r in self.excluderek:
                     s = r[0].get_text().strip()
                     if r[1].get_active() and s:
                         rel_sheet.setstring(idx, 0, "exclude")
                         rel_sheet.setstring(idx, 1, s)
+                        idx +=1
 
 
                 rel_sheet.write(fname, 0, 0, erase = True)

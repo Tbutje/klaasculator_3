@@ -236,8 +236,8 @@ if __name__ == "__main__":
     rel = Relaties()
     print "print rel.leden"
     print rel.leden_codes
-    print rel.exist("ALDI - Aletta Dijkstra")
-    print "ALDI - Aletta Dijkstra" in rel.leden_codes
+    print rel.exist("TIWO - Tineke Wolting ")
+    print "TIWO - Tineke Wolting " in rel.leden_codes
 
 # self.leden, self.olv en self.extern, d
     # self.ledenrek, self.olvrek en self.externrek.

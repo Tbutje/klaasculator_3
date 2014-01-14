@@ -78,7 +78,8 @@ class Debcred:
 
         for r in regels:
             if self.check and not self.rel.exist(r.omschrijving):
-                raise Fout('\'%s\' is niet bekend in het relatiebestand.' % r.omschrijving)
+                day, month, year = inttodate(r.datum)
+                raise Fout('\'%s\' is niet bekend in het relatiebestand. datum: %s %s %s' % (r,day,month,year ))
             # != rel.rekening zorgt ervoor dat er per rekening uitgesplitsts word
             if r.omschrijving != rel.omschrijving or r.rekening != rel.rekening:
                 it = self.footer(it, rel, waarde)
