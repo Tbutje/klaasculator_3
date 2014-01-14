@@ -727,6 +727,8 @@ class BoekstukZoekerWidget:
                 # lets go lomp
                 if self.kascie_true:
                     # self.match_kascie returned TRUE als er alles niet ge x'd is
+
+
                     if self.match_kascie(boekstuk):
                         if self.doenummerdatum.get_active() and self.match_nummerdatum(boekstuk):
                             self.status.set_text('Gevonden.')
@@ -743,7 +745,8 @@ class BoekstukZoekerWidget:
                             if self.callback:
                                 self.callback(boekstuk)
                             break
-                        else:
+                        if not( self.doerekening.get_active() or self.doenummerdatum.get_active() or \
+                                self.doeomschrijving.get_active()):
                             self.status.set_text('Gevonden.')
                             if self.callback:
                                 self.callback(boekstuk)
