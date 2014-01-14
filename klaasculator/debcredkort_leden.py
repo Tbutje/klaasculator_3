@@ -24,7 +24,7 @@ class DebcredKortLeden(Debcred):
         # remove als niet in self.rel.leden
         regels_new = []
         for line in regels:
-            if line.omschrijving in self.rel.leden:
+            if self.rel.exist(line.omschrijving, soort = LID):
                 regels_new.append(line)
             else:
                 pass

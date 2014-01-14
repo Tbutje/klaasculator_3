@@ -104,13 +104,10 @@ def relatiewidget(incleden = True, incolv = False, incextern = False):
     store = gtk.ListStore(str)
 
     rel = Relaties()
-    leden = []
-    for r in rel.leden:
-        leden.append(r[0])
 
     if incleden:
 
-        for r in sorter(leden):
+        for r in sorter(rel.leden_codes):
             store.append([r])
     if incolv:
         for r in sorter(rel.olv):
