@@ -10,6 +10,17 @@ class Baromzet:
         # hoog en laag btw
         self.btw_hoog = self.conf.getvar('btw:hoog') /100.0 #21 / 100.0
         self.btw_laag = self.conf.getvar('btw:laag') / 100.0 # 6 / 100.0
+        #Rekening check
+        # gooit een error als deze rekeningen niet gevonden kunnen worden
+        self.rek_keuk = self.conf.getrekening('Omzet Groep 1 - Keuken')
+        self.rek_bier = self.conf.getrekening('Omzet Groep 2 - Bier')
+        self.rek_fris = self.conf.getrekening('Omzet Groep 3 - Fris')
+        self.rek_alc = self.conf.getrekening('Omzet Groep 4 - Alcohol+')
+        self.rek_kasvr = self.conf.getrekening('Kasverschillen')
+        self.rek_kas = self.conf.getrekening('Kas Algemeen')
+        self.rek_btw = self.conf.getrekening('Af te dragen BTW over verkopen')
+
+
 
         self.window = gtkwindow('Baromzet')
         # de window
@@ -65,11 +76,11 @@ class Baromzet:
         if kas.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kas.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Omzet Groep 1 - Keuken').nummer,
-                                      self.conf.getrekening('Omzet Groep 2 - Bier').nummer,
+                                      self.rek_keuk.nummer,
+                                      self.rek_bier.nummer,
                                       kas,
                                         ''))
 
@@ -84,11 +95,11 @@ class Baromzet:
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Omzet Groep 1 - Keuken').nummer,
+                                      self.rek_keuk.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kasverschillen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kasvr.nummer,
+                                      self.rek_kas.nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzet1)))
         # groep 2
@@ -98,11 +109,11 @@ class Baromzet:
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Omzet Groep 2 - Bier').nummer,
+                                      self.rek_bier.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kasverschillen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kasvr.nummer,
+                                      self.rek_kas.nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzet2)))
         # groep 3
@@ -112,11 +123,11 @@ class Baromzet:
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Omzet Groep 3 - Fris').nummer,
+                                      self.rek_fris.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kasverschillen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kasvr.nummer,
+                                      self.rek_kas.nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzet3)))
         # groep 4
@@ -126,11 +137,11 @@ class Baromzet:
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Omzet Groep 4 - Alcohol+').nummer,
+                                      self.rek_alc.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kasverschillen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kasvr.nummer,
+                                      self.rek_kas.nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzet4)))
 
@@ -138,11 +149,11 @@ class Baromzet:
         if btw.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Af te dragen BTW over verkopen').nummer,
+                                      self.rek_btw.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kasverschillen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kasvr.nummer,
+                                      self.rek_kas.nummer,
                                       btw,
                                       ''))
 
@@ -151,11 +162,11 @@ class Baromzet:
         if verschil.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Kasverschillen').nummer,
+                                      self.rek_kasvr.nummer,
                                       '',
                                       omschrijving,
                                       0,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.rek_kas.nummer,
                                       verschil,
                                       ''))
         # naar journaal schrijven

@@ -20,6 +20,15 @@ class Nico:
         #zwarteters
         self.administratiekosten = Euro(self.conf.getvar('nico:administratiekosten') / 100.0, CREDIT)
 
+        # get rekeningen:
+        self.kas_num = self.conf.getrekening('Kas Algemeen')
+        self.verbr_nico = self.conf.getrekening('Verbruik NICO')
+        self.omz_nico = self.conf.getrekening('Omzet NICO')
+        self.deb_int = self.conf.getrekening('Debiteuren Intern')
+        self.btw_num = self.conf.getrekening('Af te dragen BTW over verkopen')
+        self.kas_versch = self.conf.getrekening('Kasverschillen')
+        self.admin_zwart = self.conf.getrekening('Administratie zwarteters')
+
         # de window
         self.window = gtkwindow('Nico')
 
@@ -128,11 +137,11 @@ class Nico:
         if kas.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.kas_num.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Verbruik NICO').nummer,
-                                      self.conf.getrekening('Omzet NICO').nummer,
+                                      self.verbr_nico.nummer,
+                                      self.omz_nico.nummer,
                                       kas,
                                         ''))
 
@@ -147,11 +156,11 @@ class Nico:
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Omzet NICO').nummer,
+                                      self.omz_nico.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Af te dragen BTW over verkopen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.btw_num.nummer,
+                                      self.kas_num.nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(omzetinc)))
 
@@ -159,11 +168,11 @@ class Nico:
         if btwafdracht.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Af te dragen BTW over verkopen').nummer,
+                                      self.btw_num.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
-                                      self.conf.getrekening('Omzet NICO').nummer,
+                                      self.kas_num.nummer,
+                                      self.omz_nico.nummer,
                                       btwafdracht,
                                       ''))
 
@@ -173,11 +182,11 @@ class Nico:
         if exc.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Verbruik NICO').nummer,
+                                      self.verbr_nico.nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kasverschillen').nummer,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.kas_versch.nummer,
+                                      self.kas_num.nummer,
                                       exc,
                                       '(inc. BTW: %.2f)' % float(verbruik)))
         # af te dragen BTW
@@ -187,8 +196,8 @@ class Nico:
                                       self.conf.getrekening('Te vorderen BTW over inkopen').nummer,
                                       '',
                                       omschrijving,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
-                                      self.conf.getrekening('Verbruik NICO').nummer,
+                                      self.kas_num.nummer,
+                                      self.verbr_nico.nummer,
                                       btwterug,
                                       ''))
 
@@ -203,11 +212,11 @@ class Nico:
             totaal += self.administratiekosten
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Debiteuren Intern').nummer,
+                                      self.deb_int.nummer,
                                       '',
                                       lidx,
-                                      self.conf.getrekening('Administratie zwarteters').nummer,
-                                      self.conf.getrekening('Omzet NICO').nummer,
+                                      self.admin_zwart.nummer,
+                                      self.omz_nico.nummer,
                                       adminkostenppe,
                                       'Zwarteter'))
 
@@ -216,11 +225,11 @@ class Nico:
         if totaal.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Administratie zwarteters').nummer,
+                                      self.admin_zwart.nummer,
                                       '',
                                       'Nico',
-                                      self.conf.getrekening('Kas Algemeen').nummer,
-                                      self.conf.getrekening('Debiteuren Intern').nummer,
+                                      self.kas_num.nummer,
+                                      self.deb_int.nummer,
                                       totaal,
                                       'Administratiekosten zwarteters'))
 
@@ -230,11 +239,11 @@ class Nico:
         if verschil.true():
             boekstuk.append(Boekregel(0,
                                       0,
-                                      self.conf.getrekening('Kasverschillen').nummer,
+                                      self.kas_versch.nummer,
                                       '',
                                       omschrijving,
                                       0,
-                                      self.conf.getrekening('Kas Algemeen').nummer,
+                                      self.kas_num.nummer,
                                       verschil,
                                       ''))
         # naar journaal schrijven
