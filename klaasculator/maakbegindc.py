@@ -16,7 +16,6 @@ class MaakBeginDC(Debcred):
 
     def header(self, it, b):
         """Hulpfunctie.Dit maakt de headers.
-        Als regel b de datum begindatum - 1 is, is het een regel van de begindc.
         """
         self.dclijst.setboekregel(it, Boekregel(rekening = b.rekening,
                                             omschrijving = ""))
@@ -46,14 +45,10 @@ class MaakBeginDC(Debcred):
         return it
 
 
-    def bdatumfix(self, b):
-        if b.datum == self.bdatum:
-            b.datum = self.bdatum - 1
-        return b
 
     def maak(self):
         """Maak de handel."""
-        regels = self.begindc_fix() + self.journaal_fix()
+        regels = sorter(self.begindc, sorter_rodn) + self.journaal_fix()
 
         if self.wegstrepen_true:
             regels = self.wegstrepen(regels)
@@ -97,7 +92,7 @@ class MaakBeginDC(Debcred):
         createsheet('BeginDC_NEW')
 
         tmp = Sheet('BeginDC_NEW', 0, 0, 9, 0)
-        tmp.setstring(0, 4, 'Debiteuren / Crediteuren Samenvatting')
+        tmp.setstring(0, 4, 'Debiteuren / Crediteuren BEGINDC')
 
         tmp.setstring(1, 0, 'Bknr.')
         tmp.setstring(1, 1, 'Datum')
@@ -118,28 +113,7 @@ class MaakBeginDC(Debcred):
         except:
             pass
 
-    def begindc_fix(self):
-        """Deze methode verwijdert dubbele entrys in de begindc.
 
-        Dus wanneer iemand twee keer op dezelfde rekening in de begindc iets heeft, wordt dit samengevat tot een.
-        Retourneert een lijst met boekregels zoals ze horen.
-        Omdat dit later van pas komt worden alle date vervangen door de begindatum - 1
-        """
-        bdc = sorter(self.begindc, sorter_rodn)
-
-
-
-        it = 0
-        while it < len(bdc):
-            b = bdc[it]
-            it += 1
-            b.datum = self.bdatum - 1
-            while it < len(bdc) and b.omschrijving == bdc[it].omschrijving:
-                b.omschrijving2 += ', ' + bdc[it].omschrijving2
-                b.waarde += bdc[it].waarde
-                del bdc[it]
-
-        return bdc
 
     def journaal_fix(self):
         regels = filter(lambda b: self.rel.isrelatierekening(self.conf.getrekening(b.rekening)), self.journaal)
@@ -161,7 +135,7 @@ class MaakBeginDC(Debcred):
 
             it2 = it + 1
 
-            while it2 < len(regels) and regels[it2].omschrijving == naam and regels[it2].rekening == rek:
+            while it2 < len(regels) and regels[it2].rekening == rek and regels[it2].omschrijving == naam:
                 if regels[it2].waarde == waarde and regels[it2].waarde.dc != waarde.dc:
                     #print regels[it]
                     #print regels[it2]
