@@ -1,4 +1,5 @@
 from os.path import dirname
+import os
 
 from powertools import *
 
@@ -35,6 +36,8 @@ def selectconfig(field = 'C10', titel = 'Selecteer het configuratiebestand'):
     result = dialog.run()
     if result == gtk.RESPONSE_OK:
         npath = dialog.get_filename()
+        npath =  os.path.abspath(npath)
+
         setcellstring('Info', field, npath)
         if field == 'C10':
             Config().configure()
