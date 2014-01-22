@@ -109,7 +109,7 @@ class MaakBeginDC(Debcred):
         self.dclijst.write('BeginDC_NEW', erase = True)
 
         try:
-            layout_journaalstyle('DebCredKort')
+            layout_journaalstyle('BeginDC_NEW')
         except:
             pass
 

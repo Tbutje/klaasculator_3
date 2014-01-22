@@ -93,7 +93,7 @@ class DebcredKortLeden(Debcred):
         tmp.write('DebCredIncassoLeden', 0, 0)
 
         try:
-            layout_journaalstyle('DebCredKort')
+            layout_journaalstyle('DebCredIncassoLeden')
         except:
             pass
 
