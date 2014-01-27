@@ -13,6 +13,7 @@ class Debug:
         self.begindc = Sheet_jr_ro('BeginDC')
 
         self.verder = True
+        ok = True
         self.error = ''
         # ok returned FALSE als er ergens iets niet ok is
         # optioneel kan self.verder aangeven dat het al klaar is
@@ -20,17 +21,19 @@ class Debug:
         # ook nadat je verberterd hebt
         # misschien dubbele check doen? beetje loos. dan maar geen berichtje
         # als je alles goed verbeterd hebt.
-        ok = self.check_journaal(True)
 
         if self.verder:
             ok = self.check_beginbalans(ok)
 
         if self.verder:
             ok = self.check_begindc(ok)
-            
+
         # maak check voor totaal begin dc / post == beginbalans
         if self.verder:
             ok = self.check_begindc_x_beginbalans(ok)
+
+        if self.verder:
+            ok = self.check_journaal(ok)
 
         # even een schermpje als er geen fouten waren
         if ok:
@@ -81,9 +84,9 @@ class Debug:
             d = inttodate(self.bdatum)
             self.error = 'De datum is voor na de begindatum (%i-%i-%i)' % (d[0], d[1], d[2])
             return False
-        
+
         return True
-    
+
     def check_boekstuk(self, boekstuk):
         """Check of een boekstuk deugt.
 
@@ -112,7 +115,7 @@ class Debug:
                 if self.rel.isrelatierekening(r) and not self.rel.exist(b.omschrijving):
                     self.error = '%s is niet gedefinieerd in het relatiebestand.' % b.omschrijving
                     return False
-                
+
             except Fout: # exceptie voor als de rekening niet bestaat afvangen
                 self.error = 'Rekening %i is niet gedefinieerd.' % b.rekening
                 return False
@@ -262,7 +265,7 @@ class Debug:
 
         window.add(vbox)
         window.show_all()
-        gtk.main()        
+        gtk.main()
 
     def error_balansregel(self, regel):
         """Errorscherm voor als er iest mis is in de beginbalans."""
@@ -320,14 +323,14 @@ class Debug:
         s.setboekregel(0, bw.get_boekstuk()[0])
         s.write('BeginDC')
         window.destroy()
-    
+
     def sluiten(self, button, window):
         self.verder = False
         window.destroy()
 
     def verder_bl(self, button, window):
         window.destroy()
-        
+
     def check_begindc_x_beginbalans(self, ok):
         dc = self.begindc_fix()
         totals = {}
@@ -341,13 +344,13 @@ class Debug:
                 # zoals bv btw
                 if not (self.conf.getrekening(line.nummer).naam in self.rel.exclude_rek):
                     totals[line.nummer] = 0
-        
+
         for line in dc:
             if line.waarde.dc == 0: # debet
                 totals[line.rekening] += line.waarde.value/100
             elif line.waarde.dc == 1: # credit
                 totals[line.rekening] -= line.waarde.value/100
-                    
+
         beginbalans = Sheet_bl_ro('Beginbalans')
         ok = True
         foute_nummers = []
@@ -358,7 +361,7 @@ class Debug:
             if beginbalans.getwaarde(key).dc == 1: # credit
                 if (beginbalans.getwaarde(key).value/-100) != value:
                     foute_nummers.append( key)
-        
+
         if len(foute_nummers) > 0:
             text = " ".join(str(x) for x in foute_nummers)
             text = "Het totaal van de volgende begin DC posten is niet gelijk aan de beginbalans : " + text
@@ -377,9 +380,9 @@ class Debug:
             window.add(vbox)
             window.show_all()
             gtk.main()
-            
+
         return ok
-        
+
     def begindc_fix(self):
         """Deze methode verwijdert dubbele entrys in de begindc.
 
@@ -399,19 +402,19 @@ class Debug:
                 b.waarde += bdc[it].waarde
                 del bdc[it]
 
-        for line in bdc:
-            print line
+#         for line in bdc:
+#             print line
         return bdc
-        
-    
-        
-            
+
+
+
+
 
 if __name__ == "__main__":
     Debug()
-    
-    
 
-                    
-        
-    
+
+
+
+
+
