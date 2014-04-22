@@ -110,32 +110,33 @@ class Relaties:
                 self.leden_codes.add(line[0])
 
             # maak lijst met ficos en check if uniek
-            for line in self.leden:
-                fico = line[0][:4]
+            if Config().getvar('check_ficos'):
+                for line in self.leden:
+                    fico = line[0][:4]
 
-                #check if geen naam
-                if not fico.isupper():
-                    raise Fout("naam ipv fico %s" % line[0])
+                    #check if geen naam
+                    if not fico.isupper():
+                        raise Fout("naam ipv fico %s" % line[0])
 
-                # check if dubbel
-                if fico in self.ficos:
-                    raise Fout("FICO dubbel %s" % line[0])
+                    # check if dubbel
+                    if fico in self.ficos:
+                        raise Fout("FICO dubbel %s" % line[0])
 
-                self.ficos.append(fico)
+                    self.ficos.append(fico)
 
-            # loop door olvers
-            for line in self.olv:
-                fico = line[0][:4]
+                # loop door olvers
+                for line in self.olv:
+                    fico = line[0][:4]
 
-                #check if geen naam
-                if not fico.isupper():
-                    raise Fout("naam ipv fico %s" % line[0])
+                    #check if geen naam
+                    if not fico.isupper():
+                        raise Fout("naam ipv fico %s" % line[0])
 
-                # check if dubbel
-                if fico in self.ficos:
-                    raise Fout("FICO dubbel %s" % line[0])
+                    # check if dubbel
+                    if fico in self.ficos:
+                        raise Fout("FICO dubbel %s" % line[0])
 
-                self.ficos.append(fico)
+                    self.ficos.append(fico)
 
 
             # maak hier iets dat alle rekeningde die niet olv of extern zijn
