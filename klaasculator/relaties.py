@@ -48,6 +48,7 @@ class Relaties:
 
             self.leden = []
             self.leden_codes = set() # deze gaat alleen ficos opslaan.
+            self.ficos = []
             self.olv = set()
             self.extern = set()
             self.ledenrek = set()
@@ -104,8 +105,37 @@ class Relaties:
 
             # versimpelde list maken van rel.leden met alleen fico.
             for line in self.leden:
+                if line[0] in self.leden_codes:
+                    raise Fout("fico niet uniek %s" % line[0])
                 self.leden_codes.add(line[0])
 
+            # maak lijst met ficos en check if uniek
+            for line in self.leden:
+                fico = line[0][:4]
+
+                #check if geen naam
+                if not fico.isupper():
+                    raise Fout("naam ipv fico %s" % line[0])
+
+                # check if dubbel
+                if fico in self.ficos:
+                    raise Fout("FICO dubbel %s" % line[0])
+
+                self.ficos.append(fico)
+
+            # loop door olvers
+            for line in self.olv:
+                fico = line[0][:4]
+
+                #check if geen naam
+                if not fico.isupper():
+                    raise Fout("naam ipv fico %s" % line[0])
+
+                # check if dubbel
+                if fico in self.ficos:
+                    raise Fout("FICO dubbel %s" % line[0])
+
+                self.ficos.append(fico)
 
 
             # maak hier iets dat alle rekeningde die niet olv of extern zijn
