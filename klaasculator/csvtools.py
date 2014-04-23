@@ -33,10 +33,10 @@ def getsheetbyname(name):
     try:
         if not name.endswith('.csv'):
             name += '.csv'
-        
+
         f = open(name, 'rb')
         reader = csv.reader(f)
-        
+
         sheet = []
         for row in reader:
             sheet.append(row)
@@ -58,15 +58,15 @@ def laatsteboeking(sheet):
 
 class Sheet:
     """Deze class representeert de data op een sheet."""
-    
+
     def __init__(self, sheetname, left, bottom, right, top):
         """Maak de sheet van de sheet sheetname, in de range left, bottom, right, top.
-        
+
         Voor de goede orde: left staat voor de linker kolom, right voor de rechter, bottom voor de laagste rij (dus die
         bovenin je scherm staat) en top voor de hoogste rij (ondering je scherm). Deze zijn 0-gebasseerd.
         Dus bijvoorbeeld Sheet('Journaal', 2, 4, 5, 8) selecteerd de range C5:F9.
         """
-        
+
         if top - bottom < 0:
             self.data = [['']*(right - left + 1)]
         else:
@@ -105,34 +105,39 @@ class Sheet:
             # we willen ook met data om kunnen gaan zoals die standaard door openoffice worden opgeslagen, dus bv.
             # '5 feb 1984'
             try:
-                dag, maand, jaar = self.data[row][col].split()
+                dag, maand, jaar = self.data[row][col].split("-")
 
-                maand = maand.lower()
 
-                if maand == 'jan':
-                    maand = 1
-                elif maand == 'feb':
-                    maand = 2
-                elif maand == 'mrt' or maand == 'mar':
-                    maand = 3
-                elif maand == 'apr':
-                    maand = 4
-                elif maand == 'mei' or maand == 'may':
-                    maand = 5
-                elif maand == 'jun':
-                    maand = 6
-                elif maand == 'jul':
-                    maand = 7
-                elif maand == 'aug':
-                    maand = 8
-                elif maand == 'sep':
-                    maand = 9
-                elif maand == 'okt' or maand == 'oct':
-                    maand = 10
-                elif maand == 'nov':
-                    maand = 11
-                elif maand == 'dec':
-                    maand = 12
+                try:
+                    # eerst proberen of het een nummer is
+                    maand = int(maand)
+                except:
+                    maand = maand.lower()
+
+                    if maand == 'jan':
+                        maand = 1
+                    elif maand == 'feb':
+                        maand = 2
+                    elif maand == 'mrt' or maand == 'mar':
+                        maand = 3
+                    elif maand == 'apr':
+                        maand = 4
+                    elif maand == 'mei' or maand == 'may':
+                        maand = 5
+                    elif maand == 'jun':
+                        maand = 6
+                    elif maand == 'jul':
+                        maand = 7
+                    elif maand == 'aug':
+                        maand = 8
+                    elif maand == 'sep':
+                        maand = 9
+                    elif maand == 'okt' or maand == 'oct':
+                        maand = 10
+                    elif maand == 'nov':
+                        maand = 11
+                    elif maand == 'dec':
+                        maand = 12
 
                 jaar = int(jaar)
                 if jaar < 1000:
@@ -213,15 +218,15 @@ class Sheet:
         else:
             for r in range(self.rows()):
                 s = bottom + r
-                
+
                 while s >= len(sheet):
                     sheet.append(['']*cols)
-                    
+
                 sheet[s][left: left + self.columns()] = self.data[r]
-                    
+
         if erase:
             sheet = sheet[:bottom + self.rows()]
-            
+
         try:
             f = open(sheetname, 'wb')
             writer = csv.writer(f)
@@ -236,11 +241,11 @@ class Sheet_ro(Sheet):
 def layout_journaalstyle(sheet):
     """Layout volgens journaalstyle."""
     raise Exception('Dit is niet beschikbaar in CSV.')
-  
+
 def layout_balansstyle(sheet):
     """Layout volgens balansstyle."""
     raise Exception('Dit is niet beschikbaar in CSV.')
-  
+
 def layout_extrakortedc(sheet):
     """Layout extra korte dc."""
     raise Exception('Dit is niet beschikbaar in CSV.')
@@ -249,7 +254,7 @@ def createsheet(name):
     """Maak een nieuw sheet."""
     if not name.endswith('.csv'):
         name += '.csv'
-    
+
     f = open(name, 'w')
     f.write(',,,,,,,,,\n,,,,,,,,,\n')
     f.close()

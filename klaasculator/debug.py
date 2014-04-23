@@ -2,7 +2,7 @@ from compileer import compileeralles
 from debcred import *
 from powertools import *
 from relaties import *
-
+import csv
 
 class Debug:
     def __init__(self):
@@ -11,6 +11,10 @@ class Debug:
         self.bdatum = getbegindatum()
         self.edatum = geteinddatum()
         self.begindc = Sheet_jr_ro('BeginDC')
+        self.log = False # dit logt stuff if true
+        if self.log:
+            csvfile = open('log_debug_journaal.csv', 'wb')
+            self.logwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
         self.verder = True
         ok = True
@@ -34,6 +38,10 @@ class Debug:
 
         if self.verder:
             ok = self.check_journaal(ok)
+
+        # close log
+        if self.log:
+            csvfile.close()
 
         # even een schermpje als er geen fouten waren
         if ok:
@@ -107,23 +115,26 @@ class Debug:
             return False
 
         # afzonderlijke regels
-        for b in boekstuk:
-            try:
-                # controleer of de rekening bestaat (gooit exceptie als dat niet zo is)
-                r = self.conf.getrekening(b.rekening).naam
+        # als boekstuk niet te groot is. 100?
+        if len(boekstuk) < 100:
+            for b in boekstuk:
+        #             print b
+                try:
+                    # controleer of de rekening bestaat (gooit exceptie als dat niet zo is)
+                    r = self.conf.getrekening(b.rekening).naam
 
-                if self.rel.isrelatierekening(r) and not self.rel.exist(b.omschrijving):
-                    self.error = '%s is niet gedefinieerd in het relatiebestand.' % b.omschrijving
+                    if self.rel.isrelatierekening(r) and not self.rel.exist(b.omschrijving):
+                        self.error = '%s is niet gedefinieerd in het relatiebestand.' % b.omschrijving
+                        return False
+
+                except: # exceptie voor als de rekening niet bestaat afvangen
+                    self.error = 'Rekening %i is niet gedefinieerd.' % b.rekening
                     return False
 
-            except Fout: # exceptie voor als de rekening niet bestaat afvangen
-                self.error = 'Rekening %i is niet gedefinieerd.' % b.rekening
-                return False
-
-            # heeft het een tegenrekening
-            if not b.tegen:
-                self.error = 'Tegenrekening ontbreekt.'
-                return False
+        #             heeft het een tegenrekening
+                if not b.tegen:
+                    self.error = 'Tegenrekening ontbreekt.'
+                    return False
         return True
 
     def check_beginbalans(self, ok):
@@ -183,10 +194,16 @@ class Debug:
         biter = iter(BoekstukIter())
         # writer heeft nog wat review nodig
         writer = BoekstukWriter('Journaal')
+        #add log
+
         try:
             # zolang we verder willen
+
+
             while self.verder:
                 b = biter.next()
+                if(self.log):
+                    self.logwriter.writerow(b)
                 while self.check_boekstuk(b): # controlleer
                     b = biter.next()
                 ok = False
